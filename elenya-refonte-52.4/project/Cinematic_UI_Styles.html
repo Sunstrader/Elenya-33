@@ -1,0 +1,228 @@
+<style id="elenya-cinematic-ui-v1">
+/*
+ * ELENYA — CINEMATIC STAGE UI v1.0
+ * Couche de mise en scène uniquement.
+ * Dépend de Styles_Game + JRPG_UI_Styles.
+ * Aucun changement de narration, de flags, de sauvegardes ou de destinations de choix.
+ */
+
+:root {
+  --cinema-shift: min(4.5vw, 64px);
+  --cinema-focus-bright: 1.06;
+  --cinema-muted-bright: .76;
+}
+
+/* ---------- Décors : mouvement lent, très discret ---------- */
+body.game-live::before,
+body.game-live::after {
+  inset: -1.2%;
+  transform-origin: 50% 50%;
+  animation: elenyaCinemaBgDrift 22s ease-in-out infinite alternate;
+  will-change: opacity, transform;
+}
+body.game-live::after { animation-direction: alternate-reverse; }
+
+@keyframes elenyaCinemaBgDrift {
+  0%   { transform: scale(1.012) translate3d(-.25%, -.15%, 0); }
+  50%  { transform: scale(1.026) translate3d(.25%, .1%, 0); }
+  100% { transform: scale(1.018) translate3d(.1%, .25%, 0); }
+}
+
+/* ---------- Sprites : respiration + hiérarchie de mise en scène ---------- */
+body.game-live .sprite-layer.cinema-present::before,
+body.game-live .sprite-layer.cinema-present::after {
+  transform-origin: 50% 100%;
+  animation: elenyaCinemaBreath 5.8s ease-in-out infinite;
+  will-change: transform, filter, opacity;
+}
+body.game-live #sprite-left.cinema-present::before,
+body.game-live #sprite-left.cinema-present::after { animation-delay: -.8s; }
+body.game-live #sprite-right.cinema-present::before,
+body.game-live #sprite-right.cinema-present::after { animation-delay: -1.9s; }
+
+@keyframes elenyaCinemaBreath {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-2px) scale(1.006, 1.010); }
+}
+
+body.game-live .sprite-layer.cinema-active { z-index: 3; }
+body.game-live .sprite-layer.cinema-active::before,
+body.game-live .sprite-layer.cinema-active::after {
+  filter: brightness(var(--cinema-focus-bright)) saturate(1.06) contrast(1.015);
+}
+body.game-live .sprite-layer.cinema-muted::before,
+body.game-live .sprite-layer.cinema-muted::after {
+  filter: brightness(var(--cinema-muted-bright)) saturate(.72) contrast(.94);
+}
+
+/* Les layers 3D suivent la même hiérarchie quand un côté explicite est connu. */
+body.game-live .character-3d-layer.cinema-active { opacity: 1; filter: brightness(1.06) saturate(1.04); }
+body.game-live .character-3d-layer.cinema-muted  { filter: brightness(.76) saturate(.72); }
+
+/* ---------- Boîte de dialogue adaptative ---------- */
+body.game-live .body-content {
+  transition: transform .42s cubic-bezier(.2,.75,.25,1), opacity .28s ease;
+}
+body.game-live.cinema-dialogue-right .body-content {
+  transform: translateX(var(--cinema-shift));
+}
+body.game-live.cinema-dialogue-left .body-content {
+  transform: translateX(calc(-1 * var(--cinema-shift)));
+}
+
+/* ---------- Nom du locuteur : seulement si le moteur fournit un nom explicite ---------- */
+#cinema-speaker-name {
+  width: min(100%, var(--jrpg-dialog-width, 980px));
+  margin: 0 auto -8px;
+  padding-left: 18px;
+  position: relative;
+  z-index: 16;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(7px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+#cinema-speaker-name.visible { opacity: 1; transform: none; }
+#cinema-speaker-name > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 13px 4px;
+  border: 1px solid rgba(196,222,255,.34);
+  border-bottom-color: rgba(196,222,255,.16);
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, rgba(18,31,59,.96), rgba(7,13,29,.96));
+  box-shadow: 0 8px 22px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.045);
+  color: rgba(238,246,255,.94);
+  font: 600 .68rem/1 "Cinzel", serif;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 8px rgba(0,0,0,.85);
+}
+
+/* ---------- Carton de lieu / entrée de scène ---------- */
+#cinema-location-card {
+  position: fixed;
+  left: clamp(18px, 4.4vw, 72px);
+  top: clamp(82px, 13vh, 142px);
+  z-index: 24;
+  width: min(520px, calc(100vw - 40px));
+  padding: 10px 0 10px 18px;
+  border-left: 2px solid rgba(210,232,255,.72);
+  color: #f6f9ff;
+  text-shadow: 0 3px 20px #000, 0 1px 6px #000;
+  opacity: 0;
+  transform: translateX(-14px);
+  filter: blur(2px);
+  pointer-events: none;
+  transition: opacity .4s ease, transform .5s cubic-bezier(.2,.75,.2,1), filter .45s ease;
+}
+#cinema-location-card.show {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+#cinema-location-kicker {
+  margin-bottom: 5px;
+  color: rgba(201,222,249,.66);
+  font: 600 .62rem/1.2 "Cinzel", serif;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+#cinema-location-title {
+  max-width: 100%;
+  font: 600 clamp(1.15rem, 2.05vw, 1.72rem)/1.15 "Cinzel", serif;
+  letter-spacing: .035em;
+  text-wrap: balance;
+}
+
+/* ---------- Moment de décision ---------- */
+body.cinema-choice-stage #vignette {
+  background:
+    linear-gradient(to bottom, rgba(3,5,12,.03) 0%, rgba(3,5,12,.06) 42%, rgba(3,5,12,.28) 100%),
+    radial-gradient(ellipse at center, transparent 35%, rgba(4,5,12, calc(var(--vignette-opacity) + .06)) 100%);
+}
+body.cinema-choice-stage .narrative {
+  opacity: .90;
+  box-shadow: 0 20px 64px rgba(0,0,0,.52), inset 0 1px rgba(255,255,255,.035) !important;
+}
+body.cinema-choice-stage .choices.jrpg-ready .choice-btn {
+  animation: elenyaCinemaChoiceCard .34s cubic-bezier(.2,.8,.25,1) both;
+}
+body.cinema-choice-stage .choices.jrpg-ready .choice-btn:nth-child(2) { animation-delay: .055s; }
+body.cinema-choice-stage .choices.jrpg-ready .choice-btn:nth-child(3) { animation-delay: .11s; }
+body.cinema-choice-stage .choices.jrpg-ready .choice-btn:nth-child(4) { animation-delay: .165s; }
+body.cinema-choice-stage .choices.jrpg-ready .choice-btn:nth-child(5) { animation-delay: .22s; }
+body.cinema-choice-stage .choices.jrpg-ready .choice-btn:nth-child(n+6) { animation-delay: .26s; }
+
+@keyframes elenyaCinemaChoiceCard {
+  from { opacity: 0; transform: translateY(9px) scale(.992); filter: blur(1px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+
+/* ---------- Sauvegarde : feedback court plutôt qu'un élément criard ---------- */
+#aaa-status.cinema-save-pulse {
+  animation: elenyaCinemaSavePulse .9s ease both;
+}
+@keyframes elenyaCinemaSavePulse {
+  0%   { opacity: .5; transform: translateY(-3px); }
+  28%  { opacity: 1; transform: none; filter: drop-shadow(0 0 8px rgba(188,221,255,.34)); }
+  100% { opacity: .72; filter: none; }
+}
+
+/* ---------- Écran titre : image plus vivante, sans recadrage agressif ---------- */
+#accueil-screen::before {
+  transform-origin: 50% 50%;
+  animation: elenyaCinemaTitleDrift 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes elenyaCinemaTitleDrift {
+  from { transform: scale(1.00) translate3d(0,0,0); }
+  to   { transform: scale(1.035) translate3d(0,-.6%,0); }
+}
+.accueil-title {
+  text-shadow: 0 0 30px rgba(171,207,255,.18), 0 4px 30px rgba(0,0,0,.84);
+}
+.accueil-menu .accueil-btn {
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease, color .18s ease;
+}
+.accueil-menu .accueil-btn:hover,
+.accueil-menu .accueil-btn:focus-visible {
+  transform: translateX(4px);
+}
+
+/* ---------- Mobile : ne jamais déplacer la boîte hors écran ---------- */
+@media (max-width: 760px) {
+  body.game-live.cinema-dialogue-right .body-content,
+  body.game-live.cinema-dialogue-left .body-content { transform: none; }
+  #cinema-speaker-name { padding-left: 10px; margin-bottom: -6px; }
+  #cinema-location-card {
+    left: 15px;
+    top: max(72px, 10vh);
+    width: calc(100vw - 30px);
+    padding-left: 12px;
+  }
+  #cinema-location-title { font-size: clamp(1rem, 5vw, 1.35rem); }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  #cinema-location-card { top: 54px; }
+  #cinema-location-kicker { font-size: .52rem; }
+  #cinema-location-title { font-size: 1rem; }
+}
+
+/* Respect de l'accessibilité. */
+@media (prefers-reduced-motion: reduce) {
+  body.game-live::before,
+  body.game-live::after,
+  #accueil-screen::before,
+  body.game-live .sprite-layer.cinema-present::before,
+  body.game-live .sprite-layer.cinema-present::after,
+  body.cinema-choice-stage .choices.jrpg-ready .choice-btn,
+  #aaa-status.cinema-save-pulse {
+    animation: none !important;
+  }
+  #cinema-location-card,
+  body.game-live .body-content { transition-duration: .01ms !important; }
+}
+</style>

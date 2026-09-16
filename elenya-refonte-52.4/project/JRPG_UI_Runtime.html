@@ -211,91 +211,80 @@
     }
   }
 
-  let nativeRenderNarrativeAsHTML = typeof renderNarrativeAsHTML === 'function' ? renderNarrativeAsHTML : null;
-  let nativeTypeWriter = typeof typeWriter === 'function' ? typeWriter : null;
-  let nativeRenderChoices = typeof renderChoices === 'function' ? renderChoices : null;
-  let nativeFocusFirstChoice = typeof focusFirstChoice === 'function' ? focusFirstChoice : null;
-  let nativeRenderScene = typeof renderScene === 'function' ? renderScene : null;
-  let nativeFadeInText = typeof fadeInText === 'function' ? fadeInText : null;
+  const nativeRenderNarrativeAsHTML = renderNarrativeAsHTML;
+  const nativeTypeWriter = typeWriter;
+  const nativeRenderChoices = renderChoices;
+  const nativeFocusFirstChoice = focusFirstChoice;
+  const nativeRenderScene = renderScene;
 
-  if (nativeRenderNarrativeAsHTML) {
-    window.renderNarrativeAsHTML = function (text) {
-      ensureText(text);
-      nativeRenderNarrativeAsHTML(pageText());
-      const el = byId('narrative');
-      if (el) el.scrollTop = 0;
-      updateChrome();
-    };
-  }
+  renderNarrativeAsHTML = function (text) {
+    ensureText(text);
+    nativeRenderNarrativeAsHTML(pageText());
+    const el = byId('narrative');
+    if (el) el.scrollTop = 0;
+    updateChrome();
+  };
 
-  if (nativeTypeWriter) {
-    window.typeWriter = function (text) {
-      ensureText(text);
-      state.pageComplete = false;
-      state.renderToken++;
-      lockOrRevealChoices();
-      updateChrome();
-      nativeTypeWriter(pageText());
-      /* L'historique et le système de voix doivent conserver la scène complète. */
-      if (typeof currentFullText !== 'undefined') window.currentFullText = state.fullText;
-    };
-  }
+  typeWriter = function (text) {
+    ensureText(text);
+    state.pageComplete = false;
+    state.renderToken++;
+    lockOrRevealChoices();
+    updateChrome();
+    nativeTypeWriter(pageText());
+    /* L'historique et le système de voix doivent conserver la scène complète. */
+    currentFullText = state.fullText;
+  };
 
-  if (nativeFadeInText) {
-    window.fadeInText = function (text) {
-      ensureText(text);
-      state.pageComplete = false;
-      const token = ++state.renderToken;
-      if (typeof window.typingRafId !== 'undefined' && window.typingRafId) cancelAnimationFrame(window.typingRafId);
-      if (typeof window.isTyping !== 'undefined') window.isTyping = false;
-      if (typeof window.currentFullText !== 'undefined') window.currentFullText = state.fullText;
-      lockOrRevealChoices();
-      updateChrome();
+  fadeInText = function (text) {
+    ensureText(text);
+    state.pageComplete = false;
+    const token = ++state.renderToken;
+    if (typingRafId) cancelAnimationFrame(typingRafId);
+    isTyping = false;
+    currentFullText = state.fullText;
+    lockOrRevealChoices();
+    updateChrome();
 
-      const el = byId('narrative');
-      if (!el) return;
-      el.style.opacity = '0';
-      if (nativeRenderNarrativeAsHTML) nativeRenderNarrativeAsHTML(pageText());
-      el.scrollTop = 0;
-      el.style.transition = 'opacity .42s ease';
-      requestAnimationFrame(() => { el.style.opacity = '1'; });
-      setTimeout(() => {
-        if (token !== state.renderToken) return;
-        el.style.transition = '';
-        if (typeof window.focusFirstChoice === 'function') window.focusFirstChoice();
-      }, 470);
-    };
-  }
+    const el = byId('narrative');
+    if (!el) return;
+    el.style.opacity = '0';
+    nativeRenderNarrativeAsHTML(pageText());
+    el.scrollTop = 0;
+    el.style.transition = 'opacity .42s ease';
+    requestAnimationFrame(() => { el.style.opacity = '1'; });
+    setTimeout(() => {
+      if (token !== state.renderToken) return;
+      el.style.transition = '';
+      focusFirstChoice();
+    }, 470);
+  };
 
-  if (nativeFocusFirstChoice) {
-    window.focusFirstChoice = function () {
-      if (state.fullText || state.pages.length) {
-        markPageComplete();
-        if (!isLastPage()) return;
-      }
-      nativeFocusFirstChoice();
-    };
-  }
+  focusFirstChoice = function () {
+    if (state.fullText || state.pages.length) {
+      markPageComplete();
+      if (!isLastPage()) return;
+    }
+    nativeFocusFirstChoice();
+  };
 
-  if (nativeRenderChoices) {
-    window.renderChoices = function (choices, isEnd, postEnding) {
-      nativeRenderChoices(choices, isEnd, postEnding);
-      const container = byId('choices');
-      if (container) {
-        container.querySelectorAll('.choice-btn').forEach((btn, i) => {
-          if (!btn.dataset.index) btn.dataset.index = String(i + 1);
-        });
-      }
-      lockOrRevealChoices();
-    };
-  }
+  renderChoices = function (choices, isEnd, postEnding) {
+    nativeRenderChoices(choices, isEnd, postEnding);
+    const container = byId('choices');
+    if (container) {
+      container.querySelectorAll('.choice-btn').forEach((btn, i) => {
+        if (!btn.dataset.index) btn.dataset.index = String(i + 1);
+      });
+    }
+    lockOrRevealChoices();
+  };
 
   function showCurrentPageInstantly() {
     state.renderToken++;
-    if (typeof window.typingRafId !== 'undefined' && window.typingRafId) cancelAnimationFrame(window.typingRafId);
-    if (typeof window.isTyping !== 'undefined') window.isTyping = false;
-    if (typeof window.currentFullText !== 'undefined') window.currentFullText = state.fullText;
-    if (nativeRenderNarrativeAsHTML) nativeRenderNarrativeAsHTML(pageText());
+    if (typingRafId) cancelAnimationFrame(typingRafId);
+    isTyping = false;
+    currentFullText = state.fullText;
+    nativeRenderNarrativeAsHTML(pageText());
     const el = byId('narrative');
     if (el) {
       el.style.opacity = '1';
@@ -317,11 +306,8 @@
     document.body.classList.add('jrpg-page-turn');
     setTimeout(() => document.body.classList.remove('jrpg-page-turn'), 280);
 
-    if (typeof window._fadeMode !== 'undefined' && window._fadeMode && nativeFadeInText) {
-      window.fadeInText(state.fullText);
-    } else if (nativeTypeWriter) {
-      window.typeWriter(state.fullText);
-    }
+    if (_fadeMode) fadeInText(state.fullText);
+    else typeWriter(state.fullText);
     const el = byId('narrative');
     if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     return true;
@@ -329,8 +315,8 @@
 
   function handleAdvance() {
     if (!state.fullText && !state.pages.length) return false;
-    if (typeof window.isTyping !== 'undefined' && window.isTyping) {
-      if (typeof window.skipTypeWriter === 'function') window.skipTypeWriter();
+    if (isTyping) {
+      skipTypeWriter();
       return true;
     }
     if (!state.pageComplete) {
@@ -340,18 +326,16 @@
     return nextPage();
   }
 
-  if (nativeRenderScene) {
-    window.renderScene = function (data) {
-      beginScene(data || {});
-      const result = nativeRenderScene(data);
-      ensureChrome();
-      const narrative = byId('narrative');
-      if (narrative) narrative.onclick = () => { handleAdvance(); };
-      lockOrRevealChoices();
-      updateChrome();
-      return result;
-    };
-  }
+  renderScene = function (data) {
+    beginScene(data || {});
+    const result = nativeRenderScene(data);
+    ensureChrome();
+    const narrative = byId('narrative');
+    if (narrative) narrative.onclick = () => { handleAdvance(); };
+    lockOrRevealChoices();
+    updateChrome();
+    return result;
+  };
 
   /* Capture avant les raccourcis historiques d'Elenya : espace/entrée tournent la page,
      mais ne valident JAMAIS un choix à la place du joueur. */
@@ -364,7 +348,7 @@
     const advanceKey = event.key === ' ' || event.code === 'Space' || event.key === 'Enter';
     if (!advanceKey) return;
     if (target && target.closest && target.closest('button,a')) return;
-    if ((typeof window.isTyping !== 'undefined' && window.isTyping) || !state.pageComplete || !isLastPage()) {
+    if (isTyping || !state.pageComplete || !isLastPage()) {
       if (handleAdvance()) {
         event.preventDefault();
         event.stopImmediatePropagation();

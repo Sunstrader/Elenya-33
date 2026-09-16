@@ -1,0 +1,249 @@
+<script id="elenya-cinematic-ui-runtime-v1">
+/*
+ * ELENYA — CINEMATIC STAGE UI v1.0
+ * À charger APRÈS JRPG_UI_Runtime.html.
+ * Mise en scène uniquement : aucun changement de logique narrative.
+ */
+(function () {
+  'use strict';
+
+  if (window.ELENYA_CINEMATIC_UI && window.ELENYA_CINEMATIC_UI.version) return;
+
+  const state = {
+    version: '1.0.0',
+    lastImage: null,
+    lastLocationKey: '',
+    locationTimer: 0,
+    lastSceneData: null,
+    focusSide: ''
+  };
+
+  const byId = (id) => document.getElementById(id);
+  const body = () => document.body;
+
+  function normalizeSide(value) {
+    const v = String(value == null ? '' : value).trim().toLowerCase();
+    if (!v) return '';
+    if (/^(l|left|gauche)$/.test(v)) return 'left';
+    if (/^(r|right|droite)$/.test(v)) return 'right';
+    if (/^(c|center|centre|middle)$/.test(v)) return 'center';
+    return '';
+  }
+
+  function explicitFocusSide(data) {
+    if (!data || typeof data !== 'object') return '';
+    return normalizeSide(
+      data.focusSide ||
+      data.speakerSide ||
+      data.activeSide ||
+      data.characterSide ||
+      data.focus ||
+      ''
+    );
+  }
+
+  function speakerName(data) {
+    if (!data || typeof data !== 'object') return '';
+    const value = data.speakerName || data.speaker || data.characterName || data.character || '';
+    if (typeof value !== 'string') return '';
+    const cleaned = value.trim();
+    if (!cleaned || cleaned.length > 40) return '';
+    /* N'affiche pas des valeurs techniques utilisées comme direction. */
+    if (normalizeSide(cleaned)) return '';
+    return cleaned;
+  }
+
+  function ensureChrome() {
+    const content = document.querySelector('.body-content');
+    const narrative = byId('narrative');
+    if (content && narrative && !byId('cinema-speaker-name')) {
+      const tag = document.createElement('div');
+      tag.id = 'cinema-speaker-name';
+      tag.setAttribute('aria-hidden', 'true');
+      tag.innerHTML = '<span></span>';
+      content.insertBefore(tag, narrative);
+    }
+
+    if (!byId('cinema-location-card')) {
+      const card = document.createElement('div');
+      card.id = 'cinema-location-card';
+      card.setAttribute('aria-hidden', 'true');
+      card.innerHTML = '<div id="cinema-location-kicker"></div><div id="cinema-location-title"></div>';
+      document.body.appendChild(card);
+    }
+  }
+
+  function setSpeaker(data) {
+    ensureChrome();
+    const host = byId('cinema-speaker-name');
+    if (!host) return;
+    const name = speakerName(data);
+    const span = host.querySelector('span');
+    if (span) span.textContent = name;
+    host.classList.toggle('visible', !!name);
+    host.setAttribute('aria-hidden', name ? 'false' : 'true');
+  }
+
+  function markSprite(id, present, active, muted) {
+    const el = byId(id);
+    if (!el) return;
+    el.classList.toggle('cinema-present', !!present);
+    el.classList.toggle('cinema-active', !!active);
+    el.classList.toggle('cinema-muted', !!muted);
+  }
+
+  function mark3D(id, active, muted) {
+    const el = byId(id);
+    if (!el) return;
+    el.classList.toggle('cinema-active', !!active);
+    el.classList.toggle('cinema-muted', !!muted);
+  }
+
+  function applySpriteStage(data) {
+    data = data || {};
+    const hasLeft = !!data.spriteLeft;
+    const hasRight = !!data.spriteRight;
+    const hasCenter = !hasLeft && !hasRight && !!data.sprite;
+    let side = explicitFocusSide(data);
+
+    /* Quand un seul personnage est affiché, il devient naturellement le sujet. */
+    if (!side) {
+      if (hasLeft && !hasRight) side = 'left';
+      else if (hasRight && !hasLeft) side = 'right';
+      else if (hasCenter) side = 'center';
+    }
+    state.focusSide = side;
+
+    const multi = [hasLeft, hasRight, hasCenter].filter(Boolean).length > 1 || (hasLeft && hasRight);
+    markSprite('sprite-left', hasLeft, side === 'left', multi && !!side && side !== 'left');
+    markSprite('sprite-right', hasRight, side === 'right', multi && !!side && side !== 'right');
+    markSprite('sprite-center', hasCenter, side === 'center', multi && !!side && side !== 'center');
+
+    mark3D('character-3d-left', side === 'left', !!side && side !== 'left');
+    mark3D('character-3d-right', side === 'right', !!side && side !== 'right');
+    mark3D('character-3d-center', side === 'center', !!side && side !== 'center');
+
+    const b = body();
+    if (!b) return;
+    b.classList.remove('cinema-dialogue-left', 'cinema-dialogue-right');
+    /* On place le dialogue du côté opposé au personnage unique pour préserver son visage. */
+    if (hasLeft && !hasRight && !hasCenter) b.classList.add('cinema-dialogue-right');
+    else if (hasRight && !hasLeft && !hasCenter) b.classList.add('cinema-dialogue-left');
+  }
+
+  function locationTitle(data) {
+    if (!data || typeof data !== 'object') return '';
+    const explicit = data.location || data.sceneLocation || data.area || data.place || '';
+    if (typeof explicit === 'string' && explicit.trim()) return explicit.trim();
+    const changedImage = !!data.image && data.image !== state.lastImage;
+    if (changedImage && typeof data.title === 'string') return data.title.trim();
+    return '';
+  }
+
+  function locationKicker(data) {
+    if (!data || typeof data !== 'object') return '';
+    const raw = data.sceneNumber || data.chapter || data.act || '';
+    if (raw == null || raw === '') return 'NOUVEAU LIEU';
+    const value = String(raw).trim();
+    return value ? value : 'NOUVEAU LIEU';
+  }
+
+  function showLocationCard(data) {
+    ensureChrome();
+    const card = byId('cinema-location-card');
+    const titleEl = byId('cinema-location-title');
+    const kickerEl = byId('cinema-location-kicker');
+    if (!card || !titleEl || !kickerEl) return;
+
+    const title = locationTitle(data);
+    const image = data && data.image || null;
+    const key = title ? title + '|' + (image || '') : '';
+    if (image) state.lastImage = image;
+    if (!title || key === state.lastLocationKey) return;
+    state.lastLocationKey = key;
+
+    titleEl.textContent = title;
+    kickerEl.textContent = locationKicker(data);
+    clearTimeout(state.locationTimer);
+    card.classList.remove('show');
+    void card.offsetWidth;
+    card.classList.add('show');
+    state.locationTimer = setTimeout(() => card.classList.remove('show'), 1850);
+  }
+
+  function syncChoiceStage() {
+    const choices = byId('choices');
+    const b = body();
+    if (!choices || !b) return;
+    const ready = choices.classList.contains('jrpg-ready') && choices.children.length > 0;
+    b.classList.toggle('cinema-choice-stage', ready);
+  }
+
+  function installChoiceObserver() {
+    const choices = byId('choices');
+    if (!choices || choices.dataset.cinemaObserved === '1') return;
+    choices.dataset.cinemaObserved = '1';
+    const observer = new MutationObserver(syncChoiceStage);
+    observer.observe(choices, { attributes: true, attributeFilter: ['class'], childList: true });
+    syncChoiceStage();
+  }
+
+  function installSavePulse() {
+    const save = byId('save-status');
+    const host = byId('aaa-status');
+    if (!save || !host || save.dataset.cinemaObserved === '1') return;
+    save.dataset.cinemaObserved = '1';
+    const pulse = () => {
+      host.classList.remove('cinema-save-pulse');
+      void host.offsetWidth;
+      host.classList.add('cinema-save-pulse');
+      setTimeout(() => host.classList.remove('cinema-save-pulse'), 1000);
+    };
+    const observer = new MutationObserver(pulse);
+    observer.observe(save, { characterData: true, childList: true, subtree: true });
+  }
+
+  function stageScene(data) {
+    state.lastSceneData = data || null;
+    ensureChrome();
+    setSpeaker(data);
+    applySpriteStage(data);
+    showLocationCard(data);
+    installChoiceObserver();
+    installSavePulse();
+    syncChoiceStage();
+  }
+
+  /*
+   * On enveloppe le renderScene déjà enrichi par JRPG_UI_Runtime.
+   * Aucun accès aux variables lexicales de Scripts_Game : pas de window.isTyping,
+   * window.typingRafId, etc. Cette couche reste strictement indépendante.
+   */
+  const previousRenderScene =
+    typeof window.renderScene === 'function' ? window.renderScene :
+    (typeof renderScene === 'function' ? renderScene : null);
+
+  if (previousRenderScene) {
+    window.renderScene = function (data) {
+      const result = previousRenderScene(data);
+      requestAnimationFrame(() => stageScene(data || {}));
+      return result;
+    };
+  }
+
+  ensureChrome();
+  installChoiceObserver();
+  installSavePulse();
+
+  window.ELENYA_CINEMATIC_UI = {
+    version: state.version,
+    state,
+    refresh: function () { if (state.lastSceneData) stageScene(state.lastSceneData); },
+    focus: function (side) {
+      if (!state.lastSceneData) return;
+      const copy = Object.assign({}, state.lastSceneData, { focusSide: side });
+      applySpriteStage(copy);
+    }
+  };
+})();
+</script>
