@@ -1,0 +1,25 @@
+ELENYA FROST — SITE TESTEUR V4.0
+
+Ajouts :
+- aperçu visuel automatique du décor et des sprites de chaque scène ;
+- boutons Retour / Avance avec historique persistant ;
+- parcours cliquable affiché au-dessus de la scène ;
+- bouton « Tester ce choix » pour suivre la vraie destination ;
+- carte complète des choix avec scènes visitées ;
+- navigation précédente / suivante indépendante du parcours ;
+- compteur de scènes visitées, annotées, illustrées et de choix ;
+- export JSON enrichi avec le parcours et les choix testés ;
+- affichage adapté au téléphone ;
+- détection existante des destinations manquantes conservée.
+
+Le moteur du jeu et les sauvegardes V52.3.5 ne sont pas modifiés.
+
+Déploiement Cloud Shell :
+  unzip -o elenya-v52.3.5-reviewer-v4.zip -d elenya-v52.3.5-reviewer-v4
+  cd elenya-v52.3.5-reviewer-v4
+  printf '{"scriptId":"1IEWLRwRA8i5MYtkMOsmTkOn1YTZ4RiJmiMIzMhXhmKnwPiVkoD7rtyo0","rootDir":"."}\n' > .clasp.json
+  clasp login
+  clasp push --force
+  clasp open-script
+
+Après le push, redéployer la Web App avec une nouvelle version.

@@ -1,0 +1,148 @@
+<div id="narrative-feedback" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<svg style="position: absolute; width: 0; height: 0;">
+<filter id="daltonize">
+<feColorMatrix type="matrix" values="0.567 0.433 0 0 0  0.558 0.442 0 0 0  0 0.242 0.758 0 0  0 0 0 1 0"/>
+</filter>
+</svg>
+
+<div id="accueil-screen">
+<div class="accueil-title">ELENYA FROST</div>
+<div class="accueil-desc">Corona Glacialis</div>
+<div class="accueil-menu">
+<button class="accueil-btn" id="btn-continue-classic" onclick="continueGame('classic')" style="display:none;">▶ Reprendre — Classique</button>
+<button class="accueil-btn" id="btn-continue-ngplus" onclick="continueGame('ngplus')" style="display:none;">❄ Reprendre — New Game+</button>
+<button class="accueil-btn" onclick="if(confirm('Effacer uniquement la partie classique en cours et recommencer ?')) startGame(true,'classic')">Nouvelle Partie</button>
+<button class="accueil-btn" id="btn-ngplus" onclick="startNewGamePlus()" disabled>🔒 NEW GAME+ — Le Cycle Brisé</button>
+<div id="ngplus-panel">Le mode New Game+ se débloque après les 9 fins classiques principales.
+<strong>Le Cycle Brisé</strong> est une campagne indépendante : tes fins précédentes deviennent des souvenirs jouables.<span id="ngplus-progress">0 / 9 fins classiques</span></div>
+<button class="accueil-btn" onclick="showSaveModal()">💾 Sauvegardes</button>
+<button class="accueil-btn" onclick="showStats()">📊 Statistiques</button>
+<button class="accueil-btn" onclick="showAchievements()">🏆 Succès</button>
+<button class="accueil-btn" onclick="showGallery()">🖼️ Galerie</button>
+</div>
+</div>
+
+<div id="achievements-modal">
+<div class="modal-header">
+<h2>Salle des Trophées</h2>
+<button class="modal-close" onclick="hideAchievements()">Fermer</button>
+</div>
+<div id="ach-list"></div>
+</div>
+
+<div id="stats-modal">
+<div class="modal-header">
+<h2>Statistiques</h2>
+<button class="modal-close" onclick="hideStats()">Fermer</button>
+</div>
+<div id="stats-list"></div>
+</div>
+
+<div id="gallery-modal">
+<div class="modal-header">
+<h2>Galerie</h2>
+<button class="modal-close" onclick="hideGallery()">Fermer</button>
+</div>
+<div id="gallery-grid"></div>
+</div>
+
+<div id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Image agrandie" onclick="closeGalleryImage(event)">
+<button id="gallery-lightbox-close" type="button" onclick="closeGalleryImage()" aria-label="Fermer l’image">✕</button>
+<img id="gallery-lightbox-image" alt="" />
+<video id="gallery-lightbox-video" controls playsinline></video>
+<div id="gallery-lightbox-caption"></div>
+</div>
+
+<div id="notes-modal">
+<div class="modal-header">
+<h2>Notes</h2>
+<button class="modal-close" onclick="hideNotes()">Fermer</button>
+</div>
+<div id="notes-list"></div>
+<div style="width: 100%; max-width: 650px; margin-top: 16px;">
+<textarea id="note-input" class="note-input" placeholder="Ajouter une note..."></textarea>
+<button class="note-btn" onclick="addNote()">Ajouter</button>
+</div>
+</div>
+
+<div id="save-modal">
+<div class="modal-header">
+<h2>Sauvegardes</h2>
+<button class="modal-close" onclick="hideSaveModal()">Fermer</button>
+</div>
+<div id="save-list"></div>
+<div style="width: 100%; max-width: 650px; margin-top: 16px; display: flex; gap: 12px;">
+<button class="note-btn" onclick="exportSave()">📤 Exporter</button>
+<button class="note-btn" onclick="document.getElementById('import-file').click()">📥 Importer</button>
+<input type="file" id="import-file" style="display: none;" accept=".json" onchange="importSave(event)">
+</div>
+</div>
+
+<img id="scene-video" alt="Transition" />
+<video id="scene-video-mp4" muted playsinline></video>
+<div id="sprite-left" class="sprite-layer"></div>
+<div id="sprite-center" class="sprite-layer"></div>
+<div id="character-3d-center" class="character-3d-layer" aria-hidden="true"></div>
+<div id="character-3d-left" class="character-3d-layer character-3d-left" aria-hidden="true"></div>
+<div id="character-3d-right" class="character-3d-layer character-3d-right" aria-hidden="true"></div>
+<div id="sprite-right" class="sprite-layer"></div>
+<div id="vignette"></div>
+<canvas id="particles-canvas"></canvas>
+<canvas id="frost-trail-canvas"></canvas>
+<div id="ice-crack"></div>
+<div id="book-open"></div>
+<div id="flashback-veil" aria-hidden="true"><div class="fb-ring"></div></div>
+<div id="fen-silhouette"></div>
+<div id="progress-bar-wrap"><div id="progress-bar-fill"></div></div>
+<div id="toast-container"></div>
+<div id="fen-reaction"></div>
+<div id="narrative-echo" aria-live="polite"></div><div id="director-beat" aria-hidden="true"></div>
+<div id="aaa-hud" aria-live="polite">
+  <div class="hud-card"><div class="hud-kicker">ÉTAT DU LIEN</div><div class="hud-row"><span>OMBRE</span><i><b id="g-ombre"></b></i><em id="v-ombre">0</em></div><div class="hud-row"><span>ÉCLAIREUR</span><i><b id="g-eclaireur"></b></i><em id="v-eclaireur">0</em></div><div class="hud-row"><span>INSTABILITÉ</span><i><b id="g-solo"></b></i><em id="v-solo">0</em></div></div>
+  <div class="hud-card route-card"><div class="hud-kicker">TRAJECTOIRE</div><strong id="route-name">SOLO</strong><small id="route-sub">Aucune chaîne ne te possède.</small></div>
+</div>
+<div id="scene-badge" aria-live="polite" aria-hidden="false"></div>
+<div id="aaa-status" aria-live="polite"><span id="save-status">AUTO-SAVE</span><span id="route-status">SOLO</span></div>
+<div class="header">
+<div>
+<div class="scene-info" id="sceneInfo">Connexion...</div>
+<div class="scene-title" id="sceneTitle">...</div>
+</div>
+<div class="header-right">
+<button class="hdr-btn" onclick="textSizeStep(-1)" title="Texte plus petit">A−</button>
+<button class="hdr-btn" onclick="textSizeStep(1)" title="Texte plus grand">A+</button>
+<button class="hdr-btn" id="btn-fade" onclick="toggleFadeMode()" title="Mode apparition">✧ Texte</button>
+<button class="hdr-btn active" id="btn-autoskip" onclick="toggleAutoSkip()" title="Affichage instantané">⏩ Lu</button>
+<button class="hdr-btn" id="btn-links" onclick="toggleLinkHUD()" title="Afficher ou masquer les liens">♡ <span>Liens</span></button>
+<button class="hdr-btn" id="btn-notes" onclick="showNotes()" title="Notes">📝</button>
+<button class="hdr-btn" id="btn-history" onclick="toggleHistory()">📜 Journal</button>
+<button class="hdr-btn rf-option-btn" id="btn-rf-narrate" onclick="RF.toggleSpeak()" title="Narration vocale" aria-label="Narration vocale">🎙️ Narration</button>
+<button class="hdr-btn rf-option-btn" id="btn-rf-tools" onclick="RF.toggleTools()" title="Options de lecture" aria-label="Options de lecture">⋯</button>
+<button class="hdr-btn" id="btn-colorblind" onclick="toggleColorblind()" title="Mode daltonien">🎨</button>
+<button class="hdr-btn" id="btn-mute" onclick="toggleMute()">🔊</button>
+<span>❄ Elenya Frost <span id="mode-badge" class="mode-badge">CLASSIQUE</span></span>
+</div>
+</div>
+
+<div class="body-content">
+<div class="narrative" id="narrative"></div>
+<div class="choices" id="choices"></div>
+</div>
+
+<div class="footer">
+<div class="footer-left">
+<button class="footer-btn" onclick="returnToMenu()">Menu principal</button>
+<div id="speed-wrap">🐢 <input type="range" id="speed-slider" min="20" max="200" value="60" oninput="updateSpeed(this.value)"> 🐇</div>
+</div>
+<div id="build-version" style="font-size:.72em; color:rgba(140,165,255,0.7);">V52.4.3-free-voice • Corona Glacialis — Refonte en validation</div>
+</div>
+
+<div class="overlay" id="overlay"><div class="overlay-text">Action en cours…</div></div>
+<div id="drawer-backdrop" onclick="closeHistory()"></div>
+<div id="history-drawer">
+<div class="drawer-header"><span>JOURNAL</span><button class="drawer-close" onclick="closeHistory()">✕</button></div>
+<div id="history-list"></div>
+</div>
+
+<audio id="bgm" loop preload="metadata"></audio>

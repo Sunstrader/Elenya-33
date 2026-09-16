@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "checks": [
+    "instantanés complets",
+    "double clic bloqué",
+    "retour et avance",
+    "nouvelle branche invalide l’avance",
+    "mode sans retour",
+    "réponses réseau périmées invalidées",
+    "import fusionne galerie et découvertes",
+    "import invalide préserve la partie"
+  ],
+  "environment": "Node VM avec DOM/FileReader simulés"
+}

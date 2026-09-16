@@ -1,0 +1,166 @@
+{
+  "total": 32,
+  "etat": "32 MP3 récupérés : 10 pistes déjà référencées dans le jeu ; 22 nouveaux MP3 non encore intégrés ni publiés par ce correctif.",
+  "fichiers": [
+    {
+      "fichier": "Blade of Winter.mp3",
+      "octets": 2878127,
+      "sha256": "03f810fcdbad70fa6e4643cdd4fb815e6abad7ed1d49beaa367c15f79af57a6e"
+    },
+    {
+      "fichier": "Bound in Frost.mp3",
+      "octets": 2908079,
+      "sha256": "074cc04302e73415f7070ff8a25ed937415d63bb841264a07099fe51994fcec9"
+    },
+    {
+      "fichier": "Buried Memories.mp3",
+      "octets": 2696111,
+      "sha256": "18265ff26ec3527dde0e16a284ec46e6c675eb4eb52ae43203b4c7f96bcc2d5c"
+    },
+    {
+      "fichier": "Danger Beneath the Snow(1).mp3",
+      "octets": 2866607,
+      "sha256": "089be4e0ea555132bd7eea837d56709234bc4b55bd2019074aa99c8f213031a0"
+    },
+    {
+      "fichier": "Danger Beneath the Snow.mp3",
+      "octets": 2795951,
+      "sha256": "483e62b83935f9f152af0c0204733e67afd6015c3e8e64d30cc756071ff5db76"
+    },
+    {
+      "fichier": "Dawn After Winter.mp3",
+      "octets": 2792111,
+      "sha256": "afbdaa879aa5a782f6bae5f41263b7149220790bb3ecf03eb2ea9f230c7920e1"
+    },
+    {
+      "fichier": "Echoes of Sacrifice.mp3",
+      "octets": 2784431,
+      "sha256": "37b546cb1135b1c0ec48c24b818265e87831f544d069d7930f10ca8fc60c5541"
+    },
+    {
+      "fichier": "Echoes of the Glacial Throne.mp3",
+      "octets": 2735279,
+      "sha256": "e808095607ad0c18d460edc9796bfff8f135ea8745559a4bfb8254f8f82000a1"
+    },
+    {
+      "fichier": "Echoes of the Journey.mp3",
+      "octets": 2855471,
+      "sha256": "a3b4d0c9de1b85db8d69e519065293b071087b604e1bcdf24c11353055288aa4"
+    },
+    {
+      "fichier": "Embrace in the Snowfall.mp3",
+      "octets": 2923439,
+      "sha256": "e648ec0c66ae35a6d656aad0d5cf2e70dc58dd0d2f23df3e0ec198733832f397"
+    },
+    {
+      "fichier": "Emptiness in the Frost.mp3",
+      "octets": 2880047,
+      "sha256": "2a48373f83a10f93cd9b6aa2677aea25f7c1f4ad6349b71d11523784b1df5bf6"
+    },
+    {
+      "fichier": "End of Winter.mp3",
+      "octets": 2889647,
+      "sha256": "17001b097801a69d77916eac3ae5b5b1e5b5bd055374f26d2cd098a203901a55"
+    },
+    {
+      "fichier": "Fading Light.mp3",
+      "octets": 2352815,
+      "sha256": "c110a1dd690d522dad0b18b11615db152fde2431bd6072a692c4854b1c7cd575"
+    },
+    {
+      "fichier": "Forbidden Whispers.mp3",
+      "octets": 2391599,
+      "sha256": "8507d3470791efeb6c0f6deffe4dc220f4ef047968fec5350ff0376df54aa90a"
+    },
+    {
+      "fichier": "Forgotten Ruins.mp3",
+      "octets": 2830511,
+      "sha256": "001c9699dc46464a0db4f81ebb9572ac7b12da7a769f4087611704f22b633149"
+    },
+    {
+      "fichier": "Fractured Memories.mp3",
+      "octets": 2846255,
+      "sha256": "076e6ec71a2c08aaa96892e7399e4be6fc22cddbb44c73d6434f586fefafac93"
+    },
+    {
+      "fichier": "Frostbound Battle.mp3",
+      "octets": 2901551,
+      "sha256": "fb0aadba86aea3715e19a9606d515d96534f03aa34c3311fa2c54a6162a55c92"
+    },
+    {
+      "fichier": "Frozen Echoes.mp3",
+      "octets": 2837039,
+      "sha256": "9098ce9c8f5e85c8305bb20c5a8dab6f9e9068802d476920a49c34baa6eb93f7"
+    },
+    {
+      "fichier": "Frozen Heartstrings.mp3",
+      "octets": 2856623,
+      "sha256": "10a79fdc1013347d7d9619a7ed6281bcb5d970225e4819990886fb9c745fe4b1"
+    },
+    {
+      "fichier": "Frozen Shadow.mp3",
+      "octets": 2449199,
+      "sha256": "1be016a17444afc541f66a2f1f75a57ef6d1ff88c51328f6ce2e1a098c18bf28"
+    },
+    {
+      "fichier": "Glacial Devotion.mp3",
+      "octets": 2853935,
+      "sha256": "ac926b2b5b27f24f38086f3c440b48139983ccc65adb522c534703feba26cce8"
+    },
+    {
+      "fichier": "Glacial Horizon.mp3",
+      "octets": 2865455,
+      "sha256": "65a89a353acf978419c75698bca38dcd4dd337732a3e5d9db2651421c5949d96"
+    },
+    {
+      "fichier": "Icy Tension.mp3",
+      "octets": 2632367,
+      "sha256": "0c669d436bcdc15842c3c179c4eabf503383fe377ff1fa79a71ae99168c30cca"
+    },
+    {
+      "fichier": "Lurking in the Frost.mp3",
+      "octets": 2404655,
+      "sha256": "050dc756efcb475bdc7edd4d2ed050a4c0f3867a5d7c4c2fe4f86f311ae3395b"
+    },
+    {
+      "fichier": "Phantom Echoes.mp3",
+      "octets": 2559791,
+      "sha256": "c17d84d3e7b8071292b291d68b0f3363facfd6c2d3a7822d5a63876a896a2ed1"
+    },
+    {
+      "fichier": "Solemn Frost.mp3",
+      "octets": 2901935,
+      "sha256": "4faabf4f34b787739ed3048c2ddd6786e7cba2b6404bdac86a0451652bf3578b"
+    },
+    {
+      "fichier": "Tender Shadows.mp3",
+      "octets": 2826671,
+      "sha256": "9b8e967a6c2bbda0568f6b9761d91e70db4acf89dbfa1eb15b69eed3f988f045"
+    },
+    {
+      "fichier": "The Weight of Sacrifice.mp3",
+      "octets": 2714927,
+      "sha256": "0d16dcb03cd578d598124a43f1583b26237398a88af491ef03336efa642699d9"
+    },
+    {
+      "fichier": "Voices in the Glade(1).mp3",
+      "octets": 2770607,
+      "sha256": "1af558bd92011c3ab265cb5869809d8f41856b34486566b2a565f3a9dbb9c602"
+    },
+    {
+      "fichier": "Voices in the Glade.mp3",
+      "octets": 2585135,
+      "sha256": "1c8f224fe56e0eeec22cb5d21b90dc7250f0236046afa546362cda909fa12f89"
+    },
+    {
+      "fichier": "Whispers of Possession.mp3",
+      "octets": 2828591,
+      "sha256": "0838b06e4d4f47aff1058df182c76beac6ba75eb3ca11135e2e2680dbab7ed51"
+    },
+    {
+      "fichier": "Whispers of the Ice Realm.mp3",
+      "octets": 2672687,
+      "sha256": "fe775f65184d6602036a04a8acb06b6e60a8a1f5808ad3e4e129f8a65f0ae1bc"
+    }
+  ]
+}

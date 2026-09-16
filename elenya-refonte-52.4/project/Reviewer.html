@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Elenya Frost — Test visuel des scènes</title>
+<style>
+:root{--bg:#070913;--panel:#0d1120;--panel2:#12172a;--line:#26314d;--text:#e7efff;--muted:#8ea1c9;--accent:#9dbbff;--good:#84d6a2;--warn:#e8c26f;--bad:#ef8f8f;--block:#ff6f91;--shadow:0 18px 55px rgba(0,0,0,.38);--radius:14px}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:radial-gradient(circle at 25% 0%,#111a35 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow:hidden}button,input,select,textarea{font:inherit}.hidden{display:none!important}
+.app{height:100vh;display:grid;grid-template-rows:auto 1fr}.topbar{display:flex;align-items:center;gap:12px;padding:11px 15px;border-bottom:1px solid var(--line);background:rgba(7,9,19,.95);backdrop-filter:blur(14px);z-index:10}.brand{min-width:220px}.brand strong{display:block;font-family:Georgia,serif;letter-spacing:.12em;font-size:15px}.brand span{font-size:10px;color:var(--muted);letter-spacing:.10em}.guest-badge{border:1px solid #785d2c;background:#251e10;color:#f0cf86;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.07em}.spacer{flex:1}.top-meta{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px}.btn{border:1px solid var(--line);background:#11172a;color:var(--text);border-radius:9px;padding:8px 11px;cursor:pointer;transition:.18s}.btn:hover{border-color:#516899;background:#18203a}.btn.primary{background:linear-gradient(135deg,#2a427d,#24355f);border-color:#5875b7}.btn:disabled{opacity:.45;cursor:not-allowed}.sync{display:flex;align-items:center;gap:6px;white-space:nowrap}.sync-dot{width:8px;height:8px;border-radius:50%;background:#66728d}.sync.saving .sync-dot{background:var(--warn);box-shadow:0 0 8px rgba(232,194,111,.45)}.sync.ok .sync-dot{background:var(--good)}.sync.error .sync-dot{background:var(--bad)}
+.layout{min-height:0;display:grid;grid-template-columns:320px 1fr}.sidebar{min-height:0;border-right:1px solid var(--line);background:rgba(10,13,25,.92);display:grid;grid-template-rows:auto auto 1fr}.side-head{padding:13px;border-bottom:1px solid var(--line)}.search{width:100%;padding:9px 10px;border-radius:9px;border:1px solid var(--line);background:#0a0f1e;color:var(--text);outline:none}.search:focus{border-color:#5f7cc0}.filters{padding:10px 13px;display:grid;grid-template-columns:1fr 1fr;gap:8px;border-bottom:1px solid var(--line)}.filters select{width:100%;background:#0c1222;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px}.summary{grid-column:1/-1;color:var(--muted);font-size:11px}.progress-wrap{margin-top:7px;height:5px;background:#151c30;border-radius:999px;overflow:hidden}.progress{height:100%;background:linear-gradient(90deg,#5f7fd2,#a8c0ff);width:0}.scene-list{overflow:auto;padding:8px}.act-title{position:sticky;top:0;z-index:2;background:#0a0d19;padding:8px 8px 6px;color:#8ea5d7;font-size:10px;letter-spacing:.14em;text-transform:uppercase}.scene-item{display:grid;grid-template-columns:1fr auto;gap:6px;padding:9px;margin:3px 0;border:1px solid transparent;border-radius:9px;cursor:pointer}.scene-item:hover{background:#11182b}.scene-item.active{background:#16213b;border-color:#41547d}.scene-id{font-size:11px;color:#9db0d7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scene-title{font-size:13px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dot{width:9px;height:9px;border-radius:50%;margin-top:5px;background:#3a455f}.dot.ok{background:var(--good)}.dot.review{background:var(--warn)}.dot.issue{background:var(--bad)}.dot.blocker{background:var(--block);box-shadow:0 0 8px rgba(255,111,145,.5)}
+.main{min-width:0;min-height:0;overflow:auto;padding:20px 22px 60px}.loading{height:100%;display:grid;place-items:center;text-align:center;color:var(--muted)}.loading-card{max-width:620px;padding:28px;border:1px dashed #3a4b70;border-radius:16px;background:rgba(14,18,34,.58)}.spinner{width:32px;height:32px;border:3px solid #2b3652;border-top-color:#9dbbff;border-radius:50%;margin:0 auto 15px;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.hero{display:flex;gap:18px;align-items:flex-start;margin-bottom:14px}.hero-main{flex:1;min-width:0}.eyebrow{font-size:11px;letter-spacing:.13em;color:#8ea5d7;text-transform:uppercase}.hero h1{font-family:Georgia,serif;font-size:28px;margin:5px 0 6px}.meta{display:flex;gap:7px;flex-wrap:wrap}.chip{font-size:11px;border:1px solid #354262;background:#11182c;border-radius:999px;padding:4px 8px;color:#b9c9e9}.hero-nav{display:flex;gap:7px}.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(340px,.75fr);gap:14px}.card{background:linear-gradient(180deg,rgba(18,23,42,.94),rgba(11,15,29,.94));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.card h3{margin:0;padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.10em;text-transform:uppercase;color:#b9caeb}.card-body{padding:14px}.narrative{white-space:pre-wrap;line-height:1.7;color:#e3ebfb;font-family:Georgia,serif;font-size:15px;max-height:440px;overflow:auto}.source{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:#aebbd6;background:#080c17;border:1px solid #202a43;border-radius:9px;padding:10px;max-height:360px;overflow:auto}.tabs{display:flex;gap:6px;margin-bottom:10px}.tab{background:#0b1020;border:1px solid #26314d;color:#9fb0d0;border-radius:8px;padding:6px 9px;cursor:pointer;font-size:11px}.tab.active{color:#fff;border-color:#607bb7;background:#172341}
+.choice{border:1px solid #2b3654;background:#0d1325;border-radius:11px;margin:10px 0;overflow:hidden}.choice-head{display:flex;align-items:flex-start;gap:10px;padding:11px}.choice-key{display:grid;place-items:center;min-width:28px;height:28px;border:1px solid #506594;border-radius:50%;color:#dce7ff;font-weight:700;font-size:12px}.choice-main{flex:1;min-width:0}.choice-text{font-size:14px;line-height:1.45}.choice-meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.choice-details{padding:0 11px 11px;display:grid;grid-template-columns:1fr 1fr;gap:8px}.kv{border:1px solid #202a43;border-radius:8px;padding:8px;background:#0a0f1d}.kv b{display:block;color:#8298c3;text-transform:uppercase;letter-spacing:.08em;font-size:9px;margin-bottom:4px}.kv span,.kv div{font-size:11px;white-space:pre-wrap;word-break:break-word}.next-link{color:#b9d0ff;cursor:pointer;text-decoration:underline;text-underline-offset:2px}.next-link.missing{color:#f1a7a7}.choice-note{border-top:1px solid #202a43;padding:10px;background:#0a0e1b}.choice-note textarea{width:100%;min-height:64px;resize:vertical;background:#080d1a;border:1px solid #283656;color:var(--text);border-radius:8px;padding:8px}.choice-note .minirow{display:flex;gap:8px;margin-bottom:7px;align-items:center}.choice-note select{background:#080d1a;border:1px solid #283656;color:var(--text);border-radius:8px;padding:6px}.pending-mark{margin-left:auto;font-size:9px;color:#d9bd7d;letter-spacing:.06em}
+.annotation{display:grid;gap:10px}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field label{display:block;font-size:10px;color:#8ea2ca;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid #2b3858;background:#080d1a;color:var(--text);border-radius:8px;padding:8px;outline:none}.field textarea{min-height:86px;resize:vertical;line-height:1.45}.field input:focus,.field select:focus,.field textarea:focus{border-color:#5d79bc}.notice{border:1px solid #6c582a;background:rgba(74,57,21,.35);color:#efd598;border-radius:9px;padding:10px 11px;font-size:11px;line-height:1.5}.server-status{font-size:10px;color:#8fa3c9;margin-top:2px}.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.media-item{border:1px solid #283451;border-radius:10px;background:#090e1b;overflow:hidden}.media-item img{display:block;width:100%;height:180px;object-fit:cover;background:#05070c}.media-item div{padding:8px;font-size:10px;color:#9db0d4;word-break:break-all}.small{font-size:11px;color:var(--muted);line-height:1.5}.toast{position:fixed;right:18px;bottom:18px;background:#10182b;border:1px solid #4f669b;color:#eaf1ff;border-radius:10px;padding:10px 13px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;z-index:50}.toast.show{opacity:1;transform:none}
+.modal{position:fixed;inset:0;background:rgba(3,5,10,.78);display:none;place-items:center;padding:18px;z-index:40}.modal.show{display:grid}.modal-card{width:min(560px,96vw);max-height:88vh;overflow:auto;background:#0d1324;border:1px solid #31405f;border-radius:15px;box-shadow:var(--shadow);padding:20px}.modal-card h2{margin:0 0 8px;font-family:Georgia,serif}.modal-card p{color:#9fafcf;font-size:12px;line-height:1.55}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.profile-summary{font-size:11px;color:#b8c7e5}.error-box{border:1px solid #6e3540;background:#261116;color:#ffc6ce;padding:12px;border-radius:10px;white-space:pre-wrap}
+@media(max-width:1050px){.layout{grid-template-columns:280px 1fr}.grid{grid-template-columns:1fr}.hero{flex-direction:column}.hero-nav{align-self:stretch}.hero-nav .btn{flex:1}}@media(max-width:760px){body{overflow:auto}.app{height:auto;min-height:100vh}.layout{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid var(--line);max-height:45vh}.main{overflow:visible}.topbar{position:sticky;top:0;flex-wrap:wrap}.brand{min-width:0}.top-meta{width:100%;justify-content:space-between}.grid{display:block}.card{margin-bottom:12px}.choice-details,.row,.media-grid{grid-template-columns:1fr}}
+</style>
+<style>
+.visual-stage{position:relative;min-height:360px;border-radius:13px;overflow:hidden;background:linear-gradient(145deg,#111a30,#080b14);border:1px solid #33415e}.visual-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.visual-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,13,.05),rgba(4,7,13,.3) 55%,rgba(4,7,13,.9))}.visual-sprite{position:absolute;bottom:0;max-height:92%;max-width:48%;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))}.visual-sprite.left{left:4%}.visual-sprite.right{right:4%}.visual-sprite.center{left:50%;transform:translateX(-50%)}.visual-caption{position:absolute;left:16px;right:16px;bottom:14px;z-index:2}.visual-caption b{font-family:Georgia,serif;font-size:19px}.visual-caption span{display:block;margin-top:4px;color:#bbc9e5;font-size:11px}.visual-empty{position:absolute;inset:0;display:grid;place-items:center;color:#8798b9;text-align:center;padding:30px}.pathbar{display:flex;align-items:center;gap:7px;overflow:auto;padding:9px 0 13px;scrollbar-width:thin}.path-step{flex:none;border:1px solid #334260;background:#0d1426;color:#b8c8e7;border-radius:999px;padding:6px 9px;font-size:10px;cursor:pointer;max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.path-step.current{border-color:#7593d5;color:#fff;background:#1a2a4b}.path-arrow{color:#596b8d;font-size:11px}.choice-actions{padding:0 11px 11px;display:flex;gap:8px}.choice-test{width:100%;border:1px solid #4b659c;background:#16284a;color:#e8f0ff;border-radius:8px;padding:8px;cursor:pointer}.choice-test:hover{background:#203863}.coverage{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.coverage div{border:1px solid #263553;border-radius:9px;padding:9px;background:#0a1020;text-align:center}.coverage b{display:block;font-size:17px}.coverage span{font-size:9px;color:#91a4ca;text-transform:uppercase}.map-grid{display:grid;gap:8px}.map-node{border:1px solid #30405f;background:#0b1120;border-radius:10px;padding:10px;cursor:pointer}.map-node.current{border-color:#7a99dc;background:#172542}.map-node.visited{box-shadow:inset 3px 0 var(--good)}.map-links{font-size:10px;color:#90a5cf;margin-top:5px}@media(max-width:760px){.visual-stage{min-height:280px}.coverage{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><strong>ELENYA FROST</strong><span>TEST VISUEL · REVIEWER V4.0 · V52</span></div>
+    <span class="guest-badge" id="guestBadge">INVITÉ · À VÉRIFIER</span>
+    <div class="spacer"></div>
+    <div class="top-meta">
+      <span id="buildLabel">Version…</span>
+      <span class="sync" id="syncState"><i class="sync-dot"></i><span>Connexion…</span></span>
+      <button class="btn" id="profileBtn">Profil</button>
+      <button class="btn" id="mapBtn">Carte des choix</button>
+      <button class="btn" id="exportBtn">Sauvegarde JSON</button>
+    </div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="side-head"><input class="search" id="searchInput" placeholder="Rechercher scène, dialogue, choix…"></div>
+      <div class="filters">
+        <select id="actFilter"><option value="all">Tous les actes</option></select>
+        <select id="statusFilter"><option value="all">Tous les statuts</option><option value="none">Non annotées</option><option value="ok">RAS invité</option><option value="review">À vérifier</option><option value="issue">Problème probable</option><option value="blocker">Bloquant probable</option></select>
+        <select id="targetFilter"><option value="all">Tous personnages</option><option>Elenya</option><option>Kaelen</option><option>Alistair</option><option>Fen</option><option>Kalthar</option><option>Oraya</option><option>Lyra</option><option>Silas</option></select>
+        <select id="kindFilter"><option value="all">Toutes scènes</option><option value="romance">Romance</option><option value="choice-heavy">3+ choix</option><option value="end">Fins</option><option value="missing-next">Destination absente</option></select>
+        <div class="summary"><span id="summaryText">—</span><div class="progress-wrap"><div class="progress" id="progressBar"></div></div><span id="annotatedText">—</span></div>
+      </div>
+      <div class="scene-list" id="sceneList"></div>
+    </aside>
+    <main class="main">
+      <div class="loading" id="loadingState"><div class="loading-card"><div class="spinner"></div><h2>Chargement du moteur actuel</h2><p>Les scènes sont lues directement depuis le Google Apps Script d’Elenya. Aucun fichier à importer.</p><div id="loadError"></div></div></div>
+      <div id="sceneView" class="hidden"></div>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal" id="mapModal"><div class="modal-card" style="width:min(820px,96vw)"><h2>Carte du parcours</h2><p>Les scènes visitées sont marquées en vert. Clique sur une scène pour l’ouvrir.</p><div class="map-grid" id="mapGrid"></div><div class="modal-actions"><button class="btn" id="closeMapBtn">Fermer</button></div></div></div>
+
+<div class="modal" id="profileModal">
+  <div class="modal-card">
+    <h2>Ton profil de testeur</h2>
+    <p>Ce site enregistre automatiquement tes remarques. Elles seront marquées <strong>À VÉRIFIER</strong> : elles ne modifient jamais le jeu directement.</p>
+    <div class="field"><label>Nom ou pseudo *</label><input id="guestName" maxlength="120" placeholder="Ex. Alex / Noctis / Marie"></div>
+    <div class="field" style="margin-top:10px"><label>Type de test</label><select id="guestProfile"><option>Testeur invité</option><option>Lecteur / lectrice</option><option>Test narration</option><option>Test romance</option><option>Test gameplay / logique</option><option>Test UX / mobile</option><option>Auteur / autrice</option><option>Autre</option></select></div>
+    <div class="field" style="margin-top:10px"><label>Contact (facultatif)</label><input id="guestContact" maxlength="180" placeholder="Discord, e-mail, autre…"></div>
+    <div class="modal-actions"><button class="btn primary" id="saveProfileBtn">Commencer l’annotation</button></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+// V52.0.2 — paramètres injectés par doGet(e), donc indépendants de location.search.
+const REVIEWER_SERVER_BOOT = <?!= reviewerBootJson ?>;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const state={scenes:[],byId:new Map(),filtered:[],annotations:{},current:null,tab:'read',datasetId:'',buildVersion:'',guest:null,syncTimers:new Map(),dirty:new Set(),loading:false,agentMode:false,stateless:false,history:[],historyIndex:-1,visited:new Set(),choiceTrail:[]};
+const PROFILE_KEY='elenya_reviewer_guest_v3';
+const LOCAL_PREFIX='elenya_reviewer_local_v3::';
+const PATH_PREFIX='elenya_reviewer_path_v4::';
+
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove('show'),2200)}
+function setSync(mode,text){const el=$('#syncState');el.className='sync '+(mode||'');el.querySelector('span').textContent=text||''}
+function server(fn,...args){return new Promise((resolve,reject)=>{if(!(window.google&&google.script&&google.script.run))return reject(new Error('Google Apps Script indisponible. Ouvre le lien du Web App, pas le fichier HTML local.'));let r=google.script.run.withSuccessHandler(resolve).withFailureHandler(err=>reject(new Error(err&&err.message?err.message:String(err))));r[fn](...args)})}
+function quickHash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16)}
+function localKey(){return LOCAL_PREFIX+(state.datasetId||'pending')+'::'+(state.guest?.guestId||'anonymous')}
+function loadLocal(){if(state.stateless)return {};try{return JSON.parse(localStorage.getItem(localKey())||'{}')||{}}catch(e){return {}}}
+function saveLocal(){if(state.stateless)return;try{localStorage.setItem(localKey(),JSON.stringify(state.annotations))}catch(e){}}
+function pathKey(){return PATH_PREFIX+(state.datasetId||'pending')+'::'+(state.guest?.guestId||'anonymous')}
+function savePath(){if(state.stateless)return;try{localStorage.setItem(pathKey(),JSON.stringify({history:state.history,historyIndex:state.historyIndex,visited:[...state.visited],choiceTrail:state.choiceTrail}))}catch(e){}}
+function loadPath(){if(state.stateless)return;try{const p=JSON.parse(localStorage.getItem(pathKey())||'{}');state.history=Array.isArray(p.history)?p.history.filter(id=>state.byId.has(id)):[];state.historyIndex=Math.min(Number.isInteger(p.historyIndex)?p.historyIndex:state.history.length-1,state.history.length-1);state.visited=new Set((p.visited||[]).filter(id=>state.byId.has(id)));state.choiceTrail=Array.isArray(p.choiceTrail)?p.choiceTrail.filter(x=>x&&state.byId.has(x.from)&&state.byId.has(x.to)):[]}catch(e){}}
+function loadProfile(){if(state.stateless)return null;try{return JSON.parse(localStorage.getItem(PROFILE_KEY)||'null')}catch(e){return null}}
+function saveProfileLocal(p){if(state.stateless)return;try{localStorage.setItem(PROFILE_KEY,JSON.stringify(p))}catch(e){}}
+function firstParam(v){return Array.isArray(v)?String(v[0]??''):String(v??'')}
+function profileFromLaunch(raw){
+  raw=raw||{};
+  const mode=firstParam(raw.review).toLowerCase();
+  const agent=raw.agent===true||mode==='agent'||mode==='ai'||firstParam(raw.agent)==='1';
+  const name=firstParam(raw.name||raw.guest).trim();
+  const gid=firstParam(raw.gid||raw.guestId).trim();
+  state.agentMode=agent;
+  state.stateless=agent||raw.stateless===true||firstParam(raw.stateless)==='1';
+  if(!agent&&!name)return null;
+  return {
+    guestId:gid,
+    name:name||(agent?'Agent IA':'Invité'),
+    profile:firstParam(raw.profile)||(agent?'Testeur IA':'Testeur invité'),
+    contact:firstParam(raw.contact),
+    agent:agent
+  };
+}
+function launchFromLocationSearch(){
+  let q;try{q=new URLSearchParams(location.search||'')}catch(e){return {}}
+  return {review:q.get('review')||'',name:q.get('name')||q.get('guest')||'',profile:q.get('profile')||'',gid:q.get('gid')||q.get('guestId')||'',contact:q.get('contact')||'',stateless:q.get('stateless')==='1',agent:q.get('agent')==='1'};
+}
+function launchFromAppsScriptUrl(){
+  return new Promise(resolve=>{
+    try{
+      if(!(window.google&&google.script&&google.script.url&&google.script.url.getLocation))return resolve({});
+      google.script.url.getLocation(loc=>resolve((loc&&loc.parameter)||{}));
+    }catch(e){resolve({})}
+  });
+}
+function statusLabel(v){return {none:'Non annotée',ok:'RAS invité',review:'À vérifier',issue:'Problème probable',blocker:'Bloquant probable'}[v]||v}
+function deriveAct(s){return s.act||(/NEW GAME/i.test(s.campaign)?'NEW GAME+':s.chapter?'ACTE '+s.chapter:/^FIN_|^GAME_OVER/i.test(s.id)?'FINS':'AUTRES')}
+function isRomance(s){const h=(s.id+' '+s.title+' '+s.mood+' '+s.narrative+' '+s.choices.map(c=>c.text+' '+c.intent).join(' ')).toLowerCase();return /romance|intim|baiser|embrass|désir|desir|tendresse|caresse|amour/.test(h)}
+function hasMissingNext(s){return s.choices.some(c=>c.next&&c.next!=='END'&&c.next!=='RETURN'&&!state.byId.has(c.next))}
+function sceneTargets(s){return [...new Set(s.choices.map(c=>c.target).filter(Boolean))]}
+function getAnn(id){if(!state.annotations[id])state.annotations[id]={status:'none',score:'',tags:'',notes:'',continuity:'',romance:'',mechanics:'',visual:'',rewrite:'',checklist:{},choices:{},updatedAt:''};return state.annotations[id]}
+function getChoiceAnn(sceneId,key){const a=getAnn(sceneId);a.choices=a.choices||{};if(!a.choices[key])a.choices[key]={status:'none',note:''};return a.choices[key]}
+
+async function init(){
+  // 1) Source la plus fiable : paramètres reçus par doGet et injectés dans le template.
+  let launch=(REVIEWER_SERVER_BOOT&&typeof REVIEWER_SERVER_BOOT==='object')?REVIEWER_SERVER_BOOT:{};
+  let urlProfile=profileFromLaunch(launch);
+
+  // 2) Fallback officiel Apps Script pour les paramètres du Web App.
+  if(!urlProfile){
+    const gasLaunch=await launchFromAppsScriptUrl();
+    urlProfile=profileFromLaunch(gasLaunch);
+  }
+
+  // 3) Dernier fallback pour hébergement hors iframe.
+  if(!urlProfile)urlProfile=profileFromLaunch(launchFromLocationSearch());
+
+  state.guest=urlProfile||loadProfile();
+  if(!state.guest){showProfile(true);return}
+  await registerAndLoad();
+}
+async function registerAndLoad(){
+  try{
+    setSync('saving','Connexion…');
+    const registered=await server('reviewerRegisterGuest',state.guest);
+    state.guest={...state.guest,...registered};saveProfileLocal(state.guest);
+    const badge=$('#guestBadge');if(badge)badge.textContent=state.agentMode?'AGENT IA · À VÉRIFIER':'INVITÉ · À VÉRIFIER';
+    if(state.agentMode){const pb=$('#profileBtn');if(pb)pb.style.display='none'}
+    const boot=await server('reviewerBootstrap',{guestId:state.guest.guestId});
+    if(!boot||!boot.ok)throw new Error('Réponse serveur invalide.');
+    state.datasetId=boot.datasetId;state.buildVersion=boot.buildVersion||'CURRENT';state.scenes=boot.scenes||[];state.byId=new Map(state.scenes.map(s=>[s.id,s]));
+    const local=loadLocal();state.annotations={...(boot.savedAnnotations||{}),...local};saveLocal();loadPath();
+    $('#buildLabel').textContent='Moteur '+state.buildVersion+' · '+state.scenes.length+' scènes';
+    buildActFilter();applyFilters();$('#loadingState').classList.add('hidden');$('#sceneView').classList.remove('hidden');
+    const hash=decodeURIComponent(location.hash.slice(1)||''),restored=state.history[state.historyIndex];selectScene(state.byId.has(hash)?hash:(state.byId.has(restored)?restored:(state.scenes[0]?.id||'')),{replace:!!restored});setSync('ok','Synchronisé');
+  }catch(e){setSync('error','Erreur');$('#loadError').innerHTML='<div class="error-box">'+esc(e.message)+'</div>'}
+}
+function showProfile(force){
+  const p=state.guest||loadProfile()||{};$('#guestName').value=p.name||p.guestName||'';$('#guestProfile').value=p.profile||p.guestProfile||'Testeur invité';$('#guestContact').value=p.contact||'';$('#profileModal').classList.add('show');
+  if(force) $('#profileModal').dataset.forced='1'; else delete $('#profileModal').dataset.forced;
+}
+async function saveProfileFromModal(){
+  const name=$('#guestName').value.trim();if(!name)return toast('Entre un nom ou pseudo.');
+  const old=state.guest||loadProfile()||{};state.guest={guestId:old.guestId||'',name,profile:$('#guestProfile').value,contact:$('#guestContact').value.trim()};saveProfileLocal(state.guest);$('#profileModal').classList.remove('show');
+  if(!state.scenes.length)await registerAndLoad();else{const reg=await server('reviewerRegisterGuest',state.guest);state.guest={...state.guest,...reg};saveProfileLocal(state.guest);toast('Profil mis à jour')}
+}
+
+function buildActFilter(){const acts=[...new Set(state.scenes.map(deriveAct))];$('#actFilter').innerHTML='<option value="all">Tous les actes</option>'+acts.map(a=>`<option value="${esc(a)}">${esc(a)}</option>`).join('')}
+function applyFilters(){const q=$('#searchInput').value.trim().toLowerCase(),act=$('#actFilter').value,status=$('#statusFilter').value,target=$('#targetFilter').value,kind=$('#kindFilter').value;state.filtered=state.scenes.filter(s=>{const a=state.annotations[s.id]||{};const hay=(s.id+' '+s.title+' '+s.narrative+' '+s.narrativeSource+' '+s.choices.map(c=>[c.key,c.text,c.next,c.target,c.intent,c.feedback,c.response,c.effects].join(' ')).join(' ')).toLowerCase();if(q&&!hay.includes(q))return false;if(act!=='all'&&deriveAct(s)!==act)return false;if(status!=='all'&&(status==='none'?((a.status||'none')!=='none'):a.status!==status))return false;if(target!=='all'&&!hay.includes(target.toLowerCase()))return false;if(kind==='romance'&&!isRomance(s))return false;if(kind==='choice-heavy'&&s.choices.length<3)return false;if(kind==='end'&&!/^FIN_|^GAME_OVER/i.test(s.id))return false;if(kind==='missing-next'&&!hasMissingNext(s))return false;return true});renderList();updateSummary()}
+function renderList(){let html='',last='';for(const s of state.filtered){const act=deriveAct(s);if(act!==last){html+=`<div class="act-title">${esc(act)}</div>`;last=act}const a=state.annotations[s.id]||{};html+=`<div class="scene-item ${state.current===s.id?'active':''}" data-id="${esc(s.id)}"><div><div class="scene-id">${esc(s.id)}</div><div class="scene-title">${esc(s.title)}</div></div><span class="dot ${esc(a.status||'')}"></span></div>`}$('#sceneList').innerHTML=html||'<div class="small" style="padding:12px">Aucune scène avec ces filtres.</div>';$$('.scene-item').forEach(el=>el.onclick=()=>selectScene(el.dataset.id))}
+function updateSummary(){const annotated=state.scenes.filter(s=>{const a=state.annotations[s.id];return a&&a.status&&a.status!=='none'}).length;$('#summaryText').textContent=state.filtered.length+' / '+state.scenes.length+' scènes';$('#annotatedText').textContent=annotated+' annotées';$('#progressBar').style.width=(state.scenes.length?annotated/state.scenes.length*100:0)+'%'}
+function selectScene(id,opts){const s=state.byId.get(id);if(!s)return;opts=opts||{};if(!opts.historyMove){if(opts.replace&&state.historyIndex>=0)state.history[state.historyIndex]=id;else if(state.history[state.historyIndex]!==id){state.history=state.history.slice(0,state.historyIndex+1);state.history.push(id);state.historyIndex=state.history.length-1}}state.current=id;state.visited.add(id);location.hash=encodeURIComponent(id);savePath();renderList();renderScene(s);requestAnimationFrame(()=>document.querySelector('.scene-item.active')?.scrollIntoView({block:'nearest'}))}
+function historyMove(delta){const next=state.historyIndex+delta;if(next<0||next>=state.history.length)return;state.historyIndex=next;selectScene(state.history[next],{historyMove:true})}
+function navigate(delta){const arr=state.filtered.length?state.filtered:state.scenes;let i=arr.findIndex(s=>s.id===state.current);if(i<0)i=0;i=Math.max(0,Math.min(arr.length-1,i+delta));selectScene(arr[i].id)}
+function followChoice(scene,choice){if(!choice.next||!state.byId.has(choice.next))return toast('Cette destination ne peut pas être ouverte.');state.choiceTrail=state.choiceTrail.slice(0,state.historyIndex+1);state.choiceTrail.push({from:scene.id,key:choice.key,text:choice.text,to:choice.next,at:new Date().toISOString()});selectScene(choice.next)}
+
+function renderScene(s){const a=getAnn(s.id),arr=state.filtered.length?state.filtered:state.scenes,idx=arr.findIndex(x=>x.id===s.id),targets=sceneTargets(s),missing=s.choices.filter(c=>c.next&&c.next!=='END'&&c.next!=='RETURN'&&!state.byId.has(c.next)).length;
+  const choices=s.choices.map((c,i)=>renderChoice(s,c,i)).join('')||'<div class="small">Aucun choix statique détecté.</div>';
+  $('#sceneView').innerHTML=`
+  <div class="hero"><div class="hero-main"><div class="eyebrow">${esc(deriveAct(s))} · ${esc(s.sceneNumber)}</div><h1>${esc(s.title)}</h1><div class="meta"><span class="chip">${esc(s.id)}</span><span class="chip">${esc(s.mood||'mood —')}</span><span class="chip">${s.choices.length} choix</span>${targets.map(t=>`<span class="chip">${esc(t)}</span>`).join('')}${missing?`<span class="chip" style="border-color:#764351;color:#ffc0cb">${missing} destination(s) absente(s)</span>`:''}</div></div><div class="hero-nav"><button class="btn" id="backBtn" ${state.historyIndex<=0?'disabled':''}>↶ Retour</button><button class="btn" id="forwardBtn" ${state.historyIndex>=state.history.length-1?'disabled':''}>Avance ↷</button><button class="btn" id="prevBtn" ${idx<=0?'disabled':''}>← Scène</button><button class="btn" id="nextBtn" ${idx>=arr.length-1?'disabled':''}>Scène →</button></div></div>
+  ${renderPathbar()}
+  <div class="grid"><div>
+    ${renderVisualStage(s)}
+    <div style="height:12px"></div><div class="tabs"><button class="tab ${state.tab==='read'?'active':''}" data-tab="read">Lecture</button><button class="tab ${state.tab==='source'?'active':''}" data-tab="source">Source dynamique</button><button class="tab ${state.tab==='media'?'active':''}" data-tab="media">Tous les médias</button></div>
+    <section class="card ${state.tab==='read'?'':'hidden'}" data-pane="read"><h3>Narratif</h3><div class="card-body"><div class="narrative">${esc(s.narrative||'Narratif dynamique — consulte la source.')}</div></div></section>
+    <section class="card ${state.tab==='source'?'':'hidden'}" data-pane="source"><h3>Source narrative</h3><div class="card-body"><div class="source">${esc(s.narrativeSource||s.rawSummary||'')}</div></div></section>
+    <section class="card ${state.tab==='media'?'':'hidden'}" data-pane="media"><h3>Médias de la scène</h3><div class="card-body">${renderMedia(s)}</div></section>
+    <div style="height:12px"></div><section class="card"><h3>Choix</h3><div class="card-body">${choices}</div></section>
+  </div><div>
+    ${renderCoverage()}
+    <section class="card"><h3>Ton annotation · à vérifier</h3><div class="card-body annotation">
+      <div class="notice">Tes remarques sont des <strong>avis invités</strong>. Elles sont synchronisées automatiquement mais restent en attente de validation du propriétaire.</div>
+      <div class="row"><div class="field"><label>Statut invité</label><select data-ann="status"><option value="none">Non annotée</option><option value="ok">RAS invité</option><option value="review">À vérifier</option><option value="issue">Problème probable</option><option value="blocker">Bloquant probable</option></select></div><div class="field"><label>Note globale / 5</label><select data-ann="score"><option value="">—</option>${[1,2,3,4,5].map(n=>`<option value="${n}">${n} / 5</option>`).join('')}</select></div></div>
+      <div class="field"><label>Tags</label><input data-ann="tags" placeholder="ex. continuité, Kaelen, rythme, bug"></div>
+      <div class="field"><label>Remarque générale</label><textarea data-ann="notes" placeholder="Ce qui fonctionne, ce qui gêne, ce qui manque…"></textarea></div>
+      <div class="field"><label>Continuité / logique temporelle</label><textarea data-ann="continuity" placeholder="Le résultat du choix précédent est-il bien pris en compte ?"></textarea></div>
+      <div class="field"><label>Romance / relations</label><textarea data-ann="romance" placeholder="Réaction crédible ? Liberté de choisir ? Progression naturelle ?"></textarea></div>
+      <div class="field"><label>Mécaniques / flags / jauges</label><textarea data-ann="mechanics" placeholder="Effet cohérent avec ce que le choix raconte ?"></textarea></div>
+      <div class="field"><label>Visuels / ambiance / UX</label><textarea data-ann="visual" placeholder="Image, sprite, lisibilité, mobile, rythme visuel…"></textarea></div>
+      <div class="field"><label>Réécriture proposée</label><textarea data-ann="rewrite" placeholder="Facultatif — ta proposition de texte."></textarea></div>
+      <div class="server-status" id="serverVerification">Serveur : ${esc(a.serverVerification||'À VÉRIFIER')}</div>
+    </div></section>
+  </div></div>`;
+  bindScene(s,a);
+}
+function mediaUrl(v){return /^https?:/i.test(String(v||''))?String(v):''}
+function renderVisualStage(s){const bg=mediaUrl(s.image||s.transitionGif),left=mediaUrl(s.spriteLeft),right=mediaUrl(s.spriteRight),center=mediaUrl(s.sprite);if(!bg&&!left&&!right&&!center)return `<div class="visual-stage"><div class="visual-empty">Aucun visuel associé à cette scène.<br>Le testeur peut le signaler dans « Visuels / ambiance / UX ».</div><div class="visual-caption"><b>${esc(s.title)}</b><span>${esc(s.mood||'Ambiance non renseignée')}</span></div></div>`;return `<div class="visual-stage">${bg?`<img class="visual-bg" src="${esc(bg)}" alt="Décor ${esc(s.title)}" onerror="this.style.display='none'">`:''}<div class="visual-shade"></div>${left?`<img class="visual-sprite left" src="${esc(left)}" alt="Personnage gauche" onerror="this.style.display='none'">`:''}${right?`<img class="visual-sprite right" src="${esc(right)}" alt="Personnage droit" onerror="this.style.display='none'">`:''}${center?`<img class="visual-sprite center" src="${esc(center)}" alt="Personnage" onerror="this.style.display='none'">`:''}<div class="visual-caption"><b>${esc(s.title)}</b><span>${esc(s.mood||'Ambiance non renseignée')}</span></div></div>`}
+function renderPathbar(){if(!state.history.length)return '';return '<div class="pathbar">'+state.history.map((id,i)=>`${i?'<span class="path-arrow">›</span>':''}<button class="path-step ${i===state.historyIndex?'current':''}" data-history-index="${i}" title="${esc(id)}">${esc(state.byId.get(id)?.title||id)}</button>`).join('')+'</div>'}
+function renderCoverage(){const annotated=state.scenes.filter(s=>(state.annotations[s.id]?.status||'none')!=='none').length,media=state.scenes.filter(s=>s.image||s.transitionGif||s.sprite||s.spriteLeft||s.spriteRight).length,choiceCount=state.scenes.reduce((n,s)=>n+s.choices.length,0);return `<div class="coverage"><div><b>${state.visited.size}</b><span>visitées</span></div><div><b>${annotated}</b><span>annotées</span></div><div><b>${media}</b><span>avec visuel</span></div><div><b>${choiceCount}</b><span>choix totaux</span></div></div>`}
+function renderMedia(s){const items=[['Fond',s.image],['Transition',s.transitionGif],['Sprite',s.sprite],['Sprite gauche',s.spriteLeft],['Sprite droite',s.spriteRight]].filter(x=>x[1]);if(!items.length)return '<div class="small">Aucun média explicite.</div>';return '<div class="media-grid">'+items.map(([label,url])=>`<div class="media-item">${/^https?:/i.test(url)?`<img src="${esc(url)}" alt="${esc(label)}" loading="lazy" onerror="this.style.display='none'">`:''}<div><strong>${esc(label)}</strong><br>${esc(url)}</div></div>`).join('')+'</div>'}
+function renderChoice(s,c,i){const ca=getChoiceAnn(s.id,c.key),exists=!c.next||c.next==='END'||c.next==='RETURN'||state.byId.has(c.next),next=c.next?`<span class="next-link ${exists?'':'missing'}" data-next="${esc(c.next)}">${esc(c.next)}</span>`:'—';return `<article class="choice"><div class="choice-head"><div class="choice-key">${esc(c.key||i+1)}</div><div class="choice-main"><div class="choice-text">${esc(c.text||'(texte dynamique)')}</div><div class="choice-meta">${c.intent?`<span class="chip">intent · ${esc(c.intent)}</span>`:''}${c.target?`<span class="chip">cible · ${esc(c.target)}</span>`:''}${c.importance?`<span class="chip">${esc(c.importance)}</span>`:''}</div></div></div><div class="choice-details"><div class="kv"><b>Destination</b><span>${next}</span></div><div class="kv"><b>Feedback</b><span>${esc(c.feedback||'—')}</span></div><div class="kv"><b>Réponse immédiate</b><span>${esc(c.response||'—')}</span></div><div class="kv"><b>Conditions / effets</b><span>${esc([c.condition,c.effects].filter(Boolean).join('\n\n')||'—')}</span></div></div>${c.next&&state.byId.has(c.next)?`<div class="choice-actions"><button class="choice-test" data-follow-choice="${esc(c.key)}">Tester ce choix → ${esc(state.byId.get(c.next)?.title||c.next)}</button></div>`:''}<div class="choice-note" data-choice="${esc(c.key)}"><div class="minirow"><select data-choice-status><option value="none">Non annoté</option><option value="ok">RAS invité</option><option value="review">À vérifier</option><option value="issue">Problème probable</option><option value="blocker">Bloquant probable</option></select><span class="pending-mark">INVITÉ · À VÉRIFIER</span></div><textarea data-choice-note placeholder="Note spécifique à ce choix…">${esc(ca.note||'')}</textarea></div></article>`}
+function bindScene(s,a){$('#backBtn').onclick=()=>historyMove(-1);$('#forwardBtn').onclick=()=>historyMove(1);$('#prevBtn').onclick=()=>navigate(-1);$('#nextBtn').onclick=()=>navigate(1);$$('[data-history-index]').forEach(el=>el.onclick=()=>{state.historyIndex=Number(el.dataset.historyIndex);selectScene(state.history[state.historyIndex],{historyMove:true})});$$('.tab').forEach(t=>t.onclick=()=>{state.tab=t.dataset.tab;renderScene(s)});$$('[data-next]').forEach(el=>el.onclick=()=>{if(state.byId.has(el.dataset.next))selectScene(el.dataset.next);else toast('Destination non présente dans le catalogue')});$$('[data-follow-choice]').forEach(el=>el.onclick=()=>{const choice=s.choices.find(c=>String(c.key)===el.dataset.followChoice);if(choice)followChoice(s,choice)});$$('[data-ann]').forEach(el=>{const k=el.dataset.ann;el.value=a[k]??'';const ev=el.tagName==='TEXTAREA'||el.tagName==='INPUT'?'input':'change';el.addEventListener(ev,()=>{a[k]=el.value;a.updatedAt=new Date().toISOString();markDirty(s);if(k==='status')renderList();updateSummary()})});$$('[data-choice]').forEach(box=>{const key=box.dataset.choice,ca=getChoiceAnn(s.id,key),sel=box.querySelector('[data-choice-status]'),ta=box.querySelector('[data-choice-note]');sel.value=ca.status||'none';sel.onchange=()=>{ca.status=sel.value;a.updatedAt=new Date().toISOString();markDirty(s)};ta.oninput=()=>{ca.note=ta.value;a.updatedAt=new Date().toISOString();markDirty(s)}})}
+
+function showMap(){const ordered=[...state.scenes].sort((a,b)=>String(deriveAct(a)).localeCompare(String(deriveAct(b)))||String(a.sceneNumber).localeCompare(String(b.sceneNumber),undefined,{numeric:true}));$('#mapGrid').innerHTML=ordered.map(s=>{const links=s.choices.map(c=>c.next).filter(n=>state.byId.has(n));return `<div class="map-node ${s.id===state.current?'current':''} ${state.visited.has(s.id)?'visited':''}" data-map-id="${esc(s.id)}"><b>${esc(s.title)}</b><div class="small">${esc(deriveAct(s))} · ${esc(s.id)}</div><div class="map-links">${links.length?'→ '+links.map(esc).join(' · '):'Aucune destination directe'}</div></div>`}).join('');$$('[data-map-id]').forEach(el=>el.onclick=()=>{$('#mapModal').classList.remove('show');selectScene(el.dataset.mapId)});$('#mapModal').classList.add('show')}
+
+function markDirty(scene){saveLocal();state.dirty.add(scene.id);setSync('saving','Enregistrement…');clearTimeout(state.syncTimers.get(scene.id));state.syncTimers.set(scene.id,setTimeout(()=>syncScene(scene),900))}
+async function syncScene(scene){if(!state.guest||!scene)return;const a=getAnn(scene.id);try{const res=await server('reviewerSyncScene',{guestId:state.guest.guestId,guestName:state.guest.name,guestProfile:state.guest.profile,contact:state.guest.contact,datasetId:state.datasetId,buildVersion:state.buildVersion,sceneId:scene.id,sceneTitle:scene.title,act:deriveAct(scene),annotation:a});state.dirty.delete(scene.id);a.serverVerification=res?.verification||a.serverVerification||'À VÉRIFIER';saveLocal();if(state.current===scene.id){const el=$('#serverVerification');if(el)el.textContent='Serveur : '+a.serverVerification}setSync('ok','Synchronisé')}catch(e){setSync('error','Local uniquement');console.error(e)}}
+function exportLocal(){const payload={format:'elenya-reviewer-guest',version:4,guest:state.guest,datasetId:state.datasetId,buildVersion:state.buildVersion,exportedAt:new Date().toISOString(),annotations:state.annotations,testPath:{history:state.history,historyIndex:state.historyIndex,visited:[...state.visited],choices:state.choiceTrail}};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ELENYA_RETOUR_'+String(state.guest?.name||'INVITE').replace(/[^a-z0-9_-]+/gi,'_')+'_'+String(state.buildVersion).replace(/[^a-z0-9_.-]+/gi,'_')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+
+$('#saveProfileBtn').onclick=saveProfileFromModal;$('#profileBtn').onclick=()=>showProfile(false);$('#mapBtn').onclick=showMap;$('#closeMapBtn').onclick=()=>$('#mapModal').classList.remove('show');$('#exportBtn').onclick=exportLocal;['searchInput','actFilter','statusFilter','targetFilter','kindFilter'].forEach(id=>{$('#'+id).addEventListener(id==='searchInput'?'input':'change',applyFilters)});window.addEventListener('beforeunload',()=>{saveLocal();savePath()});
+init();
+</script>
+</body>
+</html>

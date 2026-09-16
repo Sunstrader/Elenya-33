@@ -1,0 +1,1785 @@
+<script>
+const CONFIG = {
+AUDIO_MAP: {
+exploration: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/glacial-horizon.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/frozen-echoes.mp3'
+],
+tension: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/icy-tension.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/frozen-shadow.mp3'
+],
+romance: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/glacial-devotion.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/tender-shadows.mp3'
+],
+intimate: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/glacial-devotion.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/tender-shadows.mp3'
+],
+action: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/frostbound-battle.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/blade-of-winter.mp3'
+],
+epilogue: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/end-of-winter.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/echoes-of-sacrifice.mp3'
+],
+end: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/end-of-winter.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/echoes-of-sacrifice.mp3'
+],
+gameover: [
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/echoes-of-sacrifice.mp3',
+  'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v55/music/end-of-winter.mp3'
+]
+},
+BGM_VOLUME: 0.70,
+VOICE_ENABLED: false,
+FALLBACK_BG: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080"%3E%3Crect fill="%23080912" width="1920" height="1080"/%3E%3C/svg%3E',
+AUTO_SAVE_INTERVAL: 5 * 60 * 1000
+};
+
+const ACHIEVEMENTS_REGISTRY = {
+'ach_poly': { icon: '💋', title: 'Le Fruit Défendu', desc: 'Vous avez succombé avec Kaelen et Alistair.' },
+'ach_surcharge': { icon: '⚡', title: 'Surcharge Magique', desc: 'Vous avez absorbé trop de mana.' },
+'ach_sirene': { icon: '🧜‍♀️', title: 'Illusion Mortelle', desc: 'Vous vous êtes laissée drainer par la sirène.' },
+'ach_scellee': { icon: '🔒', title: 'La Batterie Éternelle', desc: 'Vous avez laissé l\'Ordre vous sceller.' },
+'ach_fin_hiver': { icon: '❄️', title: 'L\'Ère de Glace', desc: 'Fin : Hiver Éternel déclenché.' },
+'ach_fin_sacrifice': { icon: '💎', title: 'La Déesse Martyre', desc: 'Fin : Vous êtes devenue une statue.' },
+'ach_fin_mortelle': { icon: '👤', title: 'L\'Aube Humaine', desc: 'Fin : Vous êtes redevenue mortelle.' },
+'ach_fin_secrete': { icon: '✨', title: 'L\'Ascension', desc: 'Fin Secrète : Vous avez brisé le cycle.' },
+'ach_fin_chaos': { icon: '🌪️', title: 'La Tempête Sans Nom', desc: 'Fin : Dissoute dans l\'instabilité.' },
+'ach_fin_poly': { icon: '👑', title: 'Les Deux Faces du Trône', desc: 'Fin : Vous avez refusé de choisir.' },
+'ach_fin_ombre': { icon: '🌑', title: 'Trône des Cendres', desc: 'Fin Ombre avec Kaelen.' },
+'ach_fin_eclaireur': { icon: '☀️', title: 'La Cage Dorée', desc: 'Fin Éclaireur avec Alistair.' },
+'ach_fin_solo': { icon: '🧭', title: 'Ligne de Fuite', desc: 'Fin Solo.' },
+'ach_fin_reconciliation': { icon: '🕊️', title: 'Ligne Commune', desc: 'Fin Réconciliation.' },
+'ach_fin_brisee': { icon: '🪞', title: 'Hiver Inachevé', desc: 'Fin Brisée.' },
+'ach_fin_ng_trone_deux_places': { icon: '♟️', title: 'Le Trône à deux places', desc: 'Fin NG+ : tu leur laisses le trône.' },
+'ach_pomme': { icon: '🍎', title: 'Deux mains, une pomme', desc: 'Kaelen et Alistair se sont touchés pour la première fois.' },
+'ach_dague_gravee': { icon: '🗡️', title: 'Marque de givre', desc: 'Vous avez gravé la dague de Kaelen.' },
+'ach_dague_combat': { icon: '⚔️', title: 'Lame empruntée', desc: 'Vous avez combattu avec la dague de Kaelen.' },
+'ach_fin_temoin': { icon: '👁️', title: 'L\'Ombre du Trône', desc: 'Vous règnez, eux restent ensemble.' },
+'ach_wingwoman': { icon: '🪽', title: 'Wingwoman', desc: 'Vous les avez laissés se trouver.' },
+'ach_solo_complet': { icon: '🦊', title: 'Couronne intérieure', desc: 'Terminer en voie solo pure.' },
+'ach_fin_equilibre': { icon: '⚖️', title: 'Le Trône sans Ombre', desc: 'Fin Équilibre : régner sans posséder.' },
+'ach_fin_redemption': { icon: '🕊️', title: 'La Reine qui Pardonne', desc: 'Fin Rédemption : pardonner et guérir.' },
+'ach_fin_verite': { icon: '🔮', title: 'Le Trône de Vérité', desc: 'Fin Vérité : savoir et choisir.' },
+'ach_venin': { icon: '🐍', title: 'Le Venin de Fen', desc: 'Vous avez succombé au venin.' },
+'ach_possession': { icon: '🖤', title: 'La Possession', desc: 'Tu as trop pris. Plus personne ne reste.' },
+'ach_fin_veyra': { icon: '🌑', title: 'La Reine Noire', desc: 'Pacte avec Veyra. Pouvoir pur, sans attache.' },
+'ach_fin_seraphine': { icon: '⚖️', title: 'La Sœur de Lumière', desc: 'Seraphine a pris la place.' },
+'ach_fin_mira': { icon: '🪶', title: 'Ligne de Contrebande', desc: 'Tu es partie avec Mira. Aucun trône.' },
+'ach_fin_corona': { icon: '❄️', title: 'Corona Glacialis', desc: 'Tu es devenue la frontière vivante.' },
+'ach_fin_dette_annulee': { icon: '🔓', title: 'Dettes Soldées', desc: 'Toutes les dettes ont été annulées.' },
+ 'ach_ng_fin_liberation': { icon: '❄️', title: 'La Fin du Cycle', desc: 'Briser le cycle sans choisir une nouvelle cage.' },
+ 'ach_ng_fin_amour': { icon: '🤍', title: 'Choisir sans enfermer', desc: 'Aimer dans le New Game+ sans confondre amour et possession.' },
+ 'ach_ng_fin_deux_mains': { icon: '♾️', title: 'Deux mains libres', desc: 'Faire tomber le Trône sans prendre le pouvoir.' },
+ 'ach_ng_fin_vide': { icon: '🪑', title: 'Le Trône vide', desc: 'Refuser définitivement la nécessité d’un souverain.' },
+ 'ach_ng_fin_cycle': { icon: '🔁', title: 'Le Roi du Recommencement', desc: 'Choisir consciemment le cycle.' },
+ 'ach_ng_fin_frontiere': { icon: '❄️', title: 'La Frontière vivante', desc: 'Devenir la limite entre le Brasier et le monde.' }
+};
+
+const ImageCache = {
+cache: {},
+failedUrls: new Set(),
+preloadImage(url) {
+if (!url || url === 'none' || this.failedUrls.has(url) || this.cache[url]) return;
+const img = new Image();
+img.onerror = () => this.failedUrls.add(url);
+img.onload = () => this.cache[url] = true;
+img.src = url;
+},
+getSafeUrl(url) {
+if (!url || url === 'none') return 'none';
+return this.failedUrls.has(url) ? CONFIG.FALLBACK_BG : url;
+}
+};
+
+let isTyping = false, typingRafId = null, currentFullText = "", CHARS_PER_SEC = 60, MS_PER_CHAR = 1000 / CHARS_PER_SEC;
+let _currentBg = null, _currentAudioUrl = null, _currentAudioMood = null, _isMuted = false, _totalScenes = 45;
+const _audioRotation = Object.create(null);
+let _activeSceneVisual = null;
+const sceneHistory = [];
+let _fadeMode = false;
+let _knownAchievements = new Set();
+
+/* V40.3.7 — Achievement baseline
+   Les succès déjà acquis sont une méta-progression permanente.
+   Ils ne doivent PAS être affichés comme venant d'être débloqués au premier choix
+   d'une nouvelle partie. */
+function syncKnownAchievementsBaseline(state) {
+  let known = [];
+  try {
+    if (state && Array.isArray(state.achievements)) known = state.achievements;
+    else known = getAllAchievements();
+  } catch (e) {
+    try { known = JSON.parse(localStorage.getItem('elenya_achievements') || '[]'); }
+    catch (_) { known = []; }
+  }
+  _knownAchievements = new Set(Array.isArray(known) ? known : []);
+}const PUNCT_PAUSE = { '.': 200, '!': 200, '?': 200, '…': 250, ',': 80, ';': 120, ':': 120 };
+let _pauseUntil = 0;
+let _autoSaveInterval = null;
+let _gameStartTime = null;
+
+function updateSpeed(val) {
+CHARS_PER_SEC = parseInt(val, 10);
+MS_PER_CHAR = 1000 / CHARS_PER_SEC;
+try { localStorage.setItem('ef_speed', val); } catch(e) {}
+}
+
+(function initSpeed() {
+try {
+const saved = localStorage.getItem('ef_speed');
+if (saved) { document.getElementById('speed-slider').value = saved; updateSpeed(saved); }
+} catch(e) {}
+})();
+
+const TEXT_SCALE_STEPS = [0.85, 1, 1.15, 1.3];
+let _textScaleIdx = 1;
+
+function applyTextScale() {
+document.documentElement.style.setProperty('--text-scale', TEXT_SCALE_STEPS[_textScaleIdx]);
+try { localStorage.setItem('ef_textscale', _textScaleIdx); } catch(e) {}
+}
+
+function textSizeStep(delta) {
+_textScaleIdx = Math.min(TEXT_SCALE_STEPS.length - 1, Math.max(0, _textScaleIdx + delta));
+applyTextScale();
+}
+
+(function initTextScale() {
+try {
+const saved = localStorage.getItem('ef_textscale');
+if (saved !== null) _textScaleIdx = parseInt(saved, 10);
+} catch(e) {}
+applyTextScale();
+})();
+
+let _visitedScenes = new Set();
+
+(function initVisited() {
+try {
+const raw = localStorage.getItem('ef_visited');
+if (raw) _visitedScenes = new Set(JSON.parse(raw));
+} catch(e) {}
+})();
+
+function markVisited(id) {
+_visitedScenes.add(id);
+try { localStorage.setItem('ef_visited', JSON.stringify(Array.from(_visitedScenes))); } catch(e) {}
+}
+
+let _autoSkipRead = true;
+
+function toggleAutoSkip() {
+_autoSkipRead = !_autoSkipRead;
+try { localStorage.setItem('ef_autoskip', _autoSkipRead ? '1' : '0'); } catch(e) {}
+document.getElementById('btn-autoskip').classList.toggle('active', _autoSkipRead);
+}
+
+(function initAutoSkip() {
+try {
+const saved = localStorage.getItem('ef_autoskip');
+if (saved !== null) _autoSkipRead = saved === '1';
+} catch(e) {}
+})();
+
+function toggleFadeMode() {
+_fadeMode = !_fadeMode;
+document.getElementById('btn-fade').classList.toggle('active', _fadeMode);
+document.getElementById('btn-fade').textContent = _fadeMode ? '✧ Fondre' : '✧ Texte';
+try { localStorage.setItem('ef_fademode', _fadeMode ? '1' : '0'); } catch(e) {}
+}
+
+(function initFadeMode() {
+try {
+const saved = localStorage.getItem('ef_fademode');
+if (saved === '1') {
+_fadeMode = true;
+document.getElementById('btn-fade').classList.add('active');
+document.getElementById('btn-fade').textContent = '✧ Fondre';
+}
+} catch(e) {}
+})();
+
+function toggleColorblind() {
+document.body.classList.toggle('colorblind');
+const isColorblind = document.body.classList.contains('colorblind');
+try { localStorage.setItem('ef_colorblind', isColorblind ? '1' : '0'); } catch(e) {}
+document.getElementById('btn-colorblind').classList.toggle('active', isColorblind);
+}
+
+(function initColorblind() {
+try {
+const saved = localStorage.getItem('ef_colorblind');
+if (saved === '1') {
+document.body.classList.add('colorblind');
+document.getElementById('btn-colorblind').classList.add('active');
+}
+} catch(e) {}
+})();
+
+function normalizeNewlines(text) {
+return typeof text === 'string' ? text.replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n') : '';
+}
+
+function applyMood(mood) {
+const body = document.body;
+body.className = body.className
+.split(/\s+/)
+.filter(c => !c.startsWith('mood-'))
+.join(' ')
+.trim();
+if (mood) body.classList.add('mood-' + mood);
+}
+
+function setBackground(url) {
+const body = document.body;
+if (!url || url === "none" || url === "") {
+_currentBg = null;
+body.style.setProperty('--bg-before', 'none');
+body.style.setProperty('--bg-after', 'none');
+body.classList.remove('fading');
+return;
+}
+const safeUrl = ImageCache.getSafeUrl(url);
+const cssUrl = "url('" + safeUrl + "')";
+if (!_currentBg) {
+_currentBg = url;
+body.style.setProperty('--bg-before', cssUrl);
+body.style.setProperty('--bg-after', 'none');
+return;
+}
+_currentBg = url;
+body.style.setProperty('--bg-after', cssUrl);
+body.classList.add('fading');
+setTimeout(() => {
+body.style.setProperty('--bg-before', cssUrl);
+body.classList.remove('fading');
+body.style.setProperty('--bg-after', 'none');
+}, 520);
+}
+
+function updateSprite(id, url) {
+const layer = document.getElementById(id);
+layer.classList.remove('sprite-animated-character');
+layer.classList.toggle('sprite-fen', !!url && /(?:\/|_)fen(?:[._/?-]|$)/i.test(url));
+layer.style.removeProperty('--animated-sprite-sheet');
+if (window.Elenya3D) window.Elenya3D.showForSprite(id, url);
+if (!url || url === "none" || url === "") {
+layer.dataset.current = "";
+layer.style.setProperty('--sprite-before', 'none');
+layer.style.setProperty('--sprite-after', 'none');
+layer.classList.remove('fading');
+return;
+}
+if (layer.dataset.current === url) return;
+const safeUrl = ImageCache.getSafeUrl(url);
+const cssUrl = "url('" + safeUrl + "')";
+if (!layer.dataset.current) {
+layer.dataset.current = url;
+layer.style.setProperty('--sprite-before', cssUrl);
+layer.style.setProperty('--sprite-after', 'none');
+return;
+}
+layer.dataset.current = url;
+layer.style.setProperty('--sprite-after', cssUrl);
+layer.classList.add('fading');
+setTimeout(() => {
+layer.style.setProperty('--sprite-before', cssUrl);
+layer.classList.remove('fading');
+layer.style.setProperty('--sprite-after', 'none');
+}, 340);
+}
+
+// Le fondu de piste et la baisse pendant la narration restent indépendants.
+function setBgmVolume(el, base) {
+  el._baseVolume = Math.min(1, Math.max(0, base));
+  const factor = typeof RF !== 'undefined' ? RF.audioFactor : 1;
+  el.volume = _isMuted ? 0 : el._baseVolume * factor;
+}
+function playAudioForScene(mood) {
+if (CONFIG.VOICE_ENABLED === false) { /* BGM only — voix personnages désactivées pour cette version */ }
+const moodKey = mood === 'intimate' ? 'romance' : ((mood === 'end' || mood === 'gameover') ? 'epilogue' : mood);
+const bgm = document.getElementById('bgm');
+bgm.loop = false;
+if (!bgm._rotationBound) {
+  bgm._rotationBound = true;
+  bgm.addEventListener('ended', () => { const previous = _currentAudioMood; _currentAudioMood = null; _currentAudioUrl = null; if (document.getElementById('accueil-screen').classList.contains('hidden')) playAudioForScene(previous); });
+  bgm.addEventListener('playing', () => { if (typeof RF !== 'undefined') RF.noteTrack(bgm.currentSrc || bgm.src); });
+}
+if (_currentAudioMood === moodKey && _currentAudioUrl) {
+  if (!_isMuted && bgm.paused && !bgm._fadeInterval) { setBgmVolume(bgm, CONFIG.BGM_VOLUME); bgm.play().catch(() => {}); }
+  return;
+}
+const tracks = CONFIG.AUDIO_MAP[moodKey] || CONFIG.AUDIO_MAP['exploration'];
+const choices = Array.isArray(tracks) ? tracks : [tracks];
+const nextIndex = ((_audioRotation[moodKey] ?? -1) + 1) % choices.length;
+_audioRotation[moodKey] = nextIndex;
+const url = choices[nextIndex];
+_currentAudioMood = moodKey;
+if (url === _currentAudioUrl) return;
+_currentAudioUrl = url;
+fadeAudio(bgm, bgm.volume, 0, 400, () => {
+bgm.pause();
+bgm.src = url;
+setBgmVolume(bgm, 0);
+if (!_isMuted) bgm.play().then(() => fadeAudio(bgm, 0, CONFIG.BGM_VOLUME, 800, null)).catch(() => {});
+});
+}
+
+function fadeAudio(el, from, to, durationMs, callback) {
+if (el._fadeInterval) clearInterval(el._fadeInterval);
+if (el.id === 'bgm') from = el._baseVolume ?? from;
+const steps = 20, interval = durationMs / steps, delta = (to - from) / steps;
+let step = 0;
+el._fadeInterval = setInterval(() => {
+step++;
+const level = Math.min(1, Math.max(0, from + delta * step));
+if (el.id === 'bgm') setBgmVolume(el, level); else el.volume = level;
+if (step >= steps) {
+clearInterval(el._fadeInterval);
+el._fadeInterval = null;
+if (callback) callback();
+}
+}, interval);
+}
+
+function toggleMute() {
+_isMuted = !_isMuted;
+const bgm = document.getElementById('bgm'), btn = document.getElementById('btn-mute');
+if (_isMuted) {
+fadeAudio(bgm, bgm.volume, 0, 300, () => bgm.pause());
+btn.textContent = '🔇';
+btn.classList.add('active');
+} else {
+btn.textContent = '🔊';
+btn.classList.remove('active');
+if (_currentAudioUrl) bgm.play().then(() => fadeAudio(bgm, 0, CONFIG.BGM_VOLUME, 600, null)).catch(() => {});
+}
+}
+
+(function initParticles() {
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+const canvas = document.getElementById('particles-canvas'), ctx = canvas.getContext('2d');
+let parts = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize, { passive: true });
+resize();
+for (let i = 0; i < 18; i++) {
+parts.push({
+x: Math.random() * canvas.width,
+y: Math.random() * canvas.height,
+r: Math.random() * 1.3 + 0.4,
+vx: (Math.random() - 0.5) * 0.22,
+vy: -Math.random() * 0.32 - 0.08
+});
+}
+function loop() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = 'rgba(180,210,255,0.42)';
+parts.forEach(p => {
+p.x += p.vx; p.y += p.vy;
+if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+ctx.beginPath();
+ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+ctx.fill();
+});
+requestAnimationFrame(loop);
+}
+loop();
+})();
+
+(function initFrostTrail() {
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+const canvas = document.getElementById('frost-trail-canvas'), ctx = canvas.getContext('2d');
+let particles = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize, { passive: true });
+resize();
+const handleTrail = (x, y) => {
+if (document.body.classList.contains('video-playing')) return;
+particles.push({ x, y, r: Math.random() * 2 + 1, life: 1 });
+if (particles.length > 30) particles.shift();
+};
+window.addEventListener('mousemove', e => handleTrail(e.clientX, e.clientY), { passive: true });
+window.addEventListener('touchmove', e => {
+if (e.touches && e.touches.length > 0) handleTrail(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: true });
+function loop() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+for (let i = particles.length - 1; i >= 0; i--) {
+let p = particles[i];
+p.life -= 0.032;
+if (p.life <= 0) { particles.splice(i, 1); continue; }
+ctx.beginPath();
+ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+ctx.fillStyle = `rgba(180,220,255,${0.35 * p.life})`;
+ctx.fill();
+}
+requestAnimationFrame(loop);
+}
+loop();
+})();
+
+function playIceCrack(oldBgUrl, onComplete) {
+const crack = document.getElementById('ice-crack');
+document.body.classList.add('page-turning');
+crack.style.backgroundImage = (oldBgUrl && oldBgUrl !== 'none')
+? `url('${ImageCache.getSafeUrl(oldBgUrl)}')`
+: 'none';
+crack.classList.remove('active');
+void crack.offsetWidth;
+crack.classList.add('active');
+setTimeout(() => {
+crack.classList.remove('active');
+crack.style.backgroundImage = 'none';
+if (typeof onComplete === 'function') onComplete();
+requestAnimationFrame(() => document.body.classList.remove('page-turning'));
+}, 1900);
+}
+
+function setProgress(sceneId, total) {
+let progressVal = 0;
+const m = sceneId && sceneId.match(/^ACTE(\d+)_(\d+)_/);
+if (m) progressVal = parseInt(m[2], 10) + (parseInt(m[1], 10) - 1) * 9;
+document.getElementById('progress-bar-fill').style.width =
+Math.min(100, Math.round((progressVal / (total || _totalScenes)) * 100)) + '%';
+}
+
+function pushHistory(title, narrative) {
+sceneHistory.push({ title, narrative });
+const list = document.getElementById('history-list');
+const entry = document.createElement('div');
+entry.className = 'history-entry';
+entry.innerHTML = `<div class="h-title">${escapeHtml(title)}</div><div>${escapeHtml(narrative)}</div>`;
+list.appendChild(entry);
+list.scrollTop = list.scrollHeight;
+}
+
+function toggleHistory() {
+ux513RefreshSemanticJournal();
+const d = document.getElementById('history-drawer');
+const b = document.getElementById('drawer-backdrop');
+const open = d.classList.toggle('open');
+b.classList.toggle('show', open);
+document.getElementById('btn-history').classList.toggle('active', open);
+}
+
+function closeHistory() {
+document.getElementById('history-drawer').classList.remove('open');
+document.getElementById('drawer-backdrop').classList.remove('show');
+document.getElementById('btn-history').classList.remove('active');
+}
+
+function renderNarrativeAsHTML(text) {
+const el = document.getElementById('narrative');
+el.innerHTML = '';
+text.split('\n').filter(p => p.trim().length > 0).forEach(para => {
+const p = document.createElement('p');
+p.textContent = para.trim();
+el.appendChild(p);
+});
+}
+
+function typeWriter(text) {
+const el = document.getElementById('narrative');
+if (typingRafId) cancelAnimationFrame(typingRafId);
+text = normalizeNewlines(text);
+el.innerHTML = '';
+currentFullText = text;
+isTyping = true;
+_pauseUntil = 0;
+const paras = text.split('\n').filter(p => p.trim().length > 0);
+const paraElements = paras.map(() => {
+const p = document.createElement('p');
+el.appendChild(p);
+return p;
+});
+let paraIdx = 0, charIdx = 0, lastTs = null, carried = 0;
+function step(ts) {
+if (!isTyping) return;
+if (ts < _pauseUntil) { typingRafId = requestAnimationFrame(step); return; }
+if (lastTs === null) lastTs = ts;
+const delta = (ts - lastTs) + carried;
+lastTs = ts;
+const toWrite = Math.floor(delta / MS_PER_CHAR);
+carried = delta % MS_PER_CHAR;
+if (toWrite > 0) {
+const currentPara = paras[paraIdx];
+const chunk = currentPara.slice(charIdx, charIdx + toWrite);
+paraElements[paraIdx].textContent += chunk;
+charIdx += toWrite;
+const lastChar = chunk.charAt(chunk.length - 1);
+if (PUNCT_PAUSE[lastChar] && !(paraIdx === paras.length - 1 && charIdx === currentPara.length)) {
+_pauseUntil = ts + PUNCT_PAUSE[lastChar];
+carried = 0;
+}
+if (charIdx >= currentPara.length) { paraIdx++; charIdx = 0; }
+}
+if (paraIdx < paras.length) {
+typingRafId = requestAnimationFrame(step);
+} else {
+isTyping = false;
+typingRafId = null;
+focusFirstChoice();
+}
+}
+typingRafId = requestAnimationFrame(step);
+}
+
+function fadeInText(text) {
+const el = document.getElementById('narrative');
+if (typingRafId) cancelAnimationFrame(typingRafId);
+text = normalizeNewlines(text);
+currentFullText = text;
+isTyping = false;
+el.style.opacity = '0';
+renderNarrativeAsHTML(text);
+el.style.transition = 'opacity 0.55s ease';
+requestAnimationFrame(() => {
+el.style.opacity = '1';
+setTimeout(() => { el.style.transition = ''; focusFirstChoice(); }, 600);
+});
+}
+
+function skipTypeWriter() {
+if (!isTyping) return;
+isTyping = false;
+if (typingRafId) cancelAnimationFrame(typingRafId);
+renderNarrativeAsHTML(currentFullText);
+focusFirstChoice();
+}
+
+function focusFirstChoice() {
+const btn = document.querySelector('.choice-btn:not(:disabled)');
+if (btn) btn.focus();
+}
+
+function isFlashbackScene(data) {
+if (!data) return false;
+if (data.isFlashback) return true;
+const sid = String(data.sceneNumber || '');
+return /^FRAG/i.test(sid) || /FRAGMENT_/i.test(sid);
+}
+
+function playFlashbackEffect(onComplete) {
+const veil = document.getElementById('flashback-veil');
+if (!veil) {
+if (typeof onComplete === 'function') onComplete();
+return;
+}
+document.body.classList.add('flashback-active');
+veil.classList.remove('active');
+void veil.offsetWidth;
+veil.classList.add('active');
+setTimeout(() => {
+veil.classList.remove('active');
+if (typeof onComplete === 'function') onComplete();
+}, 1500);
+}
+
+function showAchievementToast(key) {
+const ach = ACHIEVEMENTS_REGISTRY[key];
+if (!ach) return;
+const box = document.getElementById('toast-container');
+const el = document.createElement('div');
+el.className = 'toast-ach';
+el.innerHTML = '<div class="toast-title">SUCCÈS DÉBLOQUÉ</div><div class="toast-name">' +
+escapeHtml(ach.icon + ' ' + ach.title) + '</div>';
+box.appendChild(el);
+requestAnimationFrame(() => el.classList.add('show'));
+setTimeout(() => {
+el.classList.remove('show');
+setTimeout(() => el.remove(), 400);
+}, 3200);
+}
+
+function checkNewAchievements(state) {
+if (!state || !Array.isArray(state.achievements)) return;
+state.achievements.forEach(key => {
+if (!_knownAchievements.has(key)) {
+_knownAchievements.add(key);
+showAchievementToast(key);
+}
+});
+}
+
+
+function updateAAAState(state, data){
+  if(!state){ try{state=getActiveState()||{};}catch(e){state={}} }
+  const g=state.gauges||{};
+  const om=Number(g.lien_O ?? 0), ec=Number(g.lien_E ?? 0), so=Number(g.instabilite ?? 0);
+  const caps={ombre:20,eclaireur:20,solo:50};
+  [['ombre',om],['eclaireur',ec],['solo',so]].forEach(([k,v])=>{
+    const b=document.getElementById('g-'+k),n=document.getElementById('v-'+k);
+    if(b)b.style.width=Math.max(0,Math.min(100,(v/caps[k])*100))+'%';
+    if(n)n.textContent=Math.round(v);
+  });
+  let route=String((data&&data.currentRoute)||state.route||'solo').toLowerCase();
+  if(route==='eclaireur' || route==='ombre' || route==='poly' || route==='solo'){}
+  else if((state.flags||[]).includes('avec_ombre') && (state.flags||[]).includes('avec_eclaireur')) route='poly';
+  else if((state.flags||[]).includes('avec_ombre')) route='ombre';
+  else if((state.flags||[]).includes('avec_eclaireur')) route='eclaireur';
+  else route='solo';
+  const labels={solo:['SOI','Aucune chaîne ne te possède.'],ombre:['OMBRE','Le froid répond à ton nom.'],eclaireur:['ÉCLAIREUR','La lumière te suit.'],poly:['POLY','Deux présences, aucune cage.']};
+  const [label,sub]=labels[route]||labels.solo;
+  const rn=document.getElementById('route-name'),rs=document.getElementById('route-sub');if(rn)rn.textContent=label;if(rs)rs.textContent=sub;
+  const rsEl=document.getElementById('route-status'); if(rsEl) rsEl.textContent=label;
+  document.body.classList.remove('route-solo','route-ombre','route-eclaireur','route-poly'); document.body.classList.add('route-'+route);
+}
+
+
+function applyNarrativePresentation(data){
+  const body=document.body;
+  body.classList.remove('mode-classic','mode-ngplus','rel-possession','rel-confiance','rel-devotion','rel-attachement','rel-tension','rel-doute','memory-awake');
+  const mode=(data&&data.gameMode)||'classic';
+  body.classList.add(mode==='ngplus'?'mode-ngplus':'mode-classic');
+  const rel=data&&data.relationship||{};
+  const styles=[rel.O,rel.E].filter(Boolean);
+  if(styles.includes('possession')||styles.includes('cage')) body.classList.add('rel-possession');
+  else if(styles.includes('confiance')) body.classList.add('rel-confiance');
+  else if(styles.includes('devotion')) body.classList.add('rel-devotion');
+  else if(styles.includes('attachement')) body.classList.add('rel-attachement');
+  else if(styles.includes('tension')||styles.includes('doute')) body.classList.add(styles.includes('doute')?'rel-doute':'rel-tension');
+  const badge=document.getElementById('mode-badge');
+  if(badge) badge.textContent=mode==='ngplus'?'NEW GAME+':'CLASSIQUE';
+  if(mode==='ngplus') document.getElementById('sceneInfo').textContent='Cycle brisé · Acte '+(data.chapter||1);
+  const echoes=(data&&data.echoes)||[];
+const latest=echoes.length?echoes[echoes.length-1]:null;
+  const mem=Number(data&&data.affinity&&data.affinity.memoire||0);
+  const sid=String(data&&data.sceneNumber||'');
+  if(mem>=8 || /FRESQUE|KALTHAR|TRONE|NGP_04/i.test(sid)) body.classList.add('memory-awake');
+  // Les échos restent mémorisés dans le journal, sans popup après chaque choix.
+  const echoPopup = document.getElementById('narrative-echo');
+  if (echoPopup) echoPopup.classList.remove('show');
+  const choicePopup = document.getElementById('narrative-feedback');
+  if (choicePopup) choicePopup.classList.remove('visible');
+  const beat=document.getElementById('director-beat');
+  if(beat){
+    let label=data&&data.emotionalBeat ? String(data.emotionalBeat).toUpperCase() : '';
+    if(!label && /FRESQUE|MIROIR/i.test(sid)) label='MÉMOIRE';
+    else if(!label && (/KAELEN|OMBRE/i.test(sid) || rel.O==='possession')) label='OMBRE';
+    else if(!label && (/ALISTAIR|ECLAIREUR/i.test(sid) || rel.E==='cage')) label='LUMIÈRE';
+    else if(!label && mode==='ngplus') label='CYCLE';
+    beat.textContent=label; beat.classList.toggle('show',!!label);
+    clearTimeout(window._directorBeatTimer); if(label) window._directorBeatTimer=setTimeout(()=>beat.classList.remove('show'),2600);
+  }
+}
+function showNarrativeEcho(text){
+  const el=document.getElementById('narrative-echo'); if(!el)return;
+  el.textContent='ÉCHO · '+text; el.classList.add('show');
+  clearTimeout(window._echoToastTimer); window._echoToastTimer=setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+function renderScene(data) {
+stopAmbientMedia(false);
+// Toute image ou vidéo réellement rencontrée devient disponible dans la galerie.
+if (data.image) unlockCG(data.image);
+if (data.transitionGif) unlockCG(data.transitionGif);
+if (data.totalScenes) _totalScenes = data.totalScenes;
+const mood = data.mood || 'exploration';
+const prevTitle = document.getElementById('sceneTitle').textContent;
+document.getElementById('sceneInfo').textContent = 'Acte ' + (data.chapter || 1);
+document.getElementById('sceneTitle').textContent = data.title;
+const badge = document.getElementById('scene-badge'); if (badge) badge.textContent = data.sceneNumber || '';
+setProgress(data.sceneNumber, _totalScenes);
+updateAAAState(getActiveState(), data);
+applyNarrativePresentation(data);
+applyMood(mood);
+if (isFlashbackScene(data)) document.body.classList.add('flashback-active');
+else document.body.classList.remove('flashback-active');
+if (data.image && data.image !== _currentBg) {
+ImageCache.preloadImage(data.image);
+setBackground(data.image);
+}
+if (data.spriteLeft || data.spriteRight) {
+if (data.spriteLeft) ImageCache.preloadImage(data.spriteLeft);
+if (data.spriteRight) ImageCache.preloadImage(data.spriteRight);
+updateSprite('sprite-center', 'none');
+updateSprite('sprite-left', data.spriteLeft);
+updateSprite('sprite-right', data.spriteRight);
+} else {
+if (data.sprite) ImageCache.preloadImage(data.sprite);
+updateSprite('sprite-center', data.sprite);
+updateSprite('sprite-left', 'none');
+updateSprite('sprite-right', 'none');
+}
+_activeSceneVisual = {
+image: data.image || _currentBg || null,
+sprite: data.sprite || null,
+spriteLeft: data.spriteLeft || null,
+spriteRight: data.spriteRight || null
+};
+const alreadySeen = _visitedScenes.has(data.sceneNumber);
+markVisited(data.sceneNumber);
+playAudioForScene(mood);
+if (currentFullText) pushHistory(prevTitle, currentFullText);
+const narrativeEl = document.getElementById('narrative');
+narrativeEl.onclick = skipTypeWriter;
+const rawNarrative = normalizeNewlines(data.narrative || '');
+if (_autoSkipRead && alreadySeen) {
+if (typingRafId) cancelAnimationFrame(typingRafId);
+isTyping = false;
+currentFullText = rawNarrative;
+narrativeEl.style.opacity = '1';
+renderNarrativeAsHTML(rawNarrative);
+renderChoices(data.choices, data.isEnd, data.postEnding === true);
+focusFirstChoice();
+} else if (_fadeMode) {
+fadeInText(rawNarrative);
+renderChoices(data.choices, data.isEnd, data.postEnding === true);
+} else {
+typeWriter(rawNarrative);
+renderChoices(data.choices, data.isEnd, data.postEnding === true);
+}
+if (data.transitionGif && data.transitionGif !== "none") {
+const transitionIsVideo = /\.(mp4|webm|mov)(\?.*)?$/i.test(data.transitionGif);
+playTransitionMedia(data.transitionGif, { loop: !transitionIsVideo });
+}
+}
+
+function persistAchievements(list) {
+try {
+const prev = JSON.parse(localStorage.getItem('elenya_achievements') || '[]');
+const merged = Array.from(new Set([...(prev || []), ...(list || [])]));
+localStorage.setItem('elenya_achievements', JSON.stringify(merged));
+return merged;
+} catch (e) { return list || []; }
+}
+
+function getAllAchievements() {
+try {
+const permanent = JSON.parse(localStorage.getItem('elenya_achievements') || '[]');
+const state = getActiveState() || {};
+return Array.from(new Set([...(permanent || []), ...((state && state.achievements) || [])]));
+} catch (e) { return []; }
+}
+
+function renderChoices(choices, isEnd, postEnding) {
+const container = document.getElementById('choices');
+container.innerHTML = '';
+if (isEnd) {
+ux513RenderEndingSummary(container);
+try {
+const st = getActiveState() || {};
+persistAchievements(st.achievements || []);
+} catch (e) {}
+if (postEnding) {
+const ep=document.createElement('button');
+ep.className='choice-btn';
+ep.innerHTML='<span>Voir l’épilogue — Ce qui reste après le Trône</span>';
+ep.addEventListener('click',()=>makeChoice('EPILOGUE'));
+container.appendChild(ep);
+const menu=document.createElement('button');
+menu.className='choice-btn choice-secondary';
+menu.innerHTML='<span>Retourner au menu</span>';
+menu.addEventListener('click',()=>{returnToMenu();showAchievements();});
+container.appendChild(menu);
+return;
+}
+const btn = document.createElement('button');
+btn.className = 'choice-btn';
+btn.innerHTML = '<span>Continuer…</span>';
+btn.addEventListener('click', () => {
+clearActiveState((getActiveState()||{}).gameMode||'classic');
+returnToMenu();
+showAchievements();
+});
+container.appendChild(btn);
+// La fin reste visible aussi longtemps que le joueur le souhaite.
+return;
+}
+if (!choices || choices.length === 0) return;
+choices.forEach((c, index) => {
+const btn = document.createElement('button');
+btn.className = 'choice-btn';
+btn.setAttribute('data-key', c.key);
+btn.setAttribute('data-index', String(index + 1));
+btn.setAttribute('aria-label', String(index + 1) + '. ' + c.text);
+let htmlContent = '<span>' + escapeHtml(c.text) + '</span>';
+// V50.4 — pas d'image de la scène suivante dans les choix.
+btn.innerHTML = htmlContent;
+btn.dataset.intent = c.intent || '';
+btn.dataset.target = c.target || '';
+btn.dataset.importance = c.importance || 'minor';
+btn.addEventListener('click', () => makeChoice(c.key, btn, c));
+container.appendChild(btn);
+});
+}
+
+function showOverlay() { document.getElementById('overlay').classList.add('show'); }
+function hideOverlay() { document.getElementById('overlay').classList.remove('show'); }
+
+let _retryCount = 0, _lastChoiceKey = null, _lastChoiceMeta = null;
+let _choiceRequestState = null, _choiceRequestEpoch = 0;
+
+function makeChoice(choiceKey, activeBtn, choiceMeta) {
+if (typeof RF !== 'undefined' && !RF.prepareChoice()) return;
+_choiceRequestState = JSON.parse(JSON.stringify(getActiveState() || {}));
+_choiceRequestEpoch = typeof RF !== 'undefined' ? RF.epoch : 0;
+_lastChoiceKey = choiceKey;
+_lastChoiceMeta = choiceMeta || null;
+_retryCount = 0;
+document.querySelectorAll('.choice-btn').forEach(b => {
+b.disabled = true;
+b.classList.remove('active');
+});
+if (activeBtn) activeBtn.classList.add('active');
+showOverlay();
+callServer();
+}
+
+function stopAmbientMedia(restoreScene = true) {
+const imgEl = document.getElementById('scene-video');
+const vidEl = document.getElementById('scene-video-mp4');
+imgEl.style.display = 'none';
+vidEl.pause();
+vidEl.style.display = 'none';
+imgEl.onclick = null;
+vidEl.onclick = null;
+vidEl.onended = null;
+document.body.classList.remove('video-playing', 'video-solo');
+if (restoreScene && _activeSceneVisual) {
+const visual = _activeSceneVisual;
+if (visual.image) {
+const cssUrl = "url('" + ImageCache.getSafeUrl(visual.image) + "')";
+_currentBg = visual.image;
+document.body.style.setProperty('--bg-before', cssUrl);
+document.body.style.setProperty('--bg-after', 'none');
+document.body.classList.remove('fading');
+}
+if (visual.spriteLeft || visual.spriteRight) {
+updateSprite('sprite-center', 'none');
+updateSprite('sprite-left', visual.spriteLeft);
+updateSprite('sprite-right', visual.spriteRight);
+} else {
+updateSprite('sprite-center', visual.sprite);
+updateSprite('sprite-left', 'none');
+updateSprite('sprite-right', 'none');
+}
+}
+}
+
+function playTransitionMedia(url, options = {}) {
+const loopMode = !!options.loop;
+const isVideo = /\.(mp4|webm|mov)(\?.*)?$/i.test(url);
+const vidEl = document.getElementById('scene-video-mp4');
+const imgEl = document.getElementById('scene-video');
+const activeEl = isVideo ? vidEl : imgEl;
+document.body.classList.add('video-playing');
+if (!loopMode) document.body.classList.add('video-solo');
+activeEl.style.display = 'block';
+activeEl.onclick = () => stopAmbientMedia(true);
+if (isVideo) {
+vidEl.loop = loopMode;
+vidEl.src = url;
+vidEl.play().catch(() => {});
+if (!loopMode) {
+vidEl.onended = () => stopAmbientMedia(true);
+}
+} else {
+imgEl.src = url;
+}
+}
+
+function escapeHtml(str) {
+return typeof str === 'string'
+? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+: '';
+}
+
+function getCurrentMode(){
+  try {
+    const active=JSON.parse(localStorage.getItem('elenya_state')||'null');
+    if(active && active.gameMode) return active.gameMode==='ngplus'?'ngplus':'classic';
+    const ng=JSON.parse(localStorage.getItem('elenya_ngplus_state')||'null');
+    if(ng && ng.currentSceneId) return 'ngplus';
+    return 'classic';
+  } catch(e){ return 'classic'; }
+}
+function getActiveState(){
+  try {
+    const mode=getCurrentMode();
+    const scoped=localStorage.getItem(stateKey(mode));
+    if(scoped) return JSON.parse(scoped);
+    const legacy=localStorage.getItem('elenya_state');
+    return legacy?JSON.parse(legacy):null;
+  } catch(e) { return null; }
+}
+function stateKey(mode){ return mode==='ngplus'?'elenya_ngplus_state':'elenya_classic_state'; }
+function clearActiveState(mode){
+  const m=mode==='ngplus'?'ngplus':'classic';
+  localStorage.removeItem(stateKey(m));
+  const active=getActiveState();
+  if(active && (active.gameMode||'classic')===m) localStorage.removeItem('elenya_state');
+}
+function legacyMigrate(){
+  try{
+    if(!localStorage.getItem('elenya_classic_state') && localStorage.getItem('elenya_state')){
+      const st=JSON.parse(localStorage.getItem('elenya_state'));
+      if(!st.gameMode) st.gameMode='classic';
+      localStorage.setItem('elenya_classic_state',JSON.stringify(st));
+      localStorage.setItem('elenya_state',JSON.stringify(st));
+    }
+  }catch(e){}
+}
+function setActiveState(state){
+  if(!state) return;
+  if(!state.gameMode) state.gameMode='classic';
+  localStorage.setItem('elenya_state',JSON.stringify(state));
+  localStorage.setItem(stateKey(state.gameMode),JSON.stringify(state));
+  updateModeBadge(state.gameMode);
+  updateAAAState(state);
+}
+function getStateForMode(mode){
+  try{
+    const raw=localStorage.getItem(stateKey(mode));
+    return raw?JSON.parse(raw):null;
+  }catch(e){return null;}
+}
+function updateModeBadge(mode){
+  const b=document.getElementById('mode-badge'); if(!b)return;
+  b.textContent=mode==='ngplus'?'NEW GAME+ — LE CYCLE BRISÉ':'CLASSIQUE';
+  b.classList.toggle('ngplus',mode==='ngplus');
+}
+function showSaveModal() {
+  legacyMigrate();
+  const modal=document.getElementById('save-modal'),list=document.getElementById('save-list');
+  modal.classList.add('show'); list.innerHTML='';
+  const mode=getCurrentMode();
+  const title=mode==='ngplus'?'NEW GAME+ — SAUVEGARDES':'CLASSIQUE — SAUVEGARDES';
+  list.insertAdjacentHTML('beforeend',`<div class="save-mode">${title}</div><div class="save-notice" style="font-size:0.82rem;opacity:0.85;margin-bottom:12px;line-height:1.4;background:rgba(255,255,255,0.04);padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);">💾 Les sauvegardes sont conservées localement dans ce navigateur. Pour jouer sur un autre appareil ou sécuriser votre progression, utilisez le bouton « Exporter ».</div>`);
+  for(let i=1;i<=3;i++){
+    const saveData=localStorage.getItem(mode+'_save_'+i) || localStorage.getItem('elenya_'+mode+'_save_'+i);
+    const item=document.createElement('div'); item.className='save-item'+(saveData?'':' empty');
+    if(saveData){
+      const data=JSON.parse(saveData),date=new Date(data.timestamp).toLocaleString('fr-FR');
+      item.innerHTML=`<div class="save-icon">💾</div><div><div class="save-title">Slot ${i}</div><div class="save-desc">${date}<br>${escapeHtml(data.sceneName||'Scène inconnue')}</div></div><div class="save-actions"><button class="save-btn" onclick="loadSave(${i})">Charger</button><button class="save-btn" onclick="if(confirm('Remplacer ce slot par la partie actuelle ?'))saveToSlot(${i})">Remplacer</button><button class="save-btn" onclick="deleteSave(${i})">Supprimer</button></div>`;
+    }else{
+      item.innerHTML=`<div class="save-icon">💾</div><div><div class="save-title">Slot ${i}</div><div class="save-desc">Vide</div></div><div class="save-actions"><button class="save-btn" onclick="saveToSlot(${i})">Sauvegarder</button></div>`;
+    }
+    list.appendChild(item);
+  }
+}
+
+function hideSaveModal() {
+document.getElementById('save-modal').classList.remove('show');
+}
+
+function saveToSlot(slot) {
+const state = getActiveState() || {};
+if (!state.currentSceneId) {
+alert('Aucune partie en cours à sauvegarder.');
+return;
+}
+const saveData = {
+state: state,
+timestamp: Date.now(),
+sceneName: state.currentSceneId
+};
+const mode=state.gameMode==='ngplus'?'ngplus':'classic'; localStorage.setItem('elenya_'+mode+'_save_' + slot, JSON.stringify(saveData));
+const status=document.getElementById('save-status'); if(status){status.textContent='SAUVEGARDE…';} setSaveIndicator(true);
+google.script.run.withSuccessHandler(result=>{if(status)status.textContent=result?.ok?'SAUVEGARDÉ':'LOCAL UNIQUEMENT';setSaveIndicator(false);}).withFailureHandler(()=>{if(status)status.textContent='LOCAL UNIQUEMENT';setSaveIndicator(false);}).serverSaveGame(state);
+showSaveModal();
+}
+
+function loadSave(slot) {
+const mode=getCurrentMode(); const saveData = localStorage.getItem('elenya_'+mode+'_save_' + slot);
+if (!saveData) {
+alert('Slot vide.');
+return;
+}
+const data = JSON.parse(saveData);
+setActiveState(data.state);
+updateAAAState(data.state);
+hideSaveModal();
+document.getElementById('accueil-screen').classList.add('hidden');
+    document.body.classList.add('game-live');
+renderSceneDataFromServer(data.state);
+}
+
+function deleteSave(slot) {
+if (confirm('Supprimer cette sauvegarde ?')) {
+localStorage.removeItem('elenya_'+getCurrentMode()+'_save_' + slot);
+showSaveModal();
+}
+}
+
+function exportSave() {
+const state = getActiveState() || {};
+if (!state.currentSceneId) {
+alert('Aucune partie en cours à exporter.');
+return;
+}
+if(!state.gameMode) state.gameMode='classic';
+let gallery = [];
+try { gallery = JSON.parse(localStorage.getItem('ef_gallery') || '[]'); } catch(e) {}
+const backup = {
+  backupVersion: 1,
+  buildVersion: '52.4.3-free-voice',
+  exportedAt: new Date().toISOString(),
+  state: state,
+  achievements: getAllAchievements(),
+  gallery: Array.isArray(gallery) ? gallery : [],
+  visitedScenes: Array.from(_visitedScenes),
+  coverage: typeof RF !== 'undefined' ? RF.coverage : null
+};
+const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `elenya_backup_${Date.now()}.json`;
+a.click();
+URL.revokeObjectURL(url);
+}
+
+function importSave(event) {
+const file = event.target.files[0];
+if (!file) return;
+const reader = new FileReader();
+reader.onload = (e) => {
+try {
+const payload = JSON.parse(e.target.result);
+const isCompleteBackup = payload && Number(payload.backupVersion) >= 1 && payload.state;
+const state = isCompleteBackup ? payload.state : payload;
+if (!state || typeof state !== 'object' || Array.isArray(state) || typeof state.currentSceneId !== 'string' || !state.currentSceneId || (state.flags && !Array.isArray(state.flags)) || (state.achievements && !Array.isArray(state.achievements))) throw new Error('État invalide');
+if(!state.gameMode) state.gameMode='classic';
+if (!['classic','ngplus'].includes(state.gameMode)) throw new Error('Mode invalide');
+state.achievements = Array.from(new Set([...getAllAchievements(), ...(state.achievements || [])]));
+if (isCompleteBackup) {
+  if (Array.isArray(payload.achievements)) {
+    state.achievements = Array.from(new Set([...(state.achievements || []), ...payload.achievements]));
+    localStorage.setItem('elenya_achievements', JSON.stringify(state.achievements));
+  }
+  if (Array.isArray(payload.gallery)) localStorage.setItem('ef_gallery', JSON.stringify(Array.from(new Set([...JSON.parse(localStorage.getItem('ef_gallery') || '[]'), ...payload.gallery]))));
+  if (Array.isArray(payload.visitedScenes)) {
+    _visitedScenes = new Set([..._visitedScenes, ...payload.visitedScenes]);
+    localStorage.setItem('ef_visited', JSON.stringify(Array.from(_visitedScenes)));
+  }
+  if (payload.coverage && typeof RF !== 'undefined') {
+    for (const k of ['scenes','edges']) Object.assign(RF.coverage[k], payload.coverage[k] || {});
+    if (Array.isArray(payload.coverage.music)) RF.coverage.music = Array.from(new Set([...RF.coverage.music, ...payload.coverage.music]));
+    RF.write('ef_coverage_v524', RF.coverage);
+  }
+}
+if (typeof RF !== 'undefined') { RF.cleanup(); RF.resetHistory(); }
+setActiveState(state);
+syncKnownAchievementsBaseline(state);
+alert(isCompleteBackup ? 'Sauvegarde complète importée avec succès.' : 'Sauvegarde importée avec succès.');
+hideSaveModal();
+if (document.getElementById('accueil-screen').classList.contains('hidden')) renderSceneDataFromServer(state);
+else refreshMainMenu();
+} catch (err) {
+alert('Fichier invalide.');
+}
+};
+reader.readAsText(file);
+}
+
+function autoSave() {
+let state = null;
+try { state = getActiveState(); } catch(e) { state = null; }
+if (!state || !state.currentSceneId) return;
+const saveData = { state: state, timestamp: Date.now(), sceneName: state.currentSceneId };
+const mode = state.gameMode === 'ngplus' ? 'ngplus' : 'classic';
+localStorage.setItem('elenya_' + mode + '_autosave', JSON.stringify(saveData));
+if (!window._serverAutoSaveBusy && window.google && google.script && google.script.run) {
+  window._serverAutoSaveBusy = true;
+  setSaveIndicator(true);
+  google.script.run
+    .withSuccessHandler(result=>{ window._serverAutoSaveBusy=false; const el=document.getElementById('save-status'); if(el)el.textContent=result?.ok?'AUTO-SAVE':'LOCAL UNIQUEMENT'; setSaveIndicator(false); })
+    .withFailureHandler(()=>{ window._serverAutoSaveBusy=false; const el=document.getElementById('save-status'); if(el)el.textContent='LOCAL UNIQUEMENT'; setSaveIndicator(false); })
+    .serverSaveGame(state);
+}
+}
+
+// ===== V51 — PROFIL JOUEUR / LECTURE NARRATIVE DES JAUGES =====
+function derivePlayerProfile(state) {
+  const g = (state && state.gauges) || {};
+  const n = (state && state.narrative) || {};
+  const seeds = n.endingSeeds || {};
+  const possession = Number(g.possession || 0);
+  const volonte = Number(g.volonte || 0);
+  const memoire = Number(g.memoire_kalthar || 0);
+  const instabilite = Number(g.instabilite || 0);
+
+  if (possession >= 20) return { title: 'Couronne possessive', desc: 'Elenya tend à confondre protection, désir et emprise.' };
+  if (instabilite >= 30) return { title: 'Givre instable', desc: 'Le pouvoir répond plus vite que la raison.' };
+  if (memoire >= 15 && volonte >= 8) return { title: 'Mémoire éveillée', desc: 'Elenya comprend de mieux en mieux ce qui lui a été retiré.' };
+  if (volonte >= 10 && possession <= 10) return { title: 'Souveraine libre', desc: 'Elle choisit sans accepter que le choix devienne une cage.' };
+
+  const dominant = Object.entries(seeds).sort((a,b)=>Number(b[1]||0)-Number(a[1]||0))[0];
+  if (dominant && Number(dominant[1]||0) > 0) {
+    const labels = { shadow:'Ombre', light:'Lumière', poly:'Deux liens', freedom:'Liberté', possession:'Possession', truth:'Vérité', sacrifice:'Sacrifice', reconciliation:'Réconciliation', corona:'Corona' };
+    return { title: labels[dominant[0]] || 'En devenir', desc: 'La trajectoire actuelle penche vers : ' + (labels[dominant[0]] || dominant[0]) + '.' };
+  }
+  return { title: 'En devenir', desc: 'Aucune trajectoire ne domine encore vraiment.' };
+}
+
+function describeRelationship(state, route) {
+  const n = (state && state.narrative && state.narrative.relationshipStyle) || {};
+  const style = route === 'O' ? n.O : n.E;
+  const names = route === 'O'
+    ? {distance:'distant',tension:'tendu',attachement:'attachement réel',confiance:'confiance profonde',possession:'lien possessif'}
+    : {distance:'distant',doute:'doute croissant',devotion:'dévotion',confiance:'confiance profonde',cage:'lien qui devient une cage'};
+  return names[style] || 'indéterminé';
+}
+
+function recentMeaningfulChoices(state) {
+  const hist = Array.isArray(state && state.choiceHistory) ? state.choiceHistory : [];
+  return hist.slice(-5).reverse();
+}
+
+function showStats() {
+  const modal = document.getElementById('stats-modal');
+  const list = document.getElementById('stats-list');
+  modal.classList.add('show');
+  const state = getActiveState() || {};
+  const achievements = getAllAchievements();
+  const totalAchievements = Object.keys(ACHIEVEMENTS_REGISTRY).length;
+  const visitedScenes = _visitedScenes.size;
+  const playTime = state.stats?.playTime || 0;
+  const choicesMade = state.stats?.choicesMade || 0;
+  const profile = derivePlayerProfile(state);
+  const relO = describeRelationship(state, 'O');
+  const relE = describeRelationship(state, 'E');
+  const recent = recentMeaningfulChoices(state);
+  const recentHtml = recent.length
+    ? recent.map(c => `<div style="margin-top:5px;opacity:.85">• ${escapeHtml(c.scene || '?')} — ${escapeHtml(c.choice || '?')}</div>`).join('')
+    : '<div style="margin-top:5px;opacity:.6">Aucun choix majeur enregistré.</div>';
+
+  list.innerHTML = `
+  <div class="stat-item"><div>❄️</div><div><div class="save-title">Profil d’Elenya</div><div class="save-desc"><strong>${escapeHtml(profile.title)}</strong><br>${escapeHtml(profile.desc)}</div></div></div>
+  <div class="stat-item"><div>♡</div><div><div class="save-title">Tendances relationnelles</div><div class="save-desc">Kaelen : ${escapeHtml(relO)}<br>Alistair : ${escapeHtml(relE)}</div></div></div>
+  <div class="stat-item"><div>🏆</div><div><div class="save-title">Succès débloqués</div><div class="save-desc">${achievements.length} / ${totalAchievements}</div></div></div>
+  <div class="stat-item"><div>🎬</div><div><div class="save-title">Scènes visitées</div><div class="save-desc">${visitedScenes}</div></div></div>
+  <div class="stat-item"><div>⏱️</div><div><div class="save-title">Temps de jeu</div><div class="save-desc">${formatTime(playTime)}</div></div></div>
+  <div class="stat-item"><div>🎯</div><div><div class="save-title">Choix effectués</div><div class="save-desc">${choicesMade}</div></div></div>
+  <div class="stat-item"><div>📜</div><div><div class="save-title">5 derniers choix</div><div class="save-desc">${recentHtml}</div></div></div>`;
+
+  const profileCard = ux513ProfileCard(state);
+  if (profileCard) list.insertAdjacentHTML('afterbegin', profileCard);
+}
+
+function hideStats() {
+document.getElementById('stats-modal').classList.remove('show');
+}
+
+function formatTime(ms) {
+const seconds = Math.floor(ms / 1000);
+const minutes = Math.floor(seconds / 60);
+const hours = Math.floor(minutes / 60);
+if (hours > 0) {
+return `${hours}h ${minutes % 60}m`;
+} else if (minutes > 0) {
+return `${minutes}m ${seconds % 60}s`;
+} else {
+return `${seconds}s`;
+}
+}
+
+function updateStats(incrementChoice = false) {
+  const state = getActiveState() || {};
+  if (!state.stats) state.stats = {};
+  if (!state.stats.playTime) state.stats.playTime = 0;
+  if (!state.stats.choicesMade) state.stats.choicesMade = 0;
+  if (state.sessionStartedAt) {
+    state.stats.playTime += Math.max(0, Date.now() - Number(state.sessionStartedAt));
+    state.sessionStartedAt = Date.now();
+  }
+  if (incrementChoice) state.stats.choicesMade++;
+  const ombre = Number(state.gauges?.lien_O || 0);
+  const eclaireur = Number(state.gauges?.lien_E || 0);
+  const solo = Number(state.gauges?.instabilite || 0);
+  if (ombre > eclaireur && ombre > solo) state.stats.dominantPath = 'Ombre';
+  else if (eclaireur > ombre && eclaireur > solo) state.stats.dominantPath = 'Éclaireur';
+  else state.stats.dominantPath = 'Soi';
+  setActiveState(state);
+  updateAAAState(state);
+  return state;
+}
+
+function showNotes() {
+const modal = document.getElementById('notes-modal');
+const list = document.getElementById('notes-list');
+modal.classList.add('show');
+const notes = JSON.parse(localStorage.getItem('ef_notes') || '{}');
+const state = getActiveState() || {};
+const currentScene = state.currentSceneId;
+const sceneNotes = notes[currentScene] || [];
+list.innerHTML = '';
+if (sceneNotes.length === 0) {
+list.innerHTML = '<div class="note-item">Aucune note pour cette scène.</div>';
+} else {
+sceneNotes.forEach((note, i) => {
+const item = document.createElement('div');
+item.className = 'note-item';
+item.innerHTML = `
+<div style="flex: 1;">${escapeHtml(note.text)}</div>
+<button class="save-btn" onclick="deleteNote(${i})">Supprimer</button>`;
+list.appendChild(item);
+});
+}
+}
+
+function hideNotes() {
+document.getElementById('notes-modal').classList.remove('show');
+}
+
+function addNote() {
+const input = document.getElementById('note-input');
+const text = input.value.trim();
+if (!text) return;
+const state = getActiveState() || {};
+const currentScene = state.currentSceneId;
+const notes = JSON.parse(localStorage.getItem('ef_notes') || '{}');
+if (!notes[currentScene]) notes[currentScene] = [];
+notes[currentScene].push({ text: text, timestamp: Date.now() });
+localStorage.setItem('ef_notes', JSON.stringify(notes));
+input.value = '';
+showNotes();
+}
+
+function deleteNote(index) {
+const state = getActiveState() || {};
+const currentScene = state.currentSceneId;
+const notes = JSON.parse(localStorage.getItem('ef_notes') || '{}');
+if (notes[currentScene]) {
+notes[currentScene].splice(index, 1);
+localStorage.setItem('ef_notes', JSON.stringify(notes));
+showNotes();
+}
+}
+
+function showGallery() {
+const modal = document.getElementById('gallery-modal');
+const grid = document.getElementById('gallery-grid');
+modal.classList.add('show');
+let unlocked = JSON.parse(localStorage.getItem('ef_gallery') || '[]');
+const art54 = 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v54/';
+const art55 = art54.replace('game-v54/', 'game-v55/');
+const endingIds = [
+  'FIN_POLY','GAME_OVER_SURCHARGE','GAME_OVER_SIRENE','GAME_OVER_SCELLEE',
+  'FIN_HIVER','FIN_SACRIFICE','FIN_MORTELLE','FIN_OMBRE','FIN_ECLAIREUR',
+  'FIN_SOLO','FIN_RECONCILIATION','FIN_BRISEE','FIN_CHAOS','FIN_TEMOIN',
+  'FIN_EQUILIBRE','FIN_REDEMPTION','FIN_VERITE','GAME_OVER_VENIN',
+  'GAME_OVER_POSSESSION','FIN_VEYRA','FIN_SERAPHINE','FIN_MIRA','FIN_CORONA',
+  'FIN_DETTE_ANNULEE','ACTE5_02V','ACTE5_02D','ACTE5_02R',
+  'NG_FIN_LIBERATION','NG_FIN_AMOUR','NG_FIN_DEUX_MAINS','NG_FIN_VIDE',
+  'NG_FIN_CYCLE','NG_FIN_FRONTIERE'
+];
+const bgNames = {
+  'auberge':'Auberge enneigée','autel-reveil':'Autel du réveil','bibliotheque':'Bibliothèque royale',
+  'bivouac-souterrain':'Bivouac souterrain','campement-nuit':'Campement de nuit','caravane-silas':'Caravane de Silas',
+  'chambre-automate':'Chambre de l’automate','cour-duel':'Cour du duel','dome-magique':'Dôme magique',
+  'fin-aube':'Aube nouvelle','fin-chaos':'Tempête du chaos','foret-noire':'Forêt noire',
+  'forge-sacree':'Forge sacrée','galeries-basalte':'Galeries de basalte','lac-glaciaire':'Lac glaciaire',
+  'larmes-kalthar':'Larmes de Kalthar','mansarde-auberge':'Mansarde de l’auberge','observatoire':'Observatoire gelé',
+  'royaume-souvenirs':'Royaume des souvenirs','serre':'Serre du palais','trone-ebene':'Trône d’Ébène','village':'Village d’hiver'
+};
+const allCG = Object.keys(bgNames).map(id => ({url:art54+'backgrounds/'+id+'.webp',name:bgNames[id],type:'image',group:'Décor'}));
+allCG.push(
+  {url:art54+'animations/eveil-givre.gif',name:'Éveil du givre',type:'image',group:'Animation'},
+  {url:art54+'animations/souvenirs-vivants.mp4',name:'Souvenirs vivants',type:'video',group:'Animation'},
+  {url:art54+'animations/tempete-finale.mp4',name:'Tempête finale',type:'video',group:'Animation'},
+  {url:art55+'cg/fin-ombre-elenya-kaelen.webp',name:'Romance — Elenya et Kaelen',type:'image',group:'CG'},
+  {url:art55+'cg/fin-eclaireur-elenya-alistair.webp',name:'Romance — Elenya et Alistair',type:'image',group:'CG'},
+  {url:art55+'cg/fin-poly-elenya-kaelen-alistair.webp',name:'Romance — Deux mains libres',type:'image',group:'CG'}
+);
+endingIds.forEach(id => allCG.push({
+  url:art55+'endings/'+id+'.mp4',
+  name:'Cinématique — '+id.replace(/^GAME_OVER_/,'').replace(/^NG_FIN_/,'').replace(/^FIN_/,'').replace(/^ACTE5_/,'').replace(/_/g,' '),
+  type:'video',group:'Fin'
+}));
+grid.innerHTML = '';
+allCG.forEach(cg => {
+const item = document.createElement('div');
+item.className = 'gallery-item' + (unlocked.includes(cg.url) ? '' : ' locked');
+if (unlocked.includes(cg.url)) {
+item.tabIndex=0;item.setAttribute('role','button');item.setAttribute('aria-label',cg.name);
+item.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();item.click();}};
+item.innerHTML = cg.type === 'video'
+  ? `<video src="${cg.url}" muted preload="metadata" playsinline></video><span class="gallery-play">▶</span><span class="gallery-label">${cg.group}</span>`
+  : `<img src="${cg.url}" alt="${cg.name}"><span class="gallery-label">${cg.group}</span>`;
+item.onclick = () => openGalleryMedia(cg.url, cg.name, cg.type);
+} else {
+item.innerHTML = `<div class="gallery-locked-name">${cg.name}</div><span class="gallery-label">${cg.group}</span>`;
+}
+grid.appendChild(item);
+});
+}
+
+function hideGallery() {
+closeGalleryImage();
+document.getElementById('gallery-modal').classList.remove('show');
+}
+
+function openGalleryMedia(url, name, type) {
+const lightbox = document.getElementById('gallery-lightbox');
+const image = document.getElementById('gallery-lightbox-image');
+const video = document.getElementById('gallery-lightbox-video');
+const caption = document.getElementById('gallery-lightbox-caption');
+if (!lightbox || !image || !video || !url) return;
+if (type === 'video') {
+  image.style.display='none'; image.removeAttribute('src');
+  video.style.display='block'; video.src=url; video.currentTime=0; video.play().catch(()=>{});
+} else {
+  video.pause(); video.style.display='none'; video.removeAttribute('src');
+  image.style.display='block'; image.src=url; image.alt=name || 'Illustration de la galerie';
+}
+if (caption) caption.textContent = name || '';
+lightbox.classList.add('show');
+document.body.classList.add('gallery-image-open');
+}
+
+function openGalleryImage(url, name) { openGalleryMedia(url, name, 'image'); }
+
+function closeGalleryImage(event) {
+if (event && event.target !== event.currentTarget) return;
+const lightbox = document.getElementById('gallery-lightbox');
+const image = document.getElementById('gallery-lightbox-image');
+const video = document.getElementById('gallery-lightbox-video');
+if (lightbox) lightbox.classList.remove('show');
+if (image) image.removeAttribute('src');
+if (video) { video.pause(); video.removeAttribute('src'); video.load(); }
+document.body.classList.remove('gallery-image-open');
+}
+
+function unlockCG(url) {
+const unlocked = JSON.parse(localStorage.getItem('ef_gallery') || '[]');
+if (!unlocked.includes(url)) {
+unlocked.push(url);
+localStorage.setItem('ef_gallery', JSON.stringify(unlocked));
+}
+}
+
+window.addEventListener('load', () => {
+legacyMigrate();
+syncKnownAchievementsBaseline(getActiveState());
+refreshBuildInfo();
+refreshMainMenu();
+document.getElementById('btn-autoskip').classList.toggle('active', _autoSkipRead);
+_autoSaveInterval = setInterval(autoSave, CONFIG.AUTO_SAVE_INTERVAL);
+_gameStartTime = Date.now();
+const savedState = (()=>{try{return JSON.parse(localStorage.getItem('elenya_state')||'null')}catch(e){return null}})();
+if(savedState) updateAAAState(savedState);
+});
+
+function refreshBuildInfo(){
+  if(!(window.google&&google.script&&google.script.run)) return;
+  try {
+    const runner = google.script.run
+      .withSuccessHandler(info=>{
+        if(!info) return;
+        const el=document.getElementById('build-version');
+        if(el) el.textContent=(info.version || '52.4.3-free-voice')+' • '+(info.engine||'Corona Glacialis');
+        document.documentElement.dataset.engineVersion=String(info.version || '52.4.3-free-voice');
+      })
+      .withFailureHandler(()=>{});
+    if (runner && typeof runner.serverGetBuildInfo === 'function') {
+      runner.serverGetBuildInfo();
+    }
+  } catch(e) {
+    console.warn('Erreur refreshBuildInfo ignorée:', e);
+  }
+}
+
+function refreshMainMenu(){
+  legacyMigrate();
+  const classic=getStateForMode('classic'), ng=getStateForMode('ngplus');
+  const cc=document.getElementById('btn-continue-classic'), cn=document.getElementById('btn-continue-ngplus');
+  if(cc) cc.style.display=classic&&classic.currentSceneId?'block':'none';
+  if(cn) cn.style.display=ng&&ng.currentSceneId?'block':'none';
+  updateModeBadge((JSON.parse(localStorage.getItem('elenya_state')||'{}')||{}).gameMode==='ngplus'?'ngplus':'classic');
+  const btn=document.getElementById('btn-ngplus'), progress=document.getElementById('ngplus-progress');
+  const apply=(menu)=>{
+    if(!menu)return;
+    if(Array.isArray(menu.achievements)) persistAchievements(menu.achievements);
+    const n=Number(menu.classicEnds||0), total=Number(menu.classicEndsRequired||9);
+    if(progress) progress.textContent=`${n} / ${total} fins classiques`;
+    if(btn){btn.disabled=!menu.ngPlusUnlocked;btn.classList.toggle('unlocked',!!menu.ngPlusUnlocked);btn.textContent=menu.ngPlusUnlocked?'❄ NEW GAME+ — Le Cycle Brisé':'🔒 NEW GAME+ — Le Cycle Brisé';}
+  };
+  if(window.google&&google.script&&google.script.run){
+    google.script.run.withSuccessHandler(apply).withFailureHandler(()=>{}).serverGetMainMenu({ achievements: getAllAchievements() });
+  }
+}
+function unlockBgmFromUserGesture() {
+  const bgm = document.getElementById('bgm');
+  if (!bgm || _isMuted || !bgm.paused) return;
+  const attempt = bgm.play();
+  if (attempt && typeof attempt.catch === 'function') attempt.catch(() => {});
+}
+
+
+function toggleLinkHUD(){
+  const open=document.body.classList.toggle('hud-open');
+  const b=document.getElementById('btn-links');
+  if(b)b.classList.toggle('active',open);
+}
+function setSaveIndicator(active){
+  const box=document.getElementById('aaa-status');
+  if(!box)return;
+  box.classList.toggle('saving',!!active);
+  if(active){
+    clearTimeout(window._saveIndicatorTimer);
+    window._saveIndicatorTimer=setTimeout(()=>box.classList.remove('saving'),1200);
+  }
+}
+
+function continueGame(mode){
+  if(typeof RF!=='undefined')RF.cleanup();
+  unlockBgmFromUserGesture();
+  document.body.classList.remove('hud-open');
+  const linkBtn=document.getElementById('btn-links'); if(linkBtn)linkBtn.classList.remove('active');
+  const state=getStateForMode(mode);
+  if(!state){return;}
+  syncKnownAchievementsBaseline(state);
+  setActiveState(state);
+  document.getElementById('accueil-screen').classList.add('hidden');
+  document.body.classList.add('game-live');
+  renderSceneDataFromServer(state);
+}
+function startGame(reset,mode='classic'){
+  unlockBgmFromUserGesture();
+  if(mode==='ngplus'){ startNewGamePlus(); return; }
+  if(typeof RF!=='undefined')RF.cleanup();
+  const ticket=typeof RF!=='undefined'?RF.epoch:0;
+  const book=document.getElementById('book-open');
+  if(book){book.classList.remove('active');void book.offsetWidth;book.classList.add('active');}
+  setTimeout(()=>{
+    if(typeof RF!=='undefined'&&ticket!==RF.epoch)return;
+    document.getElementById('accueil-screen').classList.add('hidden'); if(book)book.classList.remove('active');
+    if(reset){ localStorage.removeItem(stateKey('classic')); localStorage.removeItem('elenya_state'); if(typeof RF!=='undefined') RF.resetHistory(); }
+    showOverlay();
+    let currentState=getStateForMode('classic');
+    if(!currentState||reset){ currentState={gameMode:'classic',currentSceneId:'ACTE1_01_REVEIL',flags:[],gauges:{},achievements:getAllAchievements()}; }
+    syncKnownAchievementsBaseline(currentState);
+    setActiveState(currentState);
+    renderSceneDataFromServer(currentState,true);
+  },700);
+}
+function startNewGamePlus(){
+  unlockBgmFromUserGesture();
+  if(typeof RF!=='undefined')RF.cleanup();
+  const ticket=typeof RF!=='undefined'?RF.epoch:0;
+  showOverlay();
+  google.script.run.withSuccessHandler(result=>{
+    if(typeof RF!=='undefined'&&ticket!==RF.epoch)return;
+    if(!result||!result.ok){hideOverlay();alert(result?.error||'NEW GAME+ verrouillé.');refreshMainMenu();return;}
+    syncKnownAchievementsBaseline(result.state);
+    setActiveState(result.state); if(typeof RF!=='undefined') RF.resetHistory();
+    document.getElementById('accueil-screen').classList.add('hidden'); document.body.classList.add('game-live'); hideOverlay();
+    renderSceneDataFromServer(result.state);
+  }).withFailureHandler(err=>{hideOverlay();alert('Erreur serveur : '+err);}).serverStartNewGamePlus({ achievements: getAllAchievements() });
+}
+function renderSceneDataFromServer(state,returnOnError=false){
+  const ticket=typeof RF!=='undefined'?RF.epoch:0;
+  showOverlay();
+  google.script.run.withSuccessHandler(data=>{if(typeof RF!=='undefined'&&ticket!==RF.epoch)return;hideOverlay();if(data)renderScene(data);else{alert('Aucune scène reçue.');if(returnOnError)returnToMenu();}}).withFailureHandler(err=>{if(typeof RF!=='undefined'&&ticket!==RF.epoch)return;hideOverlay();alert('Erreur : '+err);if(returnOnError)returnToMenu();}).serverGetPendingScene(state);
+}
+
+function callServer() {
+const epoch = _choiceRequestEpoch;
+if (typeof RF !== 'undefined' && epoch !== RF.epoch) return;
+// Les tentatives réseau repartent du même état ; le serveur compte le choix une seule fois.
+const currentState = _choiceRequestState || getActiveState();
+const oldBg = _currentBg;
+google.script.run
+.withSuccessHandler(result => {
+if (typeof RF !== 'undefined' && epoch !== RF.epoch) return;
+hideOverlay();
+_retryCount = 0;
+if (typeof RF !== 'undefined') RF.settle(!!result && !result.error);
+if (result && result.error) { alert(result.error); if(result.nextSceneData)renderScene(result.nextSceneData); return; }
+if (!result || !result.nextSceneData) {
+  if (result && result.updatedState) {
+    setActiveState(result.updatedState);
+    updateAAAState(result.updatedState);
+    if (result.updatedState.achievements) persistAchievements(result.updatedState.achievements);
+    checkNewAchievements(result.updatedState);
+  }
+  returnToMenu();
+  return;
+}
+
+// FIX V30.1 : nextData doit exister avant updateAAAState(..., nextData).
+// L'ancien ordre déclenchait une ReferenceError (TDZ) et bloquait le rendu
+// de la scène suivante jusqu'à un retour menu > Reprendre.
+const nextData = result.nextSceneData;
+if (result.updatedState) {
+  setActiveState(result.updatedState);
+  updateAAAState(result.updatedState, nextData);
+  if (result.choiceUX) ux513ChoiceAftermath(result.choiceUX);
+  if (result.updatedState.achievements) persistAchievements(result.updatedState.achievements);
+  checkNewAchievements(result.updatedState);
+}
+if (nextData.image) {
+ImageCache.preloadImage(nextData.image);
+unlockCG(nextData.image);
+document.body.style.setProperty('--bg-before', "url('" + ImageCache.getSafeUrl(nextData.image) + "')");
+_currentBg = nextData.image;
+}
+if (nextData.transitionGif) unlockCG(nextData.transitionGif);
+const sid = String(nextData.sceneNumber || '');
+const isFb = isFlashbackScene(nextData);
+const lightTransition = /^(LIEN_|JOUTE_|R_|ACTE_DAGUE|ACTE3_DAGUE|ACTE3_SILAS|ACTE1_SOLO|ACTE_SOLO|AVEU_)/.test(sid)
+&& !isFb;
+
+// V50.1.0 — TRANSITION ATOMIQUE : le serveur est la source de vérité.
+// On rend TOUJOURS la scène reçue immédiatement. Les effets visuels deviennent
+// purement décoratifs et ne peuvent plus bloquer le passage à la scène suivante.
+renderScene(nextData);
+if (typeof RF !== 'undefined' && nextData.presentation?.effect) RF.effect(nextData.presentation.effect);
+
+if (isFb) {
+  playFlashbackEffect(() => {});
+} else if (!lightTransition) {
+  playIceCrack(oldBg, () => {});
+}
+})
+.withFailureHandler(err => {
+if (typeof RF !== 'undefined' && epoch !== RF.epoch) return;
+if (_retryCount < 2) {
+_retryCount++;
+setTimeout(callServer, 1500);
+} else {
+hideOverlay();
+if (typeof RF !== 'undefined') RF.settle(false);
+document.querySelectorAll('#choices .choice-btn').forEach(b=>b.disabled=false);
+alert('Erreur serveur : ' + err);
+}
+})
+.serverProcessChoice(currentState, _lastChoiceKey);
+}
+
+function returnToMenu() {
+  document.body.classList.remove('game-live');
+document.getElementById('accueil-screen').classList.remove('hidden');
+refreshMainMenu();
+document.getElementById('narrative').textContent = '';
+document.getElementById('choices').innerHTML = '';
+setBackground('none');
+updateSprite('sprite-center', 'none');
+updateSprite('sprite-left', 'none');
+updateSprite('sprite-right', 'none');
+applyMood(null);
+document.body.classList.remove('flashback-active');
+const bgm = document.getElementById('bgm');
+if (bgm && !bgm.paused) fadeAudio(bgm, bgm.volume, 0, 600, () => bgm.pause());
+}
+
+function showAchievements() {
+const modal = document.getElementById('achievements-modal');
+const list = document.getElementById('ach-list');
+modal.classList.add('show');
+let unlocked = getAllAchievements();
+list.innerHTML = '';
+Object.keys(ACHIEVEMENTS_REGISTRY).forEach(key => {
+const ach = ACHIEVEMENTS_REGISTRY[key];
+const isUnlocked = unlocked.includes(key);
+const item = document.createElement('div');
+item.className = 'ach-item ' + (isUnlocked ? '' : 'locked');
+item.innerHTML = `
+<div class="ach-icon">${isUnlocked ? ach.icon : '🔒'}</div>
+<div>
+<div class="ach-title">${isUnlocked ? ach.title : 'Verrouillé'}</div>
+<div class="ach-desc">${isUnlocked ? ach.desc : '???'}</div>
+</div>`;
+list.appendChild(item);
+});
+}
+
+function hideAchievements() {
+document.getElementById('achievements-modal').classList.remove('show');
+}
+
+document.addEventListener('keydown', e => {
+if (e.key === 'Escape') {
+closeHistory();
+hideAchievements();
+hideStats();
+hideGallery();
+hideNotes();
+hideSaveModal();
+return;
+}
+const shortcutTarget = e.target;
+if (shortcutTarget && (shortcutTarget.matches('input, textarea, select') || shortcutTarget.isContentEditable)) {
+return;
+}
+if (e.ctrlKey || e.altKey || e.metaKey || document.querySelector('[id$="-modal"].show,#gallery-lightbox.show,#history-drawer.open') || !document.getElementById('accueil-screen').classList.contains('hidden')) return;
+if (e.key === ' ' || e.code === 'Space') {
+if (shortcutTarget.closest('button,a')) return;
+e.preventDefault();
+if (document.body.classList.contains('video-playing')) { stopAmbientMedia(); return; }
+if (isTyping) { skipTypeWriter(); return; }
+// Espace révèle le texte, mais ne choisit jamais une réponse à la place du joueur.
+return;
+}
+if (e.key === 'h' || e.key === 'H') { toggleHistory(); return; }
+const btns = document.querySelectorAll('.choice-btn:not(:disabled)');
+const idx = parseInt(e.key, 10) - 1;
+if (!isNaN(idx) && idx >= 0 && btns[idx]) btns[idx].click();
+});
+
+// ===== V51.3 — SEMANTIC NARRATIVE AUDIT =====
+const UX512 = {
+  feedbackTimer: null,
+  majorHistoryLimit: 12,
+  showFeedback(text) {
+    if (!text) return;
+    const el = document.getElementById('narrative-feedback');
+    if (!el) return;
+    el.textContent = text;
+    el.classList.add('visible');
+    clearTimeout(this.feedbackTimer);
+
+    // V51.5.0 — temps de lecture adaptatif.
+    // Minimum ~4.8 s ; +35 ms par caractère ; maximum 9 s.
+    // Les feedbacks narratifs ne disparaissent plus avant d'avoir pu être lus.
+    const readingMs = Math.max(4800, Math.min(9000, 2600 + String(text).length * 35));
+    this.feedbackTimer = setTimeout(() => el.classList.remove('visible'), readingMs);
+  },
+  deriveProfile(state) {
+    const g = (state && state.gauges) || {};
+    const f = new Set((state && state.flags) || []);
+    const P=+g.possession||0,V=+g.volonte||0,I=+g.instabilite||0,M=+g.memoire_kalthar||0;
+    let title="En devenir", subtitle="Ta mémoire revient. Tes choix n’ont pas encore dessiné une couronne définitive.";
+    if (P>=20 || f.has('domination_path_chosen')) {
+      title="La Couronne qui serre"; subtitle="Le pouvoir répond vite. La question est de savoir ce qu’il te laissera encore aimer.";
+    } else if (V>=12 && P<=7) {
+      title="La Reine sans chaînes"; subtitle="Tu avances sans confondre l’amour, le devoir et la possession.";
+    } else if (I>=30) {
+      title="La Tempête éveillée"; subtitle="Le givre te reconnaît plus vite que le monde. Rester toi-même devient un choix.";
+    } else if (M>=15 && V>=9) {
+      title="La Mémoire souveraine"; subtitle="Tu te souviens davantage, mais l’ancienne Elenya n’a plus tous les droits sur la nouvelle.";
+    }
+    const rel=[];
+    if (f.has('lisiere_romance_O_ouverte') || f.has('interet_romantique_O') || f.has('romance_reelle_O')) rel.push("Kaelen : désir reconnu");
+    else if ((+g.lien_O||0)>=5) rel.push("Kaelen : proximité");
+    if (f.has('lisiere_romance_E_ouverte') || f.has('interet_romantique_E') || f.has('romance_reelle_E')) rel.push("Alistair : désir reconnu");
+    else if ((+g.lien_E||0)>=5) rel.push("Alistair : proximité");
+    if (f.has('voie_solo_profonde')) rel.push("Voie Solo : affirmée");
+    return {title,subtitle,relations:rel};
+  },
+  addJournal(text, meta) {
+    if (!text) return;
+    const s = (typeof getActiveState === 'function' ? getActiveState() : null);
+    if (!s) return;
+    s.narrative = s.narrative || {};
+    s.narrative.uxJournal = Array.isArray(s.narrative.uxJournal) ? s.narrative.uxJournal : [];
+    if (!s.narrative.uxJournal.some(e => e.text === text)) {
+      s.narrative.uxJournal.push({text, meta: meta || ('Acte ' + (s.chapter || '—'))});
+      s.narrative.uxJournal = s.narrative.uxJournal.slice(-24);
+      if (typeof setActiveState === 'function') setActiveState(s);
+    }
+  },
+  renderJournal(container) {
+    if (!container) return;
+    const s = typeof getActiveState === 'function' ? getActiveState() : null;
+    const entries = s?.narrative?.uxJournal || [];
+    container.innerHTML = entries.length
+      ? '<div class="ux-journal">' + entries.map(e =>
+          '<div class="ux-journal-entry"><div class="ux-journal-meta">'+escapeHtml512(e.meta||'Souvenir')+'</div><div>'+escapeHtml512(e.text)+'</div></div>'
+        ).join('') + '</div>'
+      : '<div class="ux-journal"><em>Aucun souvenir majeur consigné pour l’instant.</em></div>';
+  },
+  endingSummary(state) {
+    const p=this.deriveProfile(state||{});
+    const f=new Set(state?.flags||[]);
+    const g=state?.gauges||{};
+    const companions=[];
+    companions.push('Kaelen — ' + (f.has('kaelen_mort')?'mort':f.has('kaelen_perdu_definitif')?'perdu':f.has('kaelen_absous')?'pardonné':'destin encore nuancé'));
+    companions.push('Alistair — ' + (f.has('alistair_mort')?'mort':f.has('alistair_perdu_definitif')?'perdu':f.has('alistair_redime')?'rédimé':'destin encore nuancé'));
+    return {profile:p, companions};
+  }
+};
+function escapeHtml512(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function ux512ChoiceAftermath(choice){
+  // Conservé pour compatibilité : les retours sont consultables dans le journal.
+  return;
+}
+
+
+// ===== V51.3 — SEMANTIC NARRATIVE AUDIT / UX =====
+function ux513ChoiceAftermath(meta){
+  // Aucun popup automatique : évite les messages d'affinité répétés ou décalés.
+  // Les conséquences restent appliquées et mémorisées côté serveur.
+  return;
+}
+function ux513ProfileCard(state){
+  const p=UX512.deriveProfile(state||{});
+  const relations=(p.relations||[]).map(x=>'<li>'+escapeHtml512(x)+'</li>').join('');
+  return '<div class="ux-profile-card" aria-label="Profil narratif d’Elenya">'+
+    '<div class="ux-profile-title">'+escapeHtml512(p.title)+'</div>'+
+    '<div class="ux-profile-subtitle">'+escapeHtml512(p.subtitle)+'</div>'+
+    (relations?'<ul>'+relations+'</ul>':'')+'</div>';
+}
+function ux513RefreshSemanticJournal(){
+  const list=document.getElementById('history-list');
+  if(!list) return;
+  // Keep ordinary scene history, then append/update a semantic memory section.
+  const old=document.getElementById('ux-semantic-journal');
+  if(old) old.remove();
+  const state=getActiveState()||{};
+  const entries=state?.narrative?.uxJournal||[];
+  if(!entries.length) return;
+  const wrap=document.createElement('div');
+  wrap.id='ux-semantic-journal';
+  wrap.className='ux-journal';
+  wrap.innerHTML='<div class="ux-profile-title">Mémoire de tes choix</div>'+
+    entries.slice(-12).map(e=>'<div class="ux-journal-entry"><div class="ux-journal-meta">'+
+      escapeHtml512((e.importance||'souvenir')+(e.target?' · '+e.target:''))+
+      '</div><div>'+escapeHtml512(e.text||'')+'</div></div>').join('');
+  list.appendChild(wrap);
+}
+function ux513RenderEndingSummary(container){
+  const state=getActiveState()||{};
+  if(!state.currentSceneId || !/^FIN_|^GAME_OVER/.test(String(state.currentSceneId))) return;
+  const summary=UX512.endingSummary(state);
+  const major=state?.narrative?.majorChoices||[];
+  const card=document.createElement('div');
+  card.className='ux-ending-summary';
+  card.setAttribute('aria-label','Récapitulatif de cette fin');
+  card.innerHTML='<h3>Ce qui t’a menée ici</h3>'+
+    '<div class="ux-profile-title">'+escapeHtml512(summary.profile.title)+'</div>'+
+    '<div class="ux-profile-subtitle">'+escapeHtml512(summary.profile.subtitle)+'</div>'+
+    '<ul>'+summary.companions.map(x=>'<li>'+escapeHtml512(x)+'</li>').join('')+
+    major.slice(-5).map(x=>'<li>'+escapeHtml512(x.text||x.choice||'')+'</li>').join('')+'</ul>';
+  container.appendChild(card);
+}
+
+
+// V51.5.0 — contrôle manuel du feedback.
+(function(){
+  const bindFeedbackControls = () => {
+    const el = document.getElementById('narrative-feedback');
+    if (!el || el.dataset.v5141Bound) return;
+    el.dataset.v5141Bound = '1';
+
+    // Clic/tap = fermer volontairement.
+    el.addEventListener('click', () => {
+      clearTimeout(UX512.feedbackTimer);
+      el.classList.remove('visible');
+    });
+
+    // Sur ordinateur, garder le texte tant que la souris est dessus.
+    el.addEventListener('mouseenter', () => clearTimeout(UX512.feedbackTimer));
+    el.addEventListener('mouseleave', () => {
+      if (!el.classList.contains('visible')) return;
+      UX512.feedbackTimer = setTimeout(() => el.classList.remove('visible'), 2500);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindFeedbackControls, {once:true});
+  } else {
+    bindFeedbackControls();
+  }
+})();
+
+</script>

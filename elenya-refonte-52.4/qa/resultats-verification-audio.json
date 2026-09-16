@@ -1,0 +1,12 @@
+{
+  "base": "52.4.0-rc2",
+  "version": "52.4.1-voice-test",
+  "fichiers_modifies": [
+    "project/Game_Interface.html",
+    "project/Scripts_Game.html",
+    "project/Scripts_Refonte.html",
+    "project/90_QA.js",
+    "project/22_State.js"
+  ],
+  "scenario_assets_et_sauvegardes": "fichiers inchangés octet par octet ; 22_State.js ne change que les deux libellés de version"
+}

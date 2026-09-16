@@ -1,0 +1,271 @@
+--- rc2/project/Game_Interface.html
++++ rc3/project/Game_Interface.html
+@@ -134,7 +134,7 @@
+ <button class="footer-btn" onclick="returnToMenu()">Menu principal</button>
+ <div id="speed-wrap">🐢 <input type="range" id="speed-slider" min="20" max="200" value="60" oninput="updateSpeed(this.value)"> 🐇</div>
+ </div>
+-<div id="build-version" style="font-size:.72em; color:rgba(140,165,255,0.7);">V52.4.0-rc2 • Corona Glacialis — Refonte en validation</div>
++<div id="build-version" style="font-size:.72em; color:rgba(140,165,255,0.7);">V52.4.0-rc3-audio • Corona Glacialis — Refonte en validation</div>
+ </div>
+ 
+ <div class="overlay" id="overlay"><div class="overlay-text">Action en cours…</div></div>
+--- rc2/project/Scripts_Game.html
++++ rc3/project/Scripts_Game.html
+@@ -295,6 +295,12 @@
+ }, 340);
+ }
+ 
++// Le fondu de piste et la baisse pendant la narration restent indépendants.
++function setBgmVolume(el, base) {
++  el._baseVolume = Math.min(1, Math.max(0, base));
++  const factor = typeof RF !== 'undefined' ? RF.audioFactor : 1;
++  el.volume = _isMuted ? 0 : el._baseVolume * factor;
++}
+ function playAudioForScene(mood) {
+ if (CONFIG.VOICE_ENABLED === false) { /* BGM only — voix personnages désactivées pour cette version */ }
+ const moodKey = mood === 'intimate' ? 'romance' : ((mood === 'end' || mood === 'gameover') ? 'epilogue' : mood);
+@@ -306,7 +312,7 @@
+   bgm.addEventListener('playing', () => { if (typeof RF !== 'undefined') RF.noteTrack(bgm.currentSrc || bgm.src); });
+ }
+ if (_currentAudioMood === moodKey && _currentAudioUrl) {
+-  if (!_isMuted && bgm.paused && !bgm._fadeInterval) { bgm.volume = CONFIG.BGM_VOLUME; bgm.play().catch(() => {}); }
++  if (!_isMuted && bgm.paused && !bgm._fadeInterval) { setBgmVolume(bgm, CONFIG.BGM_VOLUME); bgm.play().catch(() => {}); }
+   return;
+ }
+ const tracks = CONFIG.AUDIO_MAP[moodKey] || CONFIG.AUDIO_MAP['exploration'];
+@@ -320,18 +326,20 @@
+ fadeAudio(bgm, bgm.volume, 0, 400, () => {
+ bgm.pause();
+ bgm.src = url;
+-bgm.volume = 0;
++setBgmVolume(bgm, 0);
+ if (!_isMuted) bgm.play().then(() => fadeAudio(bgm, 0, CONFIG.BGM_VOLUME, 800, null)).catch(() => {});
+ });
+ }
+ 
+ function fadeAudio(el, from, to, durationMs, callback) {
+ if (el._fadeInterval) clearInterval(el._fadeInterval);
++if (el.id === 'bgm') from = el._baseVolume ?? from;
+ const steps = 20, interval = durationMs / steps, delta = (to - from) / steps;
+ let step = 0;
+ el._fadeInterval = setInterval(() => {
+ step++;
+-el.volume = Math.min(1, Math.max(0, from + delta * step));
++const level = Math.min(1, Math.max(0, from + delta * step));
++if (el.id === 'bgm') setBgmVolume(el, level); else el.volume = level;
+ if (step >= steps) {
+ clearInterval(el._fadeInterval);
+ el._fadeInterval = null;
+@@ -1012,7 +1020,7 @@
+ try { gallery = JSON.parse(localStorage.getItem('ef_gallery') || '[]'); } catch(e) {}
+ const backup = {
+   backupVersion: 1,
+-  buildVersion: '52.4.0-rc2',
++  buildVersion: '52.4.0-rc3-audio',
+   exportedAt: new Date().toISOString(),
+   state: state,
+   achievements: getAllAchievements(),
+@@ -1367,8 +1375,8 @@
+     .withSuccessHandler(info=>{
+       if(!info) return;
+       const el=document.getElementById('build-version');
+-      if(el) el.textContent=(info.version || '52.4.0-rc2')+' • '+(info.engine||'Corona Glacialis');
+-      document.documentElement.dataset.engineVersion=String(info.version || '52.4.0-rc2');
++      if(el) el.textContent=(info.version || '52.4.0-rc3-audio')+' • '+(info.engine||'Corona Glacialis');
++      document.documentElement.dataset.engineVersion=String(info.version || '52.4.0-rc3-audio');
+     })
+     .withFailureHandler(()=>{})
+     .serverGetBuildInfo();
+--- rc2/project/Scripts_Refonte.html
++++ rc3/project/Scripts_Refonte.html
+@@ -46,11 +46,11 @@
+   const read=(k, fallback)=>{try{const raw=localStorage.getItem(k);return raw===null?fallback:JSON.parse(raw)}catch(_){return fallback}};
+   const tell=t=>{$('rf-live').textContent=t};
+   const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(_){tell('Stockage local indisponible ou plein : exporte une sauvegarde.');return false}};
+-  const defaults={music:.35,ambience:.1,effects:.16,voice:1,narrator:false,rate:1,contrast:false,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,vibration:false,auto:false};
++  const defaults={music:.35,ambience:.1,effects:.16,voice:1,narrator:false,voiceURI:"",rate:.95,contrast:false,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,vibration:false,auto:false};
+   const legacyPrefs=read('ef_preferences_v524',{}),prefs={...defaults,...legacyPrefs};
+   const legacyDefaults={music:.7,ambience:.18,effects:.3,voice:.8};
+   Object.keys(legacyDefaults).forEach(k=>{if(Number(legacyPrefs[k])===legacyDefaults[k])prefs[k]=defaults[k]});
+-  let data=null,busy=false,requestEpoch=0,pending=null,voiceEpoch=0,currentUtterance=null,autoTimer=null,modalFocus=null,explorer=null,audioContext=null,ambientNode=null,ambientGain=null,ambientFilter=null,ambienceKind=null,galleryPlayer=null,toolsOpen=false,narratorDucking=false,duckedVolumes=null;
++  let data=null,busy=false,requestEpoch=0,pending=null,voiceEpoch=0,currentUtterance=null,autoTimer=null,modalFocus=null,explorer=null,audioContext=null,ambientNode=null,ambientGain=null,ambientFilter=null,ambienceKind=null,galleryPlayer=null,toolsOpen=false,narratorDucking=false,duckLevel=1,duckTimer=null,effectsBus=null;
+   let history={entries:[],index:-1},historyMode='classic';
+   const coverage=read('ef_coverage_v524',{scenes:{},edges:{},music:[]});
+   coverage.scenes=coverage.scenes||{};coverage.edges=coverage.edges||{};coverage.music=Array.isArray(coverage.music)?coverage.music:[];
+@@ -100,24 +100,46 @@
+     if(prefs.narrator&&!document.body.classList.contains('video-playing'))speak();
+     scheduleAuto();
+   }
++  function syncAudioMix(){
++    const bgm=$('bgm');
++    if(bgm)bgm.volume=_isMuted?0:(bgm._baseVolume??prefs.music)*duckLevel;
++    if(ambientGain){ambientGain.gain.cancelScheduledValues(audioContext.currentTime);ambientGain.gain.setTargetAtTime(_isMuted?0:prefs.ambience*.12*duckLevel,audioContext.currentTime,.04);}
++    if(effectsBus)effectsBus.gain.setTargetAtTime(_isMuted?0:prefs.effects*duckLevel,audioContext.currentTime,.04);
++    if(galleryPlayer)galleryPlayer.volume=_isMuted?0:prefs.music*duckLevel;
++  }
+   function duckOtherAudio(active){
+-    const bgm=$('bgm');
+-    if(active&&!narratorDucking){narratorDucking=true;duckedVolumes={bgm:bgm?.volume??null,ambience:ambientGain?.gain.value??null,gallery:galleryPlayer?.volume??null};if(bgm)bgm.volume=0;if(ambientGain)ambientGain.gain.value=0;if(galleryPlayer)galleryPlayer.volume=0;return;}
+-    if(!active&&narratorDucking){narratorDucking=false;const saved=duckedVolumes||{};duckedVolumes=null;if(bgm&&!_isMuted&&saved.bgm!==null)bgm.volume=saved.bgm;if(ambientGain&&!_isMuted&&saved.ambience!==null)ambientGain.gain.value=saved.ambience;if(galleryPlayer&&!_isMuted&&saved.gallery!==null)galleryPlayer.volume=saved.gallery;}
+-  }
++    if(active===narratorDucking)return;
++    narratorDucking=active;clearInterval(duckTimer);
++    const from=duckLevel,target=active?.25:1,steps=10;let step=0;
++    duckTimer=setInterval(()=>{duckLevel=from+(target-from)*(++step/steps);syncAudioMix();if(step>=steps){clearInterval(duckTimer);duckTimer=null;}},active?20:50);
++  }
++  function frenchVoices(){
++    if(!('speechSynthesis' in window))return [];
++    const score=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?100:0)+(/^fr[-_]FR$/i.test(v.lang)?20:0);
++    return window.speechSynthesis.getVoices().filter(v=>/^fr(?:-|_|$)/i.test(v.lang)).sort((a,b)=>score(b)-score(a)||a.name.localeCompare(b.name,'fr'));
++  }
++  function refreshVoiceChoices(){
++    const select=$('rf-voice-select');if(!select)return;
++    const voices=frenchVoices();
++    select.innerHTML='<option value="">Automatique — français</option>'+voices.map(v=>'<option value="'+escapeHtml(v.voiceURI)+'">'+escapeHtml(v.name)+' ('+escapeHtml(v.lang)+')</option>').join('');
++    select.value=voices.some(v=>v.voiceURI===prefs.voiceURI)?prefs.voiceURI:'';
++  }
++  if('speechSynthesis' in window)window.speechSynthesis.addEventListener?.('voiceschanged',refreshVoiceChoices);
+   function stopVoice(){voiceEpoch++;currentUtterance=null;duckOtherAudio(false);if('speechSynthesis' in window)window.speechSynthesis.cancel();}
+   function speak(){
+     stopVoice();if(!data||!$('accueil-screen').classList.contains('hidden'))return;
+     if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){tell('Lecture vocale indisponible dans ce navigateur. Le texte reste accessible.');return;}
+     if(document.body.classList.contains('video-playing')){tell('Ferme la cinématique pour écouter la scène.');return;}
+-    skipTypeWriter();duckOtherAudio(true);const token=voiceEpoch;
++    skipTypeWriter();const token=voiceEpoch;
+     const text=[data.title,data.narrative,...(data.choices||[]).map((c,i)=>'Choix '+(i+1)+'. '+c.text)].join('\n').replace(/\*+/g,'');
+-    const pieces=(text.match(/[^.!?\n]+[.!?]?/g)||[text]).flatMap(s=>s.match(/.{1,220}(?:\s|$)|.{1,220}/g)||[]).map(x=>x.trim()).filter(Boolean);
+-    const voices=window.speechSynthesis.getVoices(),fr=voices.filter(v=>/^fr(?:-|_)/i.test(v.lang));const selected=fr.find(v=>v.localService)||fr[0];
++    const fragments=(text.match(/[^.!?\n]+[.!?]?/g)||[text]).flatMap(s=>s.match(/.{1,220}(?:\s|$)|.{1,220}/g)||[]).map(x=>x.trim()).filter(Boolean);
++    const pieces=[];for(const fragment of fragments){const last=pieces.length-1;if(last>=0&&pieces[last].length+fragment.length<220)pieces[last]+=' '+fragment;else pieces.push(fragment);}
++    const fr=frenchVoices();const selected=fr.find(v=>v.voiceURI===prefs.voiceURI)||fr[0];
+     let index=0;function next(){if(token!==voiceEpoch||index>=pieces.length||document.hidden)return;
+-      const utterance=new SpeechSynthesisUtterance(pieces[index++]);currentUtterance=utterance;utterance.lang='fr-FR';utterance.rate=prefs.rate;utterance.volume=_isMuted?0:prefs.voice;if(selected)utterance.voice=selected;
++      const utterance=new SpeechSynthesisUtterance(pieces[index++]);currentUtterance=utterance;utterance.lang=selected?.lang||'fr-FR';utterance.rate=prefs.rate;utterance.volume=_isMuted?0:prefs.voice;if(selected)utterance.voice=selected;
++      utterance.onstart=()=>{if(token===voiceEpoch)duckOtherAudio(true);};
+       utterance.onend=()=>{if(token!==voiceEpoch)return;if(index>=pieces.length){currentUtterance=null;duckOtherAudio(false);tell('Lecture terminée. À toi de choisir.');}else next();};
+-      utterance.onerror=e=>{if(token===voiceEpoch&&e.error!=='canceled'&&e.error!=='interrupted'){currentUtterance=null;duckOtherAudio(false);tell('La voix n’a pas démarré. Réessaie « Lire la scène ».');}};window.speechSynthesis.speak(utterance);
++      utterance.onerror=e=>{if(token===voiceEpoch){currentUtterance=null;duckOtherAudio(false);tell('La voix n’a pas démarré. Réessaie « Lire la scène ».');}};try{window.speechSynthesis.speak(utterance);}catch(_){currentUtterance=null;duckOtherAudio(false);tell('La voix n’a pas démarré. Réessaie « Lire la scène ».');}
+     } next();
+   }
+   function scheduleAuto(){clearTimeout(autoTimer);if(!prefs.auto||!data||data.isEnd)return;
+@@ -127,19 +149,20 @@
+   }
+   function ensureAudio(){if(audioContext)return audioContext;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;audioContext=new AC();return audioContext;}
+   function noiseBuffer(ac,seconds){const buf=ac.createBuffer(1,Math.round(ac.sampleRate*seconds),ac.sampleRate),samples=buf.getChannelData(0);let prev=0;for(let i=0;i<samples.length;i++){prev=(prev+Math.random()*.04-.02)/1.02;samples[i]=prev*4;}return buf;}
+-  function setAmbience(kind){if(!audioContext)return;if(ambienceKind===kind){if(ambientGain)ambientGain.gain.setTargetAtTime(_isMuted?0:prefs.ambience*.12,audioContext.currentTime,.2);return;}
++  function setAmbience(kind){if(!audioContext)return;if(ambienceKind===kind){if(ambientGain)ambientGain.gain.setTargetAtTime(_isMuted?0:prefs.ambience*.12*duckLevel,audioContext.currentTime,.2);return;}
+     if(ambientNode){try{ambientNode.stop()}catch(_){}ambientNode.disconnect();}ambientFilter?.disconnect();ambientGain?.disconnect();ambientNode=null;ambientGain=null;ambientFilter=null;ambienceKind=kind;if(kind==='quiet')return;
+-    const source=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),gain=audioContext.createGain();source.buffer=noiseBuffer(audioContext,4);source.loop=true;filter.type='lowpass';filter.frequency.value=kind==='fire'?1400:450;gain.gain.value=_isMuted?0:prefs.ambience*.12;source.connect(filter).connect(gain).connect(audioContext.destination);source.start();ambientNode=source;ambientGain=gain;ambientFilter=filter;
+-  }
+-  function effect(kind){if(_isMuted||!prefs.effects||narratorDucking)return;const ac=ensureAudio();if(!ac)return;ac.resume().catch(()=>{});const now=ac.currentTime,duration=kind==='ice-storm'?.85:kind==='ice-lance'?.4:.16;
+-    const source=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain();source.buffer=noiseBuffer(ac,duration);filter.type='highpass';filter.frequency.value=kind==='ui'?2600:900;gain.gain.setValueAtTime(prefs.effects*(kind==='ui'?.12:.6),now);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);source.connect(filter).connect(gain).connect(ac.destination);source.start();source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect()};
++    const source=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),gain=audioContext.createGain();source.buffer=noiseBuffer(audioContext,4);source.loop=true;filter.type='lowpass';filter.frequency.value=kind==='fire'?1400:450;gain.gain.value=_isMuted?0:prefs.ambience*.12*duckLevel;source.connect(filter).connect(gain).connect(audioContext.destination);source.start();ambientNode=source;ambientGain=gain;ambientFilter=filter;
++  }
++  function effect(kind){if(_isMuted||!prefs.effects)return;const ac=ensureAudio();if(!ac)return;ac.resume().catch(()=>{});if(!effectsBus){effectsBus=ac.createGain();effectsBus.connect(ac.destination);}effectsBus.gain.value=prefs.effects*duckLevel;const now=ac.currentTime,duration=kind==='ice-storm'?.85:kind==='ice-lance'?.4:.16;
++    const source=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain();source.buffer=noiseBuffer(ac,duration);filter.type='highpass';filter.frequency.value=kind==='ui'?2600:900;gain.gain.setValueAtTime((kind==='ui'?.12:.6),now);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);source.connect(filter).connect(gain).connect(effectsBus);source.start();source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect()};
+     if(prefs.vibration&&kind!=='ui'&&navigator.vibrate)navigator.vibrate(kind==='ice-storm'?[18,30,14]:12);
+   }
+-  function applyPrefs(){CONFIG.BGM_VOLUME=prefs.music;document.body.classList.toggle('rf-contrast',prefs.contrast);document.body.classList.toggle('rf-reduce-motion',!prefs.motion);const bgm=$('bgm');if(bgm&&!bgm._fadeInterval)bgm.volume=_isMuted||narratorDucking?0:prefs.music;if(ambientGain)ambientGain.gain.value=_isMuted||narratorDucking?0:prefs.ambience*.12;if(galleryPlayer)galleryPlayer.volume=_isMuted||narratorDucking?0:prefs.music;write('ef_preferences_v524',prefs);}
++  function applyPrefs(){CONFIG.BGM_VOLUME=prefs.music;document.body.classList.toggle('rf-contrast',prefs.contrast);document.body.classList.toggle('rf-reduce-motion',!prefs.motion);const bgm=$('bgm');if(bgm&&!bgm._fadeInterval)bgm._baseVolume=prefs.music;syncAudioMix();write('ef_preferences_v524',prefs);}
+   function open(title,html){stopVoice();clearTimeout(autoTimer);modalFocus=document.activeElement;$('rf-dialog-title').textContent=title;$('rf-dialog-content').innerHTML=html;$('rf-dialog').hidden=false;$('rf-close').focus();}
+   function close(){if($('rf-dialog').hidden)return;if(galleryPlayer){galleryPlayer.pause();galleryPlayer=null;if(data)playAudioForScene(data.mood||'exploration')}$('rf-dialog').hidden=true;if(modalFocus?.isConnected)modalFocus.focus();scheduleAuto();}
+-  function settings(){open('Paramètres',`<section><h3>Audio</h3>${[['music','Musique'],['ambience','Ambiances'],['effects','Effets'],['voice','Narrateur']].map(([k,t])=>`<label>${t}<input data-pref="${k}" aria-label="Volume ${t}" type="range" min="0" max="1" step=".05" value="${prefs[k]}"></label>`).join('')}<label><input type="checkbox" data-pref="narrator" ${prefs.narrator?'checked':''}> Narrateur automatique à chaque scène</label><p class="rf-muted">Utilise une voix française de l’appareil si elle est disponible. Certaines voix nécessitent Internet. Aucun micro n’est utilisé. Les décisions restent manuelles.</p><label>Vitesse de la voix<input aria-label="Vitesse du narrateur" type="range" data-pref="rate" min=".7" max="1.4" step=".1" value="${prefs.rate}"></label><button type="button" id="rf-test-voice">Écouter la scène actuelle</button></section><section><h3>Lecture et accessibilité</h3>${[['contrast','Contraste renforcé'],['motion','Animations et effets visuels'],['vibration','Vibrations légères'],['auto','Passer automatiquement les simples « Continuer » après lecture']].map(([k,t])=>`<label><input data-pref="${k}" type="checkbox" ${prefs[k]?'checked':''}>${t}</label>`).join('')}<p class="rf-muted">Flèches haut/bas pour choisir, Entrée pour valider. Les décisions sont définitives pendant la partie ; utilise une sauvegarde si tu veux conserver un point de reprise.</p><button type="button" id="rf-text-less">Texte −</button> <button type="button" id="rf-text-more">Texte +</button></section>`);
+-    $('rf-dialog-content').querySelectorAll('[data-pref]').forEach(el=>el.addEventListener('input',()=>{prefs[el.dataset.pref]=el.type==='checkbox'?el.checked:Number(el.value);applyPrefs();if(!prefs.narrator)stopVoice();}));
++  function settings(){open('Paramètres',`<section><h3>Audio</h3>${[['music','Musique'],['ambience','Ambiances'],['effects','Effets'],['voice','Narrateur']].map(([k,t])=>`<label>${t}<input data-pref="${k}" aria-label="Volume ${t}" type="range" min="0" max="1" step=".05" value="${prefs[k]}"></label>`).join('')}<label><input type="checkbox" data-pref="narrator" ${prefs.narrator?'checked':''}> Narrateur automatique à chaque scène</label><label>Voix française<select id="rf-voice-select" data-pref="voiceURI" aria-label="Voix française du narrateur"></select></label><p class="rf-muted">La musique, les ambiances et les effets restent audibles à 25 % de leur volume pendant la lecture, puis remontent doucement. Les voix proposées dépendent de ton appareil ; certaines nécessitent Internet.</p><label>Vitesse de la voix<input aria-label="Vitesse du narrateur" type="range" data-pref="rate" min=".7" max="1.4" step=".05" value="${prefs.rate}"></label><button type="button" id="rf-test-voice">Écouter la scène actuelle</button></section><section><h3>Lecture et accessibilité</h3>${[['contrast','Contraste renforcé'],['motion','Animations et effets visuels'],['vibration','Vibrations légères'],['auto','Passer automatiquement les simples « Continuer » après lecture']].map(([k,t])=>`<label><input data-pref="${k}" type="checkbox" ${prefs[k]?'checked':''}>${t}</label>`).join('')}<p class="rf-muted">Flèches haut/bas pour choisir, Entrée pour valider. Les décisions sont définitives pendant la partie ; utilise une sauvegarde si tu veux conserver un point de reprise.</p><button type="button" id="rf-text-less">Texte −</button> <button type="button" id="rf-text-more">Texte +</button></section>`);
++    refreshVoiceChoices();
++    $('rf-dialog-content').querySelectorAll('[data-pref]').forEach(el=>el.addEventListener('input',()=>{prefs[el.dataset.pref]=el.type==='checkbox'?el.checked:el.dataset.pref==='voiceURI'?el.value:Number(el.value);applyPrefs();if(el.dataset.pref==='narrator'&&!prefs.narrator)stopVoice();}));
+     $('rf-test-voice').onclick=()=>{close();speak()};$('rf-text-less').onclick=()=>textSizeStep(-1);$('rf-text-more').onclick=()=>textSizeStep(1);
+   }
+   function loadExplorer(){if(explorer)return Promise.resolve(explorer);return new Promise((resolve,reject)=>google.script.run.withSuccessHandler(r=>{explorer=r;resolve(r)}).withFailureHandler(reject).serverGetExplorer());}
+@@ -167,7 +190,7 @@
+     const scenes=result.scenes.filter(known).sort((a,b)=>a.chapter-b.chapter);$('rf-dialog-content').insertAdjacentHTML('beforeend',`<details><summary>Scènes découvertes par acte</summary><p class="rf-muted">Classement par acte, pas chronologie absolue des souvenirs.</p>${scenes.map(s=>`<p>${s.mode==='ngplus'?'NG+':'Classique'} · Acte ${s.chapter} — ${escapeHtml(s.title)}</p>`).join('')}</details>`);
+   }catch(_){$('rf-dialog-content').textContent='Codex indisponible. Réessaie après reconnexion.'}}
+   function music(){const urls=[...new Set(Object.values(CONFIG.AUDIO_MAP).flat())];open('Musiques découvertes',urls.map((url,i)=>`<div class="rf-track"><span>${coverage.music.includes(url)?escapeHtml(decodeURIComponent(url.split('/').pop().replace(/\.mp3$/,'').replace(/-/g,' '))):'Morceau non découvert'}</span><button type="button" data-track="${i}" ${coverage.music.includes(url)?'':'disabled'}>Écouter</button></div>`).join('')+'<button type="button" id="rf-music-stop">Arrêter</button>');
+-    $('rf-dialog-content').querySelectorAll('[data-track]').forEach(b=>b.onclick=()=>{if(galleryPlayer)galleryPlayer.pause();pauseBgm();galleryPlayer=new Audio(urls[Number(b.dataset.track)]);galleryPlayer.volume=_isMuted?0:prefs.music;galleryPlayer.play().catch(()=>tell('Ce morceau n’a pas pu être chargé.'));});$('rf-music-stop').onclick=()=>{galleryPlayer?.pause()};
++    $('rf-dialog-content').querySelectorAll('[data-track]').forEach(b=>b.onclick=()=>{if(galleryPlayer)galleryPlayer.pause();pauseBgm();galleryPlayer=new Audio(urls[Number(b.dataset.track)]);galleryPlayer.volume=_isMuted?0:prefs.music*duckLevel;galleryPlayer.play().catch(()=>tell('Ce morceau n’a pas pu être chargé.'));});$('rf-music-stop').onclick=()=>{galleryPlayer?.pause()};
+   }
+   function pauseBgm(){const bgm=$('bgm');if(bgm._fadeInterval){clearInterval(bgm._fadeInterval);bgm._fadeInterval=null;}bgm.pause();_currentAudioMood=null;_currentAudioUrl=null;}
+   function resumeBgm(){if(data&&!$('gallery-lightbox').classList.contains('show')&&!galleryPlayer&&$('accueil-screen').classList.contains('hidden'))playAudioForScene(data.mood||'exploration');}
+@@ -191,7 +214,7 @@
+   document.querySelectorAll('.header,.body-content,.footer').forEach(el=>el.inert=true);
+   applyPrefs();restoreHistory();
+   return {prefs,scene,prepareChoice,settle,rollback,resetHistory,restoreHistory,cleanup,speak,stopVoice,noteTrack,effect,applyPrefs,
+-    get busy(){return busy},get epoch(){return requestEpoch},get current(){return data},settings,map,codex,music,galleryExtras,pauseBgm,resumeBgm,toggleTools,tell,write,read,coverage};
++    get audioFactor(){return duckLevel},get busy(){return busy},get epoch(){return requestEpoch},get current(){return data},settings,map,codex,music,galleryExtras,pauseBgm,resumeBgm,toggleTools,tell,write,read,coverage};
+ })();
+ const originalRender=renderScene;
+ renderScene=function(data){if(!document.getElementById('accueil-screen').classList.contains('hidden'))return;if(data.renderedState)setActiveState(data.renderedState);originalRender(data);RF.scene(data);};
+--- rc2/project/90_QA.js
++++ rc3/project/90_QA.js
+@@ -609,7 +609,7 @@
+ 
+ function serverRunAct1PayoffContinuityQA(){
+   const errors=[],warnings=[];
+-  if(String(BUILD_VERSION)!=='52.4.0-rc2') errors.push('version');
++  if(String(BUILD_VERSION)!=='52.4.0-rc3-audio') errors.push('version');
+   const triChoices=(DB['ACTE1_07_RETROUVAILLES']?.choices||[]);
+   const triTargets=triChoices.map(c=>c.next);
+   if(triTargets.filter(n=>n==='ACTE1_07B_REACTION_TRIANGULATION').length < 3)
+@@ -630,7 +630,7 @@
+ function serverRunAct1PlaytestFixQA(){
+   const errors=[],warnings=[];
+   const src=(id)=>_sceneSourceForQA(DB[id]);
+-  if(String(BUILD_VERSION)!=='52.4.0-rc2')errors.push('version');
++  if(String(BUILD_VERSION)!=='52.4.0-rc3-audio')errors.push('version');
+   ['ACTE1_05B_REVEIL_BIVOUAC','ACTE1_05C_JALOUSIE_SOUTERRAINE'].forEach(id=>{
+     const s=src(id);
+     if(!s.includes("gs.hasFlag('avec_ombre')")||!s.includes("gs.hasFlag('avec_eclaireur')"))errors.push(id+' sprites non conditionnels');
+@@ -648,7 +648,7 @@
+ 
+ function serverRunNarrativeVoicePolishQA(){
+   const errors=[],warnings=[];
+-  if(String(BUILD_VERSION)!=='52.4.0-rc2')errors.push('version');
++  if(String(BUILD_VERSION)!=='52.4.0-rc3-audio')errors.push('version');
+   const alistair=[DB['R_E_1'],DB['LIEN_E_2_CONFIDENCE'],DB['JOUTE_E_2']].map(_sceneSourceForQA).join('\n');
+   ['clé','insigne','porte'].forEach(x=>{if(!alistair.toLowerCase().includes(x))warnings.push('motif Alistair peu visible: '+x);});
+   const dE=DB['ROMANCE_DEFERRED_ALISTAIR'], dO=DB['ROMANCE_DEFERRED_KAELEN'];
+@@ -691,8 +691,8 @@
+   if(!ie.includes('choice.target')) errors.push('inferChoiceEchoes sans choice.target');
+   if(String(secondaryStage).includes('corona_indice_1')) errors.push('corona_indice_1 encore actif');
+   if(!String(decrementTimers).includes('timeCost')) errors.push('decrementTimers sans timeCost');
+-  if(String(BUILD_VERSION)!=='52.4.0-rc2') errors.push('BUILD_VERSION incorrect');
+-  if(!String(ENGINE_LABEL).includes('V52.4.0-rc2')) errors.push('ENGINE_LABEL incorrect');
++  if(String(BUILD_VERSION)!=='52.4.0-rc3-audio') errors.push('BUILD_VERSION incorrect');
++  if(!String(ENGINE_LABEL).includes('V52.4.0-rc3-audio')) errors.push('ENGINE_LABEL incorrect');
+ 
+   // Vérification directe de la sémantique du venin.
+   const a={timers:{venin:3}}; decrementTimers(a,'X','Y',0); if(a.timers.venin!==3) errors.push('timeCost 0 consomme le venin');
+@@ -967,8 +967,8 @@
+   const classic = (typeof DB !== 'undefined' ? DB : {});
+ 
+   try {
+-    if (String(BUILD_VERSION) !== '52.4.0-rc2') errors.push('BUILD_VERSION != 52.4.0-rc2');
+-    if (!String(ENGINE_LABEL || '').includes('V52.4.0-rc2')) errors.push('ENGINE_LABEL non V52.4.0-rc2');
++    if (String(BUILD_VERSION) !== '52.4.0-rc3-audio') errors.push('BUILD_VERSION != 52.4.0-rc3-audio');
++    if (!String(ENGINE_LABEL || '').includes('V52.4.0-rc3-audio')) errors.push('ENGINE_LABEL non V52.4.0-rc3-audio');
+ 
+     const wake = classic.ACTE1_01_REVEIL || {};
+     const wakeChoices = Array.isArray(wake.choices) ? wake.choices : [];
+@@ -1140,7 +1140,7 @@
+     addFlag: () => {}, hasItem: () => false, getRep: () => 0,
+     hasOriginEnd: () => false, getLastClassicEnding: () => null
+   };
+-  if (String(BUILD_VERSION) !== '52.4.0-rc2') errors.push('Version de livraison incorrecte');
++  if (String(BUILD_VERSION) !== '52.4.0-rc3-audio') errors.push('Version de livraison incorrecte');
+   if (Object.keys(all).length !== 247) errors.push('Inventaire attendu : 242 scènes historiques + 5 branches NG+');
+   Object.keys(all).forEach(id => {
+     const scene = all[id] || {};
+--- rc2/project/22_State.js
++++ rc3/project/22_State.js
+@@ -190,9 +190,9 @@
+   return n.echoes.length ? n.echoes[n.echoes.length - 1] : null;
+ }
+ 
+-const BUILD_VERSION = '52.4.0-rc2';
++const BUILD_VERSION = '52.4.0-rc3-audio';
+ const SCHEMA_VERSION = 50;
+-const ENGINE_LABEL = 'Corona Glacialis — V52.4.0-rc2 · Refonte en validation';
++const ENGINE_LABEL = 'Corona Glacialis — V52.4.0-rc3-audio · Refonte en validation';
+ 
+ const V50_LEGACY_SCENE_ID_MAP = Object.freeze({
+   "ACTE1_07": "ACTE1_07_RETROUVAILLES",

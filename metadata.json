@@ -1,0 +1,8 @@
+{
+  "name": "Elenya — Corona Glacialis",
+  "description": "Visual novel de fantasy interactive avec narration française offline-first, pack vocal pré-généré, musiques et ambiances.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

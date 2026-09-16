@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "checks": [
+    "atténuation à 25 %, jamais coupure",
+    "fondu de piste pendant la voix",
+    "effets joués à volume réduit",
+    "nouveau volume conservé",
+    "voix française choisie",
+    "erreur et interruption",
+    "événements anciens ignorés",
+    "fin de lecture",
+    "sourdine manuelle",
+    "onglet masqué"
+  ],
+  "environment": "Node VM ; audio, DOM et synthèse vocale simulés"
+}

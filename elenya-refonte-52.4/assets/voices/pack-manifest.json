@@ -1,0 +1,36 @@
+{
+  "version": "52.4.3-free-voice-pack",
+  "mode": "offline-first",
+  "apiRequiredForPlayers": false,
+  "previewSource": "Local French pre-generated files; browser French TTS fallback until generated",
+  "voices": {
+    "Algenib": {
+      "gender": "male",
+      "style": "gravelly",
+      "previews": []
+    },
+    "Achird": {
+      "gender": "male",
+      "style": "friendly",
+      "previews": []
+    },
+    "Sulafat": {
+      "gender": "female",
+      "style": "warm",
+      "previews": []
+    },
+    "Leda": {
+      "gender": "female",
+      "style": "youthful",
+      "previews": []
+    }
+  },
+  "entries": {},
+  "notes": "Corpus français prêt. Génération réservée au Gemini API Free Tier ; aucun backend payant et aucune API côté joueur.",
+  "language": "fr-FR",
+  "model": "gemini-3.1-flash-tts-preview",
+  "style": "fantasy",
+  "corpus": "voice-corpus.json",
+  "generationTier": "free-only",
+  "paidFallback": false
+}

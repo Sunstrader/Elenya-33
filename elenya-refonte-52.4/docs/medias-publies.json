@@ -1,0 +1,53 @@
+{
+  "repo": "Sunstrader/elenya-3d-assets",
+  "commit": "b02779d6f91076b3bfedc96622b311255ce7f1ac",
+  "newBackgrounds": [
+    {
+      "path": "game-v56/backgrounds/awakening-frost-chamber.webp",
+      "gitBlobSha": "1871bdb75151e7fbfb2851b2220f21c5f29572af",
+      "size": 194950
+    },
+    {
+      "path": "game-v56/backgrounds/basalt-catacombs-transverse.webp",
+      "gitBlobSha": "f68b2002d3dd0abc850f320cc2ecff36b3e113c9",
+      "size": 181754
+    },
+    {
+      "path": "game-v56/backgrounds/basalt-ravine-oblique.webp",
+      "gitBlobSha": "67333cbe0891c2c593a29035f831cf19c199328e",
+      "size": 269044
+    },
+    {
+      "path": "game-v56/backgrounds/ebony-throne-lateral.webp",
+      "gitBlobSha": "ffa0ef76e1594521faf25aa181badb6b32041787",
+      "size": 240218
+    },
+    {
+      "path": "game-v56/backgrounds/rustic-inn-corner.webp",
+      "gitBlobSha": "e48cfebb94aba985cff79ae17417505ae3869a8d",
+      "size": 230814
+    },
+    {
+      "path": "game-v56/backgrounds/snow-forest-sideview.webp",
+      "gitBlobSha": "11a191db9c21242098b8fbb3a6ee2ae408845637",
+      "size": 201760
+    },
+    {
+      "path": "game-v56/backgrounds/winter-greenhouse-oblique.webp",
+      "gitBlobSha": "91c733b9eedea209200eb0ef280b5c0fa529dfa5",
+      "size": 294424
+    },
+    {
+      "path": "game-v56/backgrounds/winter-library-oblique.webp",
+      "gitBlobSha": "5ad5f2790e0a6d90486dd0906eb2e9573d3aca2b",
+      "size": 175772
+    }
+  ],
+  "preserved": {
+    "music": 10,
+    "endingVideos": 33,
+    "romanceCGs": 3,
+    "originalFresco": true
+  },
+  "notPublished": "Aucun code Google Apps Script déployé depuis cet environnement."
+}

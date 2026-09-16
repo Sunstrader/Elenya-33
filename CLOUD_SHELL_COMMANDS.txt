@@ -1,0 +1,77 @@
+ELENYA 52.4.3 FREE VOICE — CLOUD SHELL
+======================================
+
+OBJECTIF : 0 € / aucun backend payant.
+Le projet AI Studio associé à la clé doit être affiché "Free".
+
+1) Extraire le ZIP
+------------------
+cd ~
+rm -rf elenya-52-audio-52.4.3-free-voice
+unzip -o elenya-52-audio-52.4.3-free-voice.zip -d elenya-52-audio-52.4.3-free-voice
+cd ~/elenya-52-audio-52.4.3-free-voice
+
+2) Vérifier le projet
+---------------------
+npm test
+npm run lint
+npm run build
+npm run voice:status
+
+3) Préparer Gemini FREE uniquement
+----------------------------------
+bash scripts/prepare-gemini-free.sh
+
+Le script :
+- refuse un projet facturé si GEMINI_FREE_PROJECT_ID est fourni ;
+- exige la confirmation "GRATUIT" sinon ;
+- vérifie que la clé voit gemini-3.1-flash-tts-preview ;
+- stocke la clé hors dépôt dans ~/.config/elenya/gemini-free.key (chmod 600).
+
+4) Générer les 4 aperçus français
+---------------------------------
+npm run voice:previews
+npm run voice:status
+
+5) Générer le jeu complet avec Sulafat en premier
+-------------------------------------------------
+npm run voice:generate
+npm run voice:status
+
+Si le quota gratuit est atteint : le script s'arrête volontairement.
+Relance exactement la même commande plus tard ; les fichiers déjà générés sont ignorés.
+
+Autres voix :
+node scripts/generate-full-voice-pack.mjs --backend=gemini-free --voice=Algenib
+node scripts/generate-full-voice-pack.mjs --backend=gemini-free --voice=Achird
+node scripts/generate-full-voice-pack.mjs --backend=gemini-free --voice=Leda
+
+Les quatre voix complètes :
+npm run voice:generate:all
+
+6) Vérifier la couverture
+-------------------------
+npm run voice:status
+
+Quand les quatre voix sont complètes :
+npm run voice:verify
+
+7) Publier le pack vocal sur GitHub
+-----------------------------------
+bash scripts/publish-voice-pack.sh
+
+8) Pousser le code Apps Script
+------------------------------
+cd ~/elenya-52-audio-52.4.3-free-voice/elenya-refonte-52.4/project
+printf '{"scriptId":"1IEWLRwRA8i5MYtkMOsmTkOn1YTZ4RiJmiMIzMhXhmKnwPiVkoD7rtyo0","rootDir":"."}\n' > .clasp.json
+clasp login
+clasp push --force
+clasp open-script
+
+Puis : Déployer > Gérer les déploiements > Modifier > Nouvelle version > Déployer.
+
+SÉCURITÉ
+--------
+- Ne lance pas scripts/prepare-cloud-tts.sh : il est désactivé.
+- N'active pas "Set up billing" / "Configurer la facturation" pour ce projet.
+- Si AI Studio indique Paid au lieu de Free, utilise un autre projet Free.

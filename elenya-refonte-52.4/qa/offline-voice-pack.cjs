@@ -1,0 +1,12 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const src=fs.readFileSync(__dirname+'/../project/Scripts_Refonte.html','utf8');
+const manifest=JSON.parse(fs.readFileSync(__dirname+'/../assets/voices/pack-manifest.json','utf8'));
+assert.equal(manifest.apiRequiredForPlayers,false);
+for(const v of ['Algenib','Achird','Sulafat','Leda']) assert(manifest.voices[v],`voix manquante: ${v}`);
+assert(!src.includes("fetch('/api/tts'"),'le client appelle encore /api/tts');
+assert(src.includes('VoicePack.resolveSegment'),'résolution locale du pack absente');
+assert(src.includes('VoicePack.previewUrls'),'résolution des aperçus absente');
+assert(src.includes('VOICE_PACK_BASE'),'base du pack vocal absente');
+assert(src.includes('cdn.jsdelivr.net/gh/Sunstrader/elenya-52-audio@main/elenya-refonte-52.4/assets/voices/'),'fallback CDN Apps Script absent');
+assert(src.includes("code = 'PACK_MISS'"),'fallback de segment manquant absent');
+console.log(JSON.stringify({ok:true,checks:['4 voix candidates','aucune API TTS côté joueur','aperçus français locaux avec secours navigateur','pack statique','fallback navigateur'],voices:Object.keys(manifest.voices)},null,2));

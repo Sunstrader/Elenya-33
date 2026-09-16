@@ -1,0 +1,82 @@
+<script>
+(function () {
+  'use strict';
+  const MANIFEST_URL = 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/characters.json';
+  const VIEWER_URL = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js';
+  const slots = { 'sprite-center':'center', 'sprite-left':'left', 'sprite-right':'right' };
+  let manifestPromise = null;
+  let viewerPromise = null;
+  const requestTokens = { center:0, left:0, right:0 };
+
+  function characterId(url) {
+    const value = String(url || '').toLowerCase();
+    return ['kaelen','alistair','silas','kalthar','lyra','elenya','aubergiste','pretresse','fen']
+      .find(name => value.indexOf(name) !== -1) || null;
+  }
+
+  function manifest() {
+    if (!manifestPromise) {
+      manifestPromise = fetch(MANIFEST_URL, { cache:'no-store' })
+        .then(response => { if (!response.ok) throw new Error('manifest'); return response.json(); });
+    }
+    return manifestPromise;
+  }
+
+  function viewer() {
+    if (customElements.get('model-viewer')) return Promise.resolve();
+    if (!viewerPromise) viewerPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = VIEWER_URL;
+      script.onload = () => customElements.whenDefined('model-viewer').then(resolve);
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+    return viewerPromise;
+  }
+
+  function clear(slot, spriteLayer) {
+    const layer = document.getElementById('character-3d-' + slot);
+    if (layer) { layer.classList.remove('ready'); layer.replaceChildren(); }
+    if (spriteLayer) spriteLayer.style.opacity = '';
+  }
+
+  async function showForSprite(spriteLayerId, spriteUrl) {
+    const slot = slots[spriteLayerId];
+    if (!slot) return;
+    const spriteLayer = document.getElementById(spriteLayerId);
+    const token = ++requestTokens[slot];
+    clear(slot, spriteLayer);
+    const id = characterId(spriteUrl);
+    if (!id) return;
+    try {
+      const data = await manifest();
+      const entry = (data.characters || []).find(item => item.id === id && item.enabled === true);
+      if (!entry || token !== requestTokens[slot]) return;
+      await viewer();
+      if (token !== requestTokens[slot]) return;
+      const layer = document.getElementById('character-3d-' + slot);
+      const model = document.createElement('model-viewer');
+      model.src = new URL(entry.model, data.baseUrl).href;
+      model.setAttribute('autoplay', '');
+      model.setAttribute('animation-name', (entry.animations && entry.animations.idle) || 'Idle');
+      model.setAttribute('interaction-prompt', 'none');
+      model.setAttribute('shadow-intensity', '0');
+      model.setAttribute('exposure', '1');
+      model.setAttribute('camera-orbit', '0deg 82deg auto');
+      model.setAttribute('field-of-view', String((data.defaults && data.defaults.cameraFov) || 28) + 'deg');
+      model.addEventListener('load', () => {
+        if (token !== requestTokens[slot]) return;
+        layer.classList.add('ready');
+        spriteLayer.style.opacity = '0';
+      }, { once:true });
+      model.addEventListener('error', () => clear(slot, spriteLayer), { once:true });
+      layer.replaceChildren(model);
+    } catch (_) {
+      clear(slot, spriteLayer);
+    }
+  }
+
+  window.Elenya3D = { showForSprite };
+}());
+</script>

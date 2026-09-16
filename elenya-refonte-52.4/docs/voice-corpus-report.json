@@ -1,0 +1,5151 @@
+{
+  "summary": {
+    "version": "52.4.3-voice-corpus",
+    "generatedAt": "2026-09-15T14:49:35.821Z",
+    "language": "fr-FR",
+    "maxSegmentChars": 800,
+    "sceneCounts": {
+      "classic": 220,
+      "ngplus": 26,
+      "total": 246,
+      "dynamic": 222,
+      "static": 24
+    },
+    "variants": 1269,
+    "uniqueSegments": 2260,
+    "uniqueCharacters": 731582,
+    "utf8Bytes": 762465,
+    "byKind": {
+      "choice": 550,
+      "narrative": 1301,
+      "title": 235,
+      "choiceResponse": 174
+    }
+  },
+  "errors": [],
+  "scenes": [
+    {
+      "mode": "classic",
+      "sceneId": "800",
+      "title": "La Prisonnière de l’Inquisiteur",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_01_REVEIL",
+      "title": "Le Froid de l'Amnésie",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_01_REVEIL_DETAILS",
+      "title": "L'Empreinte de la Stèle",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "reveil_autel_inspecte",
+          "reveil_autel_quitte"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_02_RENCONTRE_1",
+      "title": "Le Duel des Ombres",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "galeries_ozone",
+          "galeries_cendre"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_02_RENCONTRE_2",
+      "title": "Le Duel des Ombres",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_03_FAMILIER_1",
+      "title": "L'Écho de Neige",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "react_ombre",
+          "react_lumiere",
+          "react_givre"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_03_FAMILIER_2",
+      "title": "L'Écho de Neige",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_04_FRESQUE",
+      "title": "Mémoires de Glace",
+      "dynamic": true,
+      "testedStates": 95,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "kalthar_melody",
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "memoire_kalthar"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_04_TRANSITION",
+      "title": "Les Marches de Basalte",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_1_VISAGE",
+      "title": "Le Visage dans la Glace",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_1_REVEIL",
+      "title": "Évanescence",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "frag1_visage_vu",
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_04_AUTOMATE",
+      "title": "Le Gardien de Pierre",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_05_BIVOUAC",
+      "title": "La Chaleur des Profondeurs",
+      "dynamic": true,
+      "testedStates": 519,
+      "variants": 75,
+      "deps": {
+        "flags": [
+          "fresque_O",
+          "fresque_E",
+          "fresque_S",
+          "fresque_ignore",
+          "avec_ombre",
+          "avec_eclaireur",
+          "_lien_E_1_vu",
+          "_lien_E_1_distance",
+          "_lien_E_1_contact"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_05B_REVEIL_BIVOUAC",
+      "title": "Cendres Froides",
+      "dynamic": true,
+      "testedStates": 135,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "bivouac_silence_proche",
+          "bivouac_contact_volontaire",
+          "bivouac_solo_froid",
+          "bivouac_fen_seul",
+          "avec_ombre",
+          "dague_kaelen_prise",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_05C_JALOUSIE_SOUTERRAINE",
+      "title": "Jalousie Souterraine",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_06_REMONTEE",
+      "title": "À Bout de Souffle",
+      "dynamic": true,
+      "testedStates": 144,
+      "variants": 30,
+      "deps": {
+        "flags": [
+          "bivouac_menace",
+          "bivouac_nom",
+          "bivouac_silence_proche",
+          "bivouac_garde_main",
+          "bivouac_garde_cadre",
+          "bivouac_retire_main",
+          "bivouac_retire_cadre",
+          "bivouac_contact_volontaire",
+          "bivouac_accepte_cadre",
+          "bivouac_solo_froid",
+          "bivouac_medite",
+          "bivouac_fen_seul",
+          "bivouac_fen_calme",
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_06C_CONVERGENCE",
+      "title": "La Jonction des Routes",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_07_RETROUVAILLES",
+      "title": "La Triangulation",
+      "dynamic": true,
+      "testedStates": 74,
+      "variants": 39,
+      "deps": {
+        "flags": [
+          "remontee_defi",
+          "remontee_rassure",
+          "remontee_seule",
+          "remontee_froid",
+          "jalousie_kaelen_vue",
+          "jalousie_alistair_vue",
+          "voie_solo",
+          "voie_solo_profonde",
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_07K_RETROUVAILLES_KAELEN",
+      "title": "Ce qui n'était pas dans le gouffre",
+      "dynamic": true,
+      "testedStates": 24,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "lien_O"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_07E_RETROUVAILLES_ALISTAIR",
+      "title": "Hors de l'ombre",
+      "dynamic": true,
+      "testedStates": 24,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "lien_E"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_08B_BIVOUAC_LISIERE",
+      "title": "La Lisière des Pins Noirs",
+      "dynamic": true,
+      "testedStates": 320,
+      "variants": 48,
+      "deps": {
+        "flags": [
+          "lisiere_retour_lyra_K",
+          "lisiere_retour_lyra_E",
+          "lisiere_retour_lyra_solo",
+          "lisiere_orientation_DEUX",
+          "lisiere_interaction_active",
+          "lyra_prescience",
+          "_lyra_echo_vu",
+          "bivouac_feu_O",
+          "bivouac_feu_E",
+          "lisiere_ordre_O_puis_E",
+          "lisiere_ordre_E_puis_O",
+          "lisiere_romance_O_ouverte",
+          "lisiere_romance_E_ouverte",
+          "avec_ombre",
+          "O_distant_1",
+          "dague_kaelen_prise",
+          "avec_eclaireur",
+          "E_distant_1",
+          "relations_reouvertes_surface",
+          "voie_solo",
+          "voie_solo_profonde",
+          "bivouac_feu_O_rapproche",
+          "bivouac_feu_O_proche",
+          "bivouac_feu_E_rapproche",
+          "bivouac_feu_E_proche",
+          "lyra_confie_K",
+          "lyra_confie_E"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_LISIERE_DEUX",
+      "title": "Le Feu n'appartient à personne",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "avec_eclaireur",
+          "avec_ombre"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_LISIERE_KAELEN",
+      "title": "Braises sans contrat",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "bivouac_feu_E"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_LISIERE_ALISTAIR",
+      "title": "Lumière sans serment",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "bivouac_feu_O"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_07B_REACTION_TRIANGULATION",
+      "title": "Ce qui reste entre vous",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "triangulation_secret_garde",
+          "avec_ombre",
+          "avec_eclaireur",
+          "triangulation_verite_dite",
+          "triangulation_coupe_court"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_08_SECRET",
+      "title": "Le Poids des Silences",
+      "dynamic": true,
+      "testedStates": 23,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "secret_partage",
+          "avec_ombre",
+          "avec_eclaireur",
+          "verite_eclatante"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_08B_LYRA_ECHO",
+      "title": "L'Écho Opalin",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_KAELEN_ANCESTRE",
+      "title": "Le Sang du Contrat",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_ALISTAIR_ANCESTRE",
+      "title": "La Forge du Sceau",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_01_RENCONTRE_SILAS_1",
+      "title": "Le Marchand qui se Souvenait",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "silas_mort"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_01_SILAS_FOUILLAGE",
+      "title": "Les Marchandises Abandonnées",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_01B_SILAS_CONFIDENCE",
+      "title": "Ce que le Marchand N'osait Pas Dire",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "fresque_touched"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_01C_CHEMIN_VOLIERES",
+      "title": "La Route des Cages Vides",
+      "dynamic": true,
+      "testedStates": 119,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "_frag_k_vu",
+          "_frag_a_vu",
+          "silas_bouton_garde",
+          "inventaire_baume"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "memoire_kalthar"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_02_QS_FAMILIERS",
+      "title": "Les Vestiges de la Fidélité",
+      "dynamic": true,
+      "testedStates": 83,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "_frag_k_vu",
+          "_frag_a_vu"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "memoire_kalthar"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_02B_PANTHERE_LIBEREE",
+      "title": "Dernier Souffle de Fidélité",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_02B_PANTHERE_ABSORBEE",
+      "title": "Le Prix de la Veille",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_03_BIVOUAC_AUTOMNE",
+      "title": "Le Gardien Invisible",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "panthere_liberee",
+          "panthere_absorbee"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_04_PONT_RUINE",
+      "title": "Le Passé Décomposé",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_04_RUINES_DETAIL",
+      "title": "Noms Qu’on A Voulu Taire",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_04_VILLAGE_HOSTILE",
+      "title": "La Paranoïa Humaine",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "fen_observe",
+          "ruines_kalthar_etudiees",
+          "lore_damnatio_kalthar",
+          "diademe_retrouve",
+          "ruines_ignorees"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_05_ARRIVEE_AUBERGE",
+      "title": "Portes Closes",
+      "dynamic": true,
+      "testedStates": 263,
+      "variants": 12,
+      "deps": {
+        "flags": [
+          "diademe_retrouve",
+          "lore_damnatio_kalthar",
+          "village_sang",
+          "village_terreur",
+          "prisonniere_refuse",
+          "prisonniere_accepte",
+          "alistair_geolier",
+          "silas_mort"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_06B_LENDEMAIN_CONFIDENCE",
+      "title": "Ce qui reste du silence",
+      "dynamic": true,
+      "testedStates": 263,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "_lien_O_2_vu",
+          "_lien_O_2_ouvert",
+          "_lien_O_2_ferme",
+          "_lien_E_2_vu",
+          "_lien_E_2_dur",
+          "_lien_E_2_doux",
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "V28_SOLO_KAELEN",
+      "title": "La Dague sur la Pierre",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "V28_SOLO_ALISTAIR",
+      "title": "La Lumière qui n’ordonne pas",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "V28_SOLO_ECHO_AUBERGE",
+      "title": "Ceux qui Attendront",
+      "dynamic": true,
+      "testedStates": 43,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "presence_O",
+          "presence_E"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "V28_ORAYA_PROPOSE_GUIDE",
+      "title": "La Solitude n’est pas une Couronne",
+      "dynamic": true,
+      "testedStates": 47,
+      "variants": 3,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "presence_O",
+          "presence_E"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_SOLO_ORAYA",
+      "title": "Ce que la Reine ne doit à personne",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_06_NUIT_AUBERGE",
+      "title": "À Huis Clos",
+      "dynamic": true,
+      "testedStates": 207,
+      "variants": 19,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "kaelen_mort",
+          "kaelen_perdu",
+          "kaelen_perdu_definitif",
+          "avec_eclaireur",
+          "alistair_mort",
+          "alistair_perdu",
+          "alistair_perdu_definitif",
+          "_lien_O_2_ouvert",
+          "_lien_O_2_ferme",
+          "_lien_E_2_doux",
+          "_lien_E_2_dur"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "tension_triangle"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_07_INTIMITE_O",
+      "title": "Glace et Acier",
+      "dynamic": true,
+      "testedStates": 44,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "lien_O",
+          "distance_O"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_07_INTIMITE_E",
+      "title": "La Cage Dorée",
+      "dynamic": true,
+      "testedStates": 44,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "lien_E",
+          "distance_E"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_07B_REACTION_E",
+      "title": "Ce que le prêtre a vu",
+      "dynamic": true,
+      "testedStates": 41,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "rejet_kaelen"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "distance_E"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_07B_REACTION_O",
+      "title": "Ce que l'assassin a vu",
+      "dynamic": true,
+      "testedStates": 41,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "rejet_alistair"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "distance_O"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_07_TRUCE_FORCEE",
+      "title": "La trêve qu'on n'a pas choisie",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_07_TRANSE_FEN",
+      "title": "Le souvenir que Fen réveille",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_08B_MICRO_REACTION",
+      "title": "Ce qui reste du silence",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "avertissement_roi",
+          "intimite_O_auberge",
+          "alistair_a_vu_intimite_O",
+          "intimite_E_auberge",
+          "kaelen_a_vu_intimite_E",
+          "refus_nuit_auberge"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_08_MATIN_AUBERGE",
+      "title": "Le Froid Trahisseur",
+      "dynamic": true,
+      "testedStates": 344,
+      "variants": 47,
+      "deps": {
+        "flags": [
+          "v28_solo_auberge_affirme",
+          "intimite_O_suggeree",
+          "kaelen_limite_respectee",
+          "intimite_E_suggeree",
+          "alistair_limite_respectee",
+          "intimite_O_auberge",
+          "alistair_a_vu_intimite_O",
+          "intimite_E_auberge",
+          "kaelen_a_vu_intimite_E",
+          "refus_nuit_auberge",
+          "_rejet_nuit_auberge_O",
+          "_rejet_nuit_auberge_E",
+          "truce_auberge_forcee"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "distance_E",
+          "distance_O"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "KAELEN_CONFRONTATION_DETTE",
+      "title": "Ce que l'assassin ne pardonne pas",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ALISTAIR_CONFRONTATION_DETTE",
+      "title": "Ce que le prêtre ne pardonne pas",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_09_MARCHE_BLANCHE",
+      "title": "La Mort de l’Automne",
+      "dynamic": true,
+      "testedStates": 173,
+      "variants": 30,
+      "deps": {
+        "flags": [
+          "baume_silas_utilise",
+          "auberge_sanglante",
+          "auberge_soumise",
+          "auberge_gelee",
+          "kaelen_protecteur",
+          "alistair_emprise"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_MARCHE_BLANCHE",
+      "title": "La Marche Blanche",
+      "dynamic": true,
+      "testedStates": 371,
+      "variants": 13,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "joute_gagne_O",
+          "joute_perdue_O",
+          "avec_eclaireur",
+          "joute_gagne_E",
+          "joute_perdue_E",
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_MARCHE_BLANCHE_B",
+      "title": "Ce que le Blizzard garde",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "marche_blanche_O",
+          "marche_blanche_E"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_10_RAVIN",
+      "title": "Le Poids des Serments",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_10_RIVIERE_CRISTAL",
+      "title": "Le Courant Noir",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "marche_rapide"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_2_TRONE",
+      "title": "Le Trône de Cendre",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_2_REVEIL",
+      "title": "Évanescence",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "frag2_rituel_accepte",
+          "alistair_perdu",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_11_RIVE_NORD",
+      "title": "Le Poids de l’Absence",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "alistair_perdu",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_12_NUIT_ISOLEE",
+      "title": "Le Froid Rassurant",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "alistair_perdu",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "REVE_KAELEN",
+      "title": "Le Pacte des Cendres",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "REVE_ALISTAIR",
+      "title": "La Cage de Dévotion",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_12_QS_FLEURS",
+      "title": "La Mémoire du Sol",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "fragment_kalthar_1",
+          "kaelen_perdu",
+          "alistair_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_13_PRYMAELIS",
+      "title": "Le Complexe de Prymaëlis",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "fleur_sang_possedee"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_13_MATIN_BIVOUAC",
+      "title": "Les Vestiges de l’Ancien Monde",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "alistair_perdu",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_14_VALVE_INTERMEDIAIRE",
+      "title": "Pression de Mana",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_14_VALVE_ECHO",
+      "title": "Après le Jet",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "filon_absorbe",
+          "avec_eclaireur",
+          "avec_ombre"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_14_MINE_PRYMAËLIS",
+      "title": "Les Échos Cristallisés",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 12,
+      "deps": {
+        "flags": [
+          "filon_absorbe",
+          "valve_forcee",
+          "alistair_perdu",
+          "dague_kaelen_prise",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_15_SOUVENIRS_MINE",
+      "title": "La Vérité du Gel",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "alistair_perdu",
+          "dague_kaelen_prise",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_16_NUIT_MINE",
+      "title": "Le Feu sous la Glace",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "alistair_perdu",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_16_COMMUNION_SOLO",
+      "title": "Le Silence Choisi",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_17_RETROUVAILLES_SORTIE",
+      "title": "Fantômes dans le Blizzard",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "alistair_perdu",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_09B_BIVOUAC_GLACE",
+      "title": "L'Abri de la Marche Blanche",
+      "dynamic": true,
+      "testedStates": 110,
+      "variants": 12,
+      "deps": {
+        "flags": [
+          "alistair_perdu",
+          "kaelen_perdu",
+          "seule_nord"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE2_09B_JOUTE_PSY",
+      "title": "Le Jeu des Ombres et de la Lumière",
+      "dynamic": true,
+      "testedStates": 153,
+      "variants": 12,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "alistair_perdu",
+          "dague_kaelen_prise",
+          "avec_eclaireur",
+          "kaelen_perdu"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_KALTHAR_LARME",
+      "title": "L'Obsidienne des Adieux",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_MARCHE_2",
+      "title": "Neige qui ne tombe plus",
+      "dynamic": true,
+      "testedStates": 173,
+      "variants": 9,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "O_distant_1",
+          "O_distant_2",
+          "avec_eclaireur",
+          "E_distant_1",
+          "E_distant_2"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_MARCHE_2B",
+      "title": "Ce que le vent ne porte plus",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "marche2_proche_O",
+          "marche2_silence",
+          "avec_ombre",
+          "marche2_proche_E",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_CENDRES_SOLEIL",
+      "title": "Le Serment Partagé",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_01_TENSION_GROUPE",
+      "title": "Halte dans le Frimas",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_01_FRONTIERE_1",
+      "title": "La Morsure du Guide",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "verite_mine",
+          "mensonge_mine",
+          "silence_mine",
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_01_FRONTIERE_2",
+      "title": "La Morsure du Guide",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_01_FRONTIERE_3",
+      "title": "La Morsure du Guide",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_02_SAUVETAGE",
+      "title": "Visions Brisées",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "alistair_insoumis",
+          "kaelen_insoumis",
+          "double_insoumission"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_03_LA_SIRENE",
+      "title": "La Voix qui se Souvenait",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "sauvetage_burst",
+          "sauvetage_lance",
+          "fresque_touched"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_03B_RESISTANCE",
+      "title": "Le Fil qui Cède",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_04_ENVOUTEMENT",
+      "title": "Le Chant de la Fièvre",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_05_FIEVRE",
+      "title": "Possession",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "reve_O",
+          "reve_E",
+          "reve_poly"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_06_REVEIL_TORDU",
+      "title": "Réalité Brisée",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "reve_solo",
+          "voie_solo",
+          "voie_solo_profonde",
+          "reve_O",
+          "reve_E",
+          "reve_poly"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_07_BRISER_LA_GLACE",
+      "title": "Gueule de Bois Magique",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "reve_solo",
+          "voie_solo",
+          "voie_solo_profonde",
+          "reve_O",
+          "reve_E",
+          "reve_poly"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_08_MISE_AU_POINT",
+      "title": "Réalité Froide",
+      "dynamic": true,
+      "testedStates": 110,
+      "variants": 9,
+      "deps": {
+        "flags": [
+          "voie_solo",
+          "voie_solo_profonde",
+          "reve_solo"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_09_ENTREE_SANCTUAIRE",
+      "title": "Les Portes du Culte",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_09_VILLAGE_CACHE",
+      "title": "Le Sanctuaire du Givre Éternel",
+      "dynamic": true,
+      "testedStates": 221,
+      "variants": 54,
+      "deps": {
+        "flags": [
+          "silas_bouton_reconnu",
+          "marche_rapide",
+          "silas_ami",
+          "domination_acte3_O",
+          "domination_acte3_E",
+          "romance_reelle_O",
+          "romance_reelle_E",
+          "ignore_malaise",
+          "crevasse_silence_solo",
+          "crevasse_silence_groupe",
+          "crevasse_silence",
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_10_ACCUEIL_CULTE_1",
+      "title": "La Garde",
+      "dynamic": true,
+      "testedStates": 23,
+      "variants": 12,
+      "deps": {
+        "flags": [
+          "silas_mort",
+          "silas_ami",
+          "marche_rapide",
+          "marche_lente"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_11_JUGEMENT",
+      "title": "Le Verdict de Basalte",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "voie_solo",
+          "voie_solo_profonde",
+          "kaelen_arme",
+          "alistair_desarme",
+          "autorite_royale"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_11_PRISON_ECHANGE",
+      "title": "Regard à Travers les Barreaux",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "alistair_emprisonne"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_12_AUTEL_KALTHAR",
+      "title": "Le Poids de la Couronne",
+      "dynamic": true,
+      "testedStates": 135,
+      "variants": 10,
+      "deps": {
+        "flags": [
+          "alistair_emprisonne",
+          "alistair_protege",
+          "protege_terreur",
+          "protege_aura",
+          "compagnons_enchaines",
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_3_TRAHISON",
+      "title": "La Dernière Nuit de Kalthar",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_3_REVEIL",
+      "title": "Évanescence",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_13_ARTEFACT",
+      "title": "La Larme",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_09B_BIVOUAC_TEMPETE",
+      "title": "La Crevasse avant le Jugement",
+      "dynamic": true,
+      "testedStates": 289,
+      "variants": 40,
+      "deps": {
+        "flags": [
+          "crevasse_domination",
+          "romance_crevasse_O",
+          "romance_crevasse_E",
+          "voie_solo",
+          "voie_solo_profonde",
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [
+          "venin"
+        ],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_09B_ROMANCE_URGENCE",
+      "title": "Le Dernier Souffle Chaud",
+      "dynamic": true,
+      "testedStates": 137,
+      "variants": 13,
+      "deps": {
+        "flags": [
+          "crevasse_doux",
+          "romance_crevasse_O",
+          "romance_crevasse_E",
+          "crevasse_brulant"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_MARCHE_1",
+      "title": "Cendres sous la Neige",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_MARCHE_1B",
+      "title": "Ce que le Feu ne Dit pas",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "marche1_deux",
+          "marche1_proche_O",
+          "marche1_silence_O",
+          "marche1_proche_E",
+          "marche1_contact_E"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_ANCESTRE_KALTHAR_JEUNE",
+      "title": "Le Roi avant la Couronne",
+      "dynamic": true,
+      "testedStates": 26,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_ANCESTRE_KALTHAR_REVEIL",
+      "title": "Évanescence",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "frag_k_jeune_visage",
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_01_DEPART_VILLAGE",
+      "title": "Le Dôme Mobile",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "compagnons_enchaines",
+          "alistair_emprisonne"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_01_HALTE_DOME",
+      "title": "Au Cœur du Dôme",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_02_CHOIX_CHAMBRE",
+      "title": "Derrière le Givre",
+      "dynamic": true,
+      "testedStates": 27,
+      "variants": 3,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "instabilite"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_03_SPICY_KAELEN",
+      "title": "Le Fil de la Lame",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "dague_kaelen_prise",
+          "kaelen_sub"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_03_SPICY_ALISTAIR",
+      "title": "Le Péché Sacré",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "alistair_pure"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_04_POLY_DOMINATION",
+      "title": "Le Trône de Chair et de Givre",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_04_COMMUNION_FINALE_SOLO",
+      "title": "La Reine Seule",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_04_POLY_ALISTAIR",
+      "title": "Le Fruit Défendu",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "reve_poly"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_04_POLY_KAELEN",
+      "title": "La Marque de l’Ombre",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "reve_poly"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_05_ARRIVEE_PORTES_1",
+      "title": "L’Aube",
+      "dynamic": true,
+      "testedStates": 99,
+      "variants": 39,
+      "deps": {
+        "flags": [
+          "double_jeu",
+          "nuit_alistair",
+          "alistair_corrupt",
+          "alistair_pure",
+          "nuit_kaelen",
+          "kaelen_dom",
+          "kaelen_sub",
+          "nuit_solo_acte4",
+          "kaelen_a_dit_ton_monstre",
+          "alistair_a_promis_cage",
+          "possession_warning_ecoute",
+          "possession_warning_ignore"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_06_MASQUE_TOMBE_1",
+      "title": "La Chute des Masques",
+      "dynamic": true,
+      "testedStates": 23,
+      "variants": 9,
+      "deps": {
+        "flags": [
+          "ton_douceur",
+          "alistair_perdu",
+          "nuit_alistair",
+          "double_jeu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_06B_TEST_KAELEN",
+      "title": "La Lame à Nu",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "dague_kaelen_prise",
+          "dague_sang"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_06_MASQUE_TOMBE_2",
+      "title": "La Chute des Masques",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "dague_kaelen_prise"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_06_OMBRE_AVEU",
+      "title": "Le Prix du Silence",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "alistair_epargne",
+          "alistair_mort",
+          "alistair_redime",
+          "nuit_kaelen",
+          "romance_reelle_O"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_07_ADIEU_KALTHAR",
+      "title": "Le Seuil du Zéro Absolu",
+      "dynamic": true,
+      "testedStates": 135,
+      "variants": 18,
+      "deps": {
+        "flags": [
+          "fen_adieu_scene",
+          "kaelen_absous",
+          "kaelen_juge",
+          "kalthar_amour_sans_dette",
+          "panthere_liberee",
+          "plume_givre_gardee",
+          "panthere_absorbee"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_07B_CHOC_FRAGMENT",
+      "title": "Le Nom dans la Bouche",
+      "dynamic": true,
+      "testedStates": 263,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "frag4_nom_prononce",
+          "alistair_mort",
+          "avec_ombre",
+          "kaelen_absous",
+          "nuit_kaelen",
+          "avec_eclaireur",
+          "nuit_alistair",
+          "alistair_redime"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_08_CORRIDOR_OBSIDIENNE",
+      "title": "Le Corridor d’Obsidienne",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_4_STELE",
+      "title": "L’Endormissement",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_4_RETOUR",
+      "title": "La Vérité du Zéro",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "frag4_nom_prononce"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_08_SEUIL_ETERNITE",
+      "title": "Le Froid Absolu",
+      "dynamic": true,
+      "testedStates": 39,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "alistair_mort",
+          "voie_solo",
+          "voie_solo_profonde",
+          "fin_solo",
+          "alistair_redime"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_09_TRONE_EBENE",
+      "title": "Le Poids du Monde",
+      "dynamic": true,
+      "testedStates": 135,
+      "variants": 10,
+      "deps": {
+        "flags": [
+          "verite_complete",
+          "consort_kaelen",
+          "kaelen_absous",
+          "consort_alistair",
+          "voie_solo",
+          "voie_solo_profonde",
+          "fin_solo"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "VEYRA_VERITE",
+      "title": "Le Fragment qui Ment",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "veyra_recit_mis_en_doute"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "VEYRA_DERNIER_PACTE",
+      "title": "Le Pacte qui n'en est plus un",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "SERAPHINE_FRACTURE",
+      "title": "La Foi après la preuve",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "SERAPHINE_DERNIER_SERMENT",
+      "title": "Le Dernier Serment",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "MIRA_ROUTE_SANS_NOM",
+      "title": "La Route sans Nom",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "CORONA_VISION",
+      "title": "La Frontière qui Respire",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "CORONA_APPEL",
+      "title": "Ni Mur ni Porte",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "DETTE_REVELATION",
+      "title": "Le Livre des Créances",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "DETTE_CHOIX",
+      "title": "Ce que personne ne peut hériter",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ROMANCE_AGENCY_NUIT_AUBERGE",
+      "title": "Deux portes dans la même nuit",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ROMANCE_AGENCY_MATIN_AUBERGE",
+      "title": "À qui donner le matin",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ROMANCE_AGENCY_VILLAGE",
+      "title": "Une seule conversation à la fois",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ROMANCE_DEFERRED_KAELEN",
+      "title": "Ce qui n'a pas été perdu",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "_lien_O_2_vu",
+          "_done_R_O_1",
+          "_joute_O2_vu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ROMANCE_DEFERRED_ALISTAIR",
+      "title": "La porte restée ouverte",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "_lien_E_2_vu",
+          "_done_R_E_1",
+          "_joute_E2_vu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_09_ISSUES_SECONDAIRES",
+      "title": "Les Portes que le Trône n'a pas Fermées",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_POLY",
+      "title": "L'Indécision Éternelle",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "domination_finale",
+          "go_poly_domination",
+          "double_jeu"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "R_O_1",
+      "title": "La Porte qu'il Laisse Ouverte",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "kaelen_retrouvailles_choisi",
+          "focus_romantique_O",
+          "alistair_sait_kaelen_compte"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "R_E_1",
+      "title": "La Porte Restée Ouverte",
+      "dynamic": true,
+      "testedStates": 23,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "alistair_retrouvailles_choisi",
+          "focus_romantique_E",
+          "kaelen_fresque_confiee",
+          "focus_romantique_O"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_O_2_CONFIDENCE",
+      "title": "Ce que les Lames Cachent",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_E_2_CONFIDENCE",
+      "title": "Le Sceau qui Tremble",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "GAME_OVER_SURCHARGE",
+      "title": "[FIN PRÉMATURÉE : Surcharge Magique]",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "GAME_OVER_SIRENE",
+      "title": "[FIN PRÉMATURÉE : L’Illusion Mortelle]",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "GAME_OVER_SCELLEE",
+      "title": "[FIN PRÉMATURÉE : L’Esclave de la Lumière]",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_HIVER",
+      "title": "L’Ère de Glace",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 12,
+      "deps": {
+        "flags": [
+          "voie_solo",
+          "voie_solo_profonde",
+          "silas_mort",
+          "silas_ami",
+          "urgence_declenchee",
+          "marche_rapide"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_SACRIFICE",
+      "title": "La Déesse Martyre",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "silas_ami"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_MORTELLE",
+      "title": "L’Aube Humaine",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_OMBRE",
+      "title": "Trône des Cendres",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 9,
+      "deps": {
+        "flags": [
+          "kaelen_amour_libre",
+          "kaelen_attend_permission",
+          "dague_gravee",
+          "kaelen_absous",
+          "possession_kaelen_sans_mots",
+          "serment_kaelen_approfondi"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_ECLAIREUR",
+      "title": "La Cage Dorée",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 5,
+      "deps": {
+        "flags": [
+          "alistair_foi_libre",
+          "alistair_porte_ouverte",
+          "alistair_pure",
+          "domination_finale",
+          "crevasse_domination",
+          "doute_alistair_progressif"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_SOLO",
+      "title": "Ligne de Fuite",
+      "dynamic": true,
+      "testedStates": 23,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "solo_couronne",
+          "fen_refuse",
+          "fen_silence",
+          "fen_accepte"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_RECONCILIATION",
+      "title": "Ligne Commune",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_BRISEE",
+      "title": "Hiver Inachevé",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "voie_solo",
+          "voie_solo_profonde"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_CHAOS",
+      "title": "La Tempête Sans Nom",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_POMME",
+      "title": "La Pomme et les Deux Mains",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_FEU_PARTAGE",
+      "title": "Le Même Feu",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE_DAGUE_GRAVURE",
+      "title": "Ce que la Lame Retient",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_DAGUE_COMBAT",
+      "title": "Lame Empruntée",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE1_SOLO_ECHO",
+      "title": "L’Écho dans la Pierre",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE_SOLO_FEN",
+      "title": "Seul le Furet",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE4_AVEU_PARALLELE",
+      "title": "Ce que le Trône n’entend pas",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE3_SILAS_CAMEO",
+      "title": "Une Dette Ancienne",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "silas_ami"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LIEN_NON_DIT",
+      "title": "Ce qui ne se dit pas",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_TEMOIN",
+      "title": "L’Ombre du Trône",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "tension_kaelen_alistair_apaisee",
+          "fen_accepte"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ALISTAIR_PRIERE",
+      "title": "La Prière sans Mots",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "KAELEN_SILENCE",
+      "title": "Ce que le Regard Garde",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FEU_PARTAGE_EXTENSION",
+      "title": "Le Feu qui ne Demande Rien",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "SILAS_MEMOIRES",
+      "title": "Ce que le Marchand se Rappelait",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "silas_histoire_1",
+          "silas_histoire_2"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "RELIQUE_KALTHAR_1",
+      "title": "Le Fragment de la Rivière",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "RELIQUE_KALTHAR_2",
+      "title": "Le Sceau de la Volière",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "RELIQUE_KALTHAR_3",
+      "title": "La Dernière Pierre",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_SERMENT_CENDRES",
+      "title": "Le Serment qu'on N'a Pas Choisi",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_EQUILIBRE",
+      "title": "Le Trône sans Ombre",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 64,
+      "deps": {
+        "flags": [
+          "relique_silas",
+          "oraya_pardonnee",
+          "lyra_liberee",
+          "fen_accepte",
+          "silas_verite_acceptee",
+          "silas_verite_brulee"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ORAYA_INDICE_1",
+      "title": "Les Larmes qui ne Coulaient pas",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ORAYA_INDICE_2",
+      "title": "Ce qu'elle Savait sans Dire",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ORAYA_INDICE_3",
+      "title": "La Main qui Hésitait",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ORAYA_CONFRONTATION",
+      "title": "La Gardienne du Gel",
+      "dynamic": true,
+      "testedStates": 15,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "oraya_indice_1",
+          "oraya_indice_2",
+          "oraya_indice_3"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LYRA_INDICE_1",
+      "title": "La Voix qui se Souvient",
+      "dynamic": true,
+      "testedStates": 9,
+      "variants": 2,
+      "deps": {
+        "flags": [
+          "sauvetage_lance"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "LYRA_VERITE",
+      "title": "Ce que la Sirène Était",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FEN_INDICE_1",
+      "title": "Trois Notes dans la Pierre",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FEN_INDICE_2",
+      "title": "La Mélodie Inachevée",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FEN_ADIEU",
+      "title": "La Cinquième Note",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_REDEMPTION",
+      "title": "La Reine qui Pardonne",
+      "dynamic": true,
+      "testedStates": 135,
+      "variants": 32,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "kaelen_absous",
+          "avec_eclaireur",
+          "alistair_redime",
+          "relique_silas",
+          "panthere_liberee",
+          "silas_verite_acceptee"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_VERITE",
+      "title": "Le Trône de Vérité",
+      "dynamic": true,
+      "testedStates": 71,
+      "variants": 32,
+      "deps": {
+        "flags": [
+          "frag4_nom_prononce",
+          "verite_mine",
+          "fen_fresque",
+          "fen_note",
+          "oraya_pardonnee",
+          "silas_verite_acceptee"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "SILAS_VERITE",
+      "title": "Ce que le Marchand Savait",
+      "dynamic": true,
+      "testedStates": 23,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "silas_histoire_1",
+          "silas_histoire_2",
+          "silas_histoire_3",
+          "relique_silas"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "URGENCE_NARRATIVE",
+      "title": "Le Venin qui Monte",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "GAME_OVER_VENIN",
+      "title": "[FIN PRÉMATURÉE : Le Venin de Fen]",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 3,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "avec_eclaireur"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "SERAPHINE_INTRO",
+      "title": "La Sœur de Lumière",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "MIRA_RENCONTRE",
+      "title": "La Contrebandière",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "VEYRA_PACTE",
+      "title": "La Prêtresse Amère",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "NOMADE_1",
+      "title": "L’Homme aux Yeux Vides",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "GAME_OVER_POSSESSION",
+      "title": "[FIN PRÉMATURÉE : La Possession]",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "SERAPHINE_ARRIVEE",
+      "title": "L'Inquisitrice",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_VEYRA",
+      "title": "La Reine Noire",
+      "dynamic": true,
+      "testedStates": 80,
+      "variants": 9,
+      "deps": {
+        "flags": [
+          "veyra_recit_mis_en_doute",
+          "silas_ami"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "possession"
+        ],
+        "timers": [],
+        "items": [
+          "fragment_couronne_veyra"
+        ],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_SERAPHINE",
+      "title": "La Sœur de Lumière",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "alistair_mort",
+          "seraphine_ennemie"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_MIRA",
+      "title": "Ligne de Contrebande",
+      "dynamic": true,
+      "testedStates": 16,
+      "variants": 9,
+      "deps": {
+        "flags": [
+          "nomade_offrande_plume",
+          "mira_complice",
+          "silas_bouton_garde"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [
+          "plume_mira"
+        ],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_CORONA",
+      "title": "Corona Glacialis",
+      "dynamic": true,
+      "testedStates": 43,
+      "variants": 5,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "lien_O",
+          "lien_E"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FIN_DETTE_ANNULEE",
+      "title": "Dettes Soldées",
+      "dynamic": true,
+      "testedStates": 105,
+      "variants": 13,
+      "deps": {
+        "flags": [
+          "dette_O_confrontee",
+          "dette_E_confrontee",
+          "silas_bouton_garde"
+        ],
+        "globalFlags": [],
+        "gauges": [
+          "volonte"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE5_01_LENDEMAIN",
+      "title": "Le Lendemain du Trône",
+      "dynamic": true,
+      "testedStates": 11,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "fen_accepte",
+          "oraya_pardonnee"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE5_02_VEILLE",
+      "title": "La Veille",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE5_02_DEPART",
+      "title": "Le Départ",
+      "dynamic": true,
+      "testedStates": 59,
+      "variants": 6,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "presence_O",
+          "presence_E",
+          "presence_S"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "ACTE5_02_RETOUR",
+      "title": "Ceux qui Restent",
+      "dynamic": true,
+      "testedStates": 263,
+      "variants": 8,
+      "deps": {
+        "flags": [
+          "avec_ombre",
+          "kaelen_mort",
+          "kaelen_perdu_definitif",
+          "avec_eclaireur",
+          "alistair_mort",
+          "alistair_perdu_definitif",
+          "mira_alliee",
+          "mira_complice"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "FRAGMENT_4_ENRICHI",
+      "title": "La Stèle et le Nom",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "MIRA_SUITE_SOLO",
+      "title": "La Contrebandière — Suite",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "AVERTISSEMENT_POSSESSION",
+      "title": "Ce que le Givre Serre Trop Fort",
+      "dynamic": true,
+      "testedStates": 24,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "possession"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "JOUTE_O_1",
+      "title": "Le Tarif et la Porte",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "JOUTE_E_1",
+      "title": "La Clé et le Seuil",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "JOUTE_O_2",
+      "title": "Le Dernier Tarif",
+      "dynamic": true,
+      "testedStates": 26,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "possession"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "classic",
+      "sceneId": "JOUTE_E_2",
+      "title": "Le Dernier Seuil",
+      "dynamic": true,
+      "testedStates": 26,
+      "variants": 2,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [
+          "possession"
+        ],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_01_SEUIL",
+      "title": "Le seuil qui se souvient",
+      "dynamic": true,
+      "testedStates": 18,
+      "variants": 11,
+      "deps": {
+        "flags": [],
+        "globalFlags": [
+          "ng_plus_unlocked"
+        ],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": [
+          "FIN_OMBRE",
+          "FIN_ECLAIREUR",
+          "FIN_POLY",
+          "FIN_SOLO",
+          "FIN_HIVER",
+          "FIN_SACRIFICE",
+          "FIN_MORTELLE",
+          "FIN_RECONCILIATION",
+          "FIN_BRISEE"
+        ]
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_02_NEUF_ECHOS",
+      "title": "Neuf vies dans la neige",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_03_PALAIS_ECHO",
+      "title": "Le palais qui n’existe plus",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_04_FRESQUE_REPRISE",
+      "title": "La fresque qui mentait autrement",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_05_CONFRERIE",
+      "title": "Les contrats qui survivent aux hommes",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_06_DEUX_PORTES",
+      "title": "Deux portes, aucune promesse",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_07_KAELEN_ECHO",
+      "title": "Kaelen — le contrat sans signature",
+      "dynamic": true,
+      "testedStates": 12,
+      "variants": 4,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": [
+          "FIN_OMBRE",
+          "FIN_POLY",
+          "FIN_HIVER",
+          "FIN_BRISEE"
+        ]
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_08_ALISTAIR_ECHO",
+      "title": "Alistair — la clé rendue",
+      "dynamic": true,
+      "testedStates": 12,
+      "variants": 4,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": [
+          "FIN_ECLAIREUR",
+          "FIN_POLY",
+          "FIN_SACRIFICE",
+          "FIN_MORTELLE"
+        ]
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_09_DEUX_ECHOS",
+      "title": "Deux hommes, deux mémoires",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_10_ORAYA",
+      "title": "Oraya n’a plus trois siècles pour mentir",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_11_LYRA",
+      "title": "La voix qui ne veut plus être une arme",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_12_FEN",
+      "title": "Le roi qui a attendu trop longtemps",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_13_BRASIER",
+      "title": "Le brasier derrière le monde",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_14_TRONE_BRIS",
+      "title": "Le Trône refuse de mourir",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_15_DERNIER_CHOIX",
+      "title": "Ce qui reste quand on ne choisit pas",
+      "dynamic": true,
+      "testedStates": 23,
+      "variants": 6,
+      "deps": {
+        "flags": [
+          "ngplus_mortelle",
+          "ngplus_brasier_absorbe",
+          "ngplus_preuve_contrat",
+          "ngplus_sceau_explique"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NG_FIN_LIBERATION",
+      "title": "La Fin du Cycle",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NG_FIN_AMOUR",
+      "title": "Choisir sans enfermer",
+      "dynamic": true,
+      "testedStates": 519,
+      "variants": 4,
+      "deps": {
+        "flags": [
+          "ngplus_kaelen_distance",
+          "ngplus_kaelen_libre",
+          "ngplus_kaelen_baiser",
+          "ngplus_choix_final_O",
+          "ngplus_truce",
+          "ngplus_alistair_distance",
+          "ngplus_alistair_libre",
+          "ngplus_alistair_baiser",
+          "ngplus_choix_final_E"
+        ],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NG_FIN_DEUX_MAINS",
+      "title": "Deux mains libres",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NG_FIN_VIDE",
+      "title": "Le Trône vide",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NG_FIN_CYCLE",
+      "title": "Le Roi du Recommencement",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NG_FIN_FRONTIERE",
+      "title": "La Frontière vivante",
+      "dynamic": true,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_05A_ARCHIVES",
+      "title": "Le nom sous la clause",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_05B_SCEAU",
+      "title": "La serrure sans héritier",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_05C_CENDRES",
+      "title": "Ce qui vaut la peine de garder",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_07B_PAS",
+      "title": "Rester au prochain tournant",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    },
+    {
+      "mode": "ngplus",
+      "sceneId": "NGP_08B_SEUIL",
+      "title": "La place près de la porte",
+      "dynamic": false,
+      "testedStates": 8,
+      "variants": 1,
+      "deps": {
+        "flags": [],
+        "globalFlags": [],
+        "gauges": [],
+        "timers": [],
+        "items": [],
+        "reps": [],
+        "originEnds": [],
+        "lastEndings": []
+      }
+    }
+  ]
+}

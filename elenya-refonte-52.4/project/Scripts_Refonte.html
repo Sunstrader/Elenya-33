@@ -1,0 +1,1143 @@
+<style>
+:root{--rf-panel:#111727;--rf-line:#506282;--rf-text:#ecf3ff}
+.narrative{font-size:calc(clamp(1.12rem,1.45vw,1.48rem) * var(--text-scale))!important;flex-shrink:0}.choice-btn{font-size:calc(1rem * var(--text-scale))!important;line-height:1.5}.hud-row em{display:none}.body-content{overflow-y:auto!important;justify-content:flex-start!important}.choices{flex-shrink:0}
+.rf-tools{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;padding:.7rem 1rem;position:relative;z-index:21}
+.rf-tools button,.rf-dialog button,.rf-reveal{font:inherit;font-size:1rem;color:var(--rf-text);background:#1b2941;border:1px solid var(--rf-line);border-radius:8px;min-height:44px;padding:.5rem .8rem;cursor:pointer}
+.rf-tools button:disabled,.rf-dialog button:disabled{opacity:.45;cursor:default}
+.rf-tools[hidden],.rf-dialog[hidden],.rf-reveal[hidden]{display:none!important}
+.rf-dialog{position:fixed;inset:0;background:rgba(4,7,15,.94);z-index:1100;color:var(--rf-text);overflow:auto;padding:1.1rem max(1rem,calc((100vw - 880px)/2));font-size:1rem}
+.rf-dialog h2{font-size:1.45rem}.rf-dialog h3{font-size:1.1rem}.rf-dialog header{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin-bottom:1rem}.rf-dialog section{padding:.8rem 0;border-bottom:1px solid var(--rf-line)}
+.rf-dialog label{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin:.8rem 0}.rf-dialog input,.rf-dialog select{font:inherit;min-height:44px;max-width:100%;accent-color:#93c9ff}.rf-dialog select{color:var(--rf-text);background:#192640;padding:.4rem}
+.rf-dialog input[type=range]{flex:1;min-width:120px}.rf-dialog summary{padding:.8rem 0;cursor:pointer}.rf-dialog p{line-height:1.6}.rf-dialog .rf-muted{color:#b4c5e1}.rf-live{position:relative;z-index:21;padding:.25rem 1rem;color:#e4f1ff;font-size:1rem;min-height:1.5rem}
+.rf-map-choices{list-style:none;padding:.4rem 0 .6rem 1rem;border-left:2px solid #677da1}.rf-map-choices li{padding:.5rem 0}.rf-map-choices button{text-align:left}.rf-map-node{border-bottom:1px solid var(--rf-line);padding:.7rem 0;scroll-margin-top:1rem}.rf-map-node h3{margin:.4rem 0}.rf-progress{display:flex;gap:1rem;flex-wrap:wrap;padding:.6rem 0}.rf-track{display:flex;align-items:center;justify-content:space-between;gap:.7rem;flex-wrap:wrap;padding:.7rem 0;border-bottom:1px solid var(--rf-line)}
+.rf-reveal{position:fixed;top:1rem;right:1rem;z-index:1050}
+.rf-live:empty{display:none}#accueil-screen.hidden,[id$="-modal"]:not(.show){visibility:hidden}.rf-tools{flex-shrink:0}.body-content{min-height:0}.rf-option-btn{display:none}body.game-live .rf-option-btn{display:inline-flex}.rf-tools:not([hidden]){position:fixed;top:64px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 1rem);background:rgba(7,12,25,.94);border:1px solid var(--rf-line);border-radius:10px;box-shadow:0 8px 30px #0008;backdrop-filter:blur(10px)}
+#accueil-screen{overflow-y:auto;justify-content:flex-start;padding-top:clamp(1rem,5vh,3rem);padding-bottom:2rem}.accueil-menu{flex-shrink:0}
+#rf-frost-screen{position:fixed;inset:40% 0 0;z-index:3;pointer-events:none;opacity:0;background:linear-gradient(165deg,transparent 45%,#a2ebff33 45.3%,transparent 45.8%),linear-gradient(23deg,transparent 70%,#c1f4ff77 70.3%,transparent 70.8%),linear-gradient(0deg,#9bdded55,transparent 70%);transition:opacity 1s}body.rf-ground-frost #rf-frost-screen{opacity:1}body.rf-ice-aftermath #rf-frost-screen{inset:0;opacity:.75;background:radial-gradient(ellipse at 35% 80%,#c2f5ff66,transparent 65%),linear-gradient(145deg,transparent 60%,#b5f3ff88 60.3%,transparent 60.9%)}
+body.rf-ui-hidden .body-content,body.rf-ui-hidden .header,body.rf-ui-hidden .footer,body.rf-ui-hidden .rf-tools,body.rf-ui-hidden #aaa-hud,body.rf-ui-hidden #aaa-status,body.rf-ui-hidden .rf-live{visibility:hidden}
+body.rf-contrast .body-content,body.rf-contrast .header,body.rf-contrast .footer,body.rf-contrast .narrative,body.rf-contrast .choices{background:#080d17!important;color:#fff!important}body.rf-contrast .choice-btn{background:#111d31!important;color:#fff!important;border:2px solid #d7e6ff!important}
+body.rf-reduce-motion *,body.rf-reduce-motion *::before,body.rf-reduce-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}body.rf-reduce-motion canvas,body.rf-reduce-motion #ice-crack,body.rf-reduce-motion #flashback-veil{display:none!important}
+.rf-ground-frost::after{filter:brightness(1.1) saturate(.75)}.sprite-layer.rf-frozen{filter:grayscale(.65) brightness(1.4) drop-shadow(0 0 14px #8cdeff)!important}.rf-ground-label{position:relative;z-index:21;padding:.3rem 1rem;color:#bcf1ff}
+.rf-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #bee6ff;outline-offset:3px}
+@media(max-width:650px){.header-right{flex-wrap:wrap;gap:.3rem}.header{flex-wrap:wrap}.rf-tools{padding:.4rem;flex-wrap:nowrap;overflow-x:auto}.rf-tools button{flex:0 0 auto;white-space:nowrap}.footer{flex-wrap:wrap}.body-content{padding-inline:1rem!important}.rf-dialog{padding:1rem}.accueil-menu{max-width:100%;padding-inline:1rem}.accueil-btn{white-space:normal!important}#accueil-screen{overflow:auto;justify-content:flex-start;padding-top:2rem;padding-bottom:2rem}.choice-btn{min-height:48px}}
+</style>
+<div id="rf-frost-screen" aria-hidden="true"></div>
+<div class="rf-tools" id="rf-tools" hidden>
+  <button type="button" id="rf-read">Lire la scène</button><button type="button" id="rf-stop">Arrêter la voix</button>
+  <button type="button" id="rf-settings">Paramètres</button><button type="button" id="rf-map">Parcours</button>
+  <button type="button" id="rf-codex">Codex</button><button type="button" id="rf-hide">Masquer l’interface</button>
+</div>
+<div class="rf-live" id="rf-live" role="status" aria-live="polite"></div>
+<div class="rf-ground-label" id="rf-ground-label" hidden></div>
+<button class="rf-reveal" id="rf-reveal" type="button" hidden>Afficher l’interface</button>
+<div id="rf-dialog" class="rf-dialog" role="dialog" aria-modal="true" aria-labelledby="rf-dialog-title" hidden>
+  <header><h2 id="rf-dialog-title"></h2><button type="button" id="rf-close">Fermer</button></header>
+  <div id="rf-dialog-content"></div>
+</div>
+<script>
+'use strict';
+Object.assign(ACHIEVEMENTS_REGISTRY,{
+  ach_archive_sans_chaines:{icon:'📜',title:'Une mémoire sans chaînes',desc:'Dans le Cycle Brisé, conserver les clauses sans exposer les victimes.'},
+  ach_amitie_choisie:{icon:'❄',title:'La place d’un ami',desc:'Choisir explicitement l’amitié et voir cette limite respectée.'}
+});
+
+// Cache audio local IndexedDB avec fallback transparent en mémoire LRU (35 éléments max)
+const AudioCache = (function() {
+  const DB_NAME = 'elenya_audio_cache_v1';
+  const STORE_NAME = 'audios';
+  const MAX_ITEMS = 35;
+  let dbPromise = null;
+  const memoryMap = new Map();
+
+  function getDB() {
+    if (!dbPromise) {
+      dbPromise = new Promise(resolve => {
+        if (typeof indexedDB === 'undefined') return resolve(null);
+        try {
+          const req = indexedDB.open(DB_NAME, 1);
+          req.onupgradeneeded = e => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME, { keyPath: 'key' });
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        } catch (_) {
+          resolve(null);
+        }
+      });
+    }
+    return dbPromise;
+  }
+
+  function sha256(str) {
+    function utf8Encode(s) {
+      const bytes = [];
+      for (let i = 0; i < s.length; i++) {
+        let code = s.charCodeAt(i);
+        if (code < 0x80) {
+          bytes.push(code);
+        } else if (code < 0x800) {
+          bytes.push(0xc0 | (code >> 6), 0x80 | (code & 0x3f));
+        } else if (code < 0xd800 || code >= 0xe000) {
+          bytes.push(0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
+        } else {
+          i++;
+          code = 0x10000 + (((code & 0x3ff) << 10) | (s.charCodeAt(i) & 0x3ff));
+          bytes.push(0xf0 | (code >> 18), 0x80 | ((code >> 12) & 0x3f), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
+        }
+      }
+      return bytes;
+    }
+
+    const K = [
+      0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+      0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+      0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+      0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+      0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+      0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+      0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+      0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+    ];
+
+    function rotr(n, x) { return (x >>> n) | (x << (32 - n)); }
+
+    const bytes = utf8Encode(String(str || ''));
+    const bitLength = bytes.length * 8;
+    bytes.push(0x80);
+    while ((bytes.length % 64) !== 56) bytes.push(0);
+    const hi = Math.floor(bitLength / 0x100000000);
+    const lo = bitLength >>> 0;
+    for (let i = 3; i >= 0; i--) bytes.push((hi >>> (i * 8)) & 0xff);
+    for (let i = 3; i >= 0; i--) bytes.push((lo >>> (i * 8)) & 0xff);
+
+    let H0 = 0x6a09e667, H1 = 0xbb67ae85, H2 = 0x3c6ef372, H3 = 0xa54ff53a;
+    let H4 = 0x510e527f, H5 = 0x9b05688c, H6 = 0x1f83d9ab, H7 = 0x5be0cd19;
+
+    const W = new Int32Array(64);
+    for (let i = 0; i < bytes.length; i += 64) {
+      for (let t = 0; t < 16; t++) {
+        W[t] = (bytes[i + t * 4] << 24) | (bytes[i + t * 4 + 1] << 16) | (bytes[i + t * 4 + 2] << 8) | bytes[i + t * 4 + 3];
+      }
+      for (let t = 16; t < 64; t++) {
+        const s0 = rotr(7, W[t - 15]) ^ rotr(18, W[t - 15]) ^ (W[t - 15] >>> 3);
+        const s1 = rotr(17, W[t - 2]) ^ rotr(19, W[t - 2]) ^ (W[t - 2] >>> 10);
+        W[t] = (W[t - 16] + s0 + W[t - 7] + s1) | 0;
+      }
+      let a = H0, b = H1, c = H2, d = H3, e = H4, f = H5, g = H6, h = H7;
+      for (let t = 0; t < 64; t++) {
+        const S1 = rotr(6, e) ^ rotr(11, e) ^ rotr(25, e);
+        const ch = (e & f) ^ ((~e) & g);
+        const temp1 = (h + S1 + ch + K[t] + W[t]) | 0;
+        const S0 = rotr(2, a) ^ rotr(13, a) ^ rotr(22, a);
+        const maj = (a & b) ^ (a & c) ^ (b & c);
+        const temp2 = (S0 + maj) | 0;
+        h = g; g = f; f = e; e = (d + temp1) | 0;
+        d = c; c = b; b = a; a = (temp1 + temp2) | 0;
+      }
+      H0 = (H0 + a) | 0; H1 = (H1 + b) | 0; H2 = (H2 + c) | 0; H3 = (H3 + d) | 0;
+      H4 = (H4 + e) | 0; H5 = (H5 + f) | 0; H6 = (H6 + g) | 0; H7 = (H7 + h) | 0;
+    }
+
+    return [H0, H1, H2, H3, H4, H5, H6, H7]
+      .map(val => (val >>> 0).toString(16).padStart(8, '0'))
+      .join('');
+  }
+
+  return {
+    makeKey(text, voice, style) {
+      return 'sha256_' + sha256(`${String(text||'').trim()}|${voice||''}|${style||''}`);
+    },
+    async get(key) {
+      const db = await getDB();
+      if (!db) return memoryMap.get(key) || null;
+      return new Promise(resolve => {
+        try {
+          const tx = db.transaction(STORE_NAME, 'readonly');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.get(key);
+          req.onsuccess = () => {
+            if (req.result && req.result.audioUrl) {
+              AudioCache.touch(key).catch(()=>{});
+              resolve(req.result.audioUrl);
+            } else {
+              resolve(null);
+            }
+          };
+          req.onerror = () => resolve(null);
+        } catch (_) {
+          resolve(null);
+        }
+      });
+    },
+    async set(key, audioUrl) {
+      const db = await getDB();
+      if (!db) {
+        if (memoryMap.size >= MAX_ITEMS) {
+          const firstKey = memoryMap.keys().next().value;
+          memoryMap.delete(firstKey);
+        }
+        memoryMap.set(key, audioUrl);
+        return;
+      }
+      return new Promise(resolve => {
+        try {
+          const tx = db.transaction(STORE_NAME, 'readwrite');
+          const store = tx.objectStore(STORE_NAME);
+          store.put({ key, audioUrl, timestamp: Date.now() });
+          tx.oncomplete = () => {
+            AudioCache.prune().catch(()=>{});
+            resolve();
+          };
+          tx.onerror = () => resolve();
+        } catch (_) {
+          resolve();
+        }
+      });
+    },
+    async touch(key) {
+      const db = await getDB();
+      if (!db) return;
+      try {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.get(key);
+        req.onsuccess = () => {
+          if (req.result) {
+            req.result.timestamp = Date.now();
+            store.put(req.result);
+          }
+        };
+      } catch (_) {}
+    },
+    async prune() {
+      const db = await getDB();
+      if (!db) return;
+      try {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.getAll();
+        req.onsuccess = () => {
+          const all = req.result || [];
+          if (all.length > MAX_ITEMS) {
+            all.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+            const toRemove = all.slice(0, all.length - MAX_ITEMS);
+            toRemove.forEach(item => store.delete(item.key));
+          }
+        };
+      } catch (_) {}
+    },
+    async clear() {
+      memoryMap.clear();
+      const db = await getDB();
+      if (!db) return 0;
+      return new Promise(resolve => {
+        try {
+          const tx = db.transaction(STORE_NAME, 'readwrite');
+          const store = tx.objectStore(STORE_NAME);
+          const countReq = store.count();
+          countReq.onsuccess = () => {
+            const count = countReq.result || 0;
+            store.clear();
+            resolve(count);
+          };
+          countReq.onerror = () => {
+            store.clear();
+            resolve(0);
+          };
+        } catch (_) {
+          resolve(0);
+        }
+      });
+    }
+  };
+})();
+
+// Découpage du récit sans perte ni omission (max 800 caractères par segment)
+function segmentNarrative(fullText, maxChunkSize = 800) {
+  if (!fullText || typeof fullText !== 'string') return [];
+  const trimmed = fullText.trim().replace(/\*+/g, '');
+  if (trimmed.length <= maxChunkSize) return [trimmed];
+
+  const paragraphs = trimmed.split(/\n\s*\n/);
+  const chunks = [];
+  let currentChunk = '';
+
+  for (const para of paragraphs) {
+    const cleanPara = para.trim();
+    if (!cleanPara) continue;
+
+    if (cleanPara.length > maxChunkSize) {
+      const sentences = cleanPara.match(/[^.!?…\n]+[.!?…]*(?:\s+|$)/g) || [cleanPara];
+      for (const sent of sentences) {
+        const cleanSent = sent.trim();
+        if (!cleanSent) continue;
+        if (cleanSent.length > maxChunkSize) {
+          const words = cleanSent.split(/\s+/);
+          for (const word of words) {
+            if ((currentChunk + ' ' + word).trim().length > maxChunkSize) {
+              if (currentChunk.trim()) chunks.push(currentChunk.trim());
+              currentChunk = word;
+            } else {
+              currentChunk = currentChunk ? (currentChunk + ' ' + word) : word;
+            }
+          }
+        } else {
+          if ((currentChunk + ' ' + cleanSent).trim().length > maxChunkSize) {
+            if (currentChunk.trim()) chunks.push(currentChunk.trim());
+            currentChunk = cleanSent;
+          } else {
+            currentChunk = currentChunk ? (currentChunk + ' ' + cleanSent) : cleanSent;
+          }
+        }
+      }
+    } else {
+      if ((currentChunk + '\n\n' + cleanPara).trim().length > maxChunkSize) {
+        if (currentChunk.trim()) chunks.push(currentChunk.trim());
+        currentChunk = cleanPara;
+      } else {
+        currentChunk = currentChunk ? (currentChunk + '\n\n' + cleanPara) : cleanPara;
+      }
+    }
+  }
+  if (currentChunk.trim()) chunks.push(currentChunk.trim());
+  return chunks;
+}
+
+const RF = (() => {
+  const $=id=>document.getElementById(id), clone=x=>JSON.parse(JSON.stringify(x));
+  const read=(k, fallback)=>{try{const raw=localStorage.getItem(k);return raw===null?fallback:JSON.parse(raw)}catch(_){return fallback}};
+  const tell=t=>{$('rf-live').textContent=t};
+  const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(_){tell('Stockage local indisponible ou plein : exporte une sauvegarde.');return false}};
+  const defaults={music:.35,ambience:.1,effects:.16,voice:1,narrator:false,voiceURI:"",voiceStyle:"fantasy",voiceDuck:"reduce",rate:.95,readChoices:false,autoFallback:true,contrast:false,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,vibration:false,auto:false};
+
+  // 4 voix candidates retenues pour Elenya. Les aperçus français sont lus
+  // depuis le pack local une fois généré; aucun appel TTS n'est fait côté joueur.
+  const VOICE_PACK_BASE = (() => {
+    // Sur le serveur Node/Railway, les fichiers sont servis localement.
+    // Dans Apps Script, on charge le même pack depuis le dépôt public afin
+    // de ne jamais dépendre d'une API TTS côté joueur.
+    const host = String((typeof location !== 'undefined' && location.hostname) || '').toLowerCase();
+    if (host.includes('script.google.com') || host.includes('googleusercontent.com')) {
+      return 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-52-audio@main/elenya-refonte-52.4/assets/voices/';
+    }
+    return '/assets/voices/';
+  })();
+
+  const OFFICIAL_VOICES = [
+    { id: 'Algenib', name: 'Algenib', gender: 'Masculine', desc: 'Grave, rocailleux & dramatique', previews: [VOICE_PACK_BASE+'previews/algenib.ogg',VOICE_PACK_BASE+'previews/algenib.wav'] },
+    { id: 'Achird', name: 'Achird', gender: 'Masculine', desc: 'Amical, naturel & chaleureux', previews: [VOICE_PACK_BASE+'previews/achird.ogg',VOICE_PACK_BASE+'previews/achird.wav'] },
+    { id: 'Sulafat', name: 'Sulafat', gender: 'Féminine', desc: 'Chaude, posée & enveloppante', previews: [VOICE_PACK_BASE+'previews/sulafat.ogg',VOICE_PACK_BASE+'previews/sulafat.wav'] },
+    { id: 'Leda', name: 'Leda', gender: 'Féminine', desc: 'Jeune, claire & légère', previews: [VOICE_PACK_BASE+'previews/leda.ogg',VOICE_PACK_BASE+'previews/leda.wav'] }
+  ];
+
+  const VoicePack = (() => {
+    const manifestUrl = VOICE_PACK_BASE + 'pack-manifest.json';
+    let manifest = null;
+    let loadPromise = null;
+
+    async function load() {
+      if (manifest) return manifest;
+      if (loadPromise) return loadPromise;
+      loadPromise = fetch(manifestUrl, { cache: 'no-store' })
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null)
+        .then(m => { manifest = m || { entries: {}, voices: {} }; return manifest; });
+      return loadPromise;
+    }
+
+    function getVoice(voiceId) {
+      return OFFICIAL_VOICES.find(v => v.id === voiceId) || null;
+    }
+
+    async function resolveSegment(text, voice, style) {
+      const m = await load();
+      const key = AudioCache.makeKey(text, voice, style);
+      const entry = m && m.entries ? m.entries[key] : null;
+      if (!entry) return null;
+      if (typeof entry === 'string') return entry.startsWith('/') ? entry : '/assets/voices/' + entry.replace(/^\/+/, '');
+      if (entry.url) return entry.url;
+      if (entry.file) return VOICE_PACK_BASE + String(entry.file).replace(/^\/+/, '');
+      return null;
+    }
+
+    function previewUrls(voiceId) {
+      const v = getVoice(voiceId);
+      return v && Array.isArray(v.previews) ? v.previews.slice() : [];
+    }
+
+    return { load, getVoice, resolveSegment, previewUrls };
+  })();
+
+  const legacyPrefs=read('ef_preferences_v524',{}),prefs={...defaults,...legacyPrefs};
+  const legacyDefaults={music:.7,ambience:.18,effects:.3,voice:.8};
+  Object.keys(legacyDefaults).forEach(k=>{if(Number(legacyPrefs[k])===legacyDefaults[k])prefs[k]=defaults[k]});
+  let data=null,busy=false,requestEpoch=0,pending=null,voiceEpoch=0,isVoiceBusy=false,voiceAbortController=null,previewEpoch=0,previewAbortController=null,currentUtterance=null,autoTimer=null,modalFocus=null,explorer=null,audioContext=null,ambientNode=null,ambientGain=null,ambientFilter=null,ambienceKind=null,galleryPlayer=null,toolsOpen=false,narratorDucking=false,duckLevel=1,duckTimer=null,effectsBus=null;
+  let history={entries:[],index:-1},historyMode='classic';
+  const coverage=read('ef_coverage_v524',{scenes:{},edges:{},music:[]});
+  coverage.scenes=coverage.scenes||{};coverage.edges=coverage.edges||{};coverage.music=Array.isArray(coverage.music)?coverage.music:[];
+
+  function active(){return getActiveState()||{}}
+  function mode(){return active().gameMode==='ngplus'?'ngplus':'classic'}
+  function key(){return 'ef_rollback_v524_'+historyMode}
+  function fingerprint(s){return JSON.stringify([s.currentSceneId,s.gameMode,s.flags,s.gauges,s.choiceHistory,s.inventory,s.narrative]);}
+  function saveHistory(){
+    while(history.entries.length>24 || (history.entries.length>1 && JSON.stringify(history).length>700000)){history.entries.shift();history.index--;}
+    history.index=Math.max(-1,history.index);write(key(),history);buttons();
+  }
+  function resetHistory(){history={entries:[],index:-1};historyMode=mode();write(key(),history);buttons();}
+  function restoreHistory(){historyMode=mode();const stored=read(key(),{entries:[],index:-1});history=Array.isArray(stored.entries)&&Number.isInteger(stored.index)?stored:{entries:[],index:-1};const entry=history.entries[history.index];if(entry&&fingerprint(entry.state)!==fingerprint(active()))history={entries:[],index:-1};buttons();}
+  function buttons(){const locked=!!active().noRollback;if($('rf-back'))$('rf-back').disabled=busy||locked||history.index<=0;if($('rf-forward'))$('rf-forward').disabled=busy||locked||history.index>=history.entries.length-1;}
+  function checkpoint(){if(!data)return;const s=clone(active()),d=clone(data);delete d.renderedState;
+    if(pending){history.entries=history.entries.slice(0,history.index+1);pending=null;}
+    const last=history.entries[history.index];if(!last||fingerprint(last.state)!==fingerprint(s)){history.entries.push({state:s,scene:d});history.index=history.entries.length-1;}else last.scene=d;
+    saveHistory();
+  }
+  function rollback(delta){if(busy||active().noRollback)return;const index=history.index+delta,entry=history.entries[index];if(!entry)return;
+    stopVoice();clearTimeout(autoTimer);requestEpoch++;stopAmbientMedia(false);
+    const restored=clone(entry.state);restored.achievements=Array.from(new Set([...getAllAchievements(),...(restored.achievements||[])]));
+    restored.sessionStartedAt=Date.now();history.index=index;setActiveState(restored);data=clone(entry.scene);
+    originalRender(data);present();saveHistory();tell('Point précédent restauré : '+data.title);autoSave();
+  }
+  function prepareChoice(){if(busy)return false;stopVoice();clearTimeout(autoTimer);stopAmbientMedia(false);checkpoint();pending=clone(active());busy=true;buttons();
+    write('elenya_'+mode()+'_before_choice',{state:clone(active()),timestamp:Date.now(),sceneName:data&&data.title});return true;
+  }
+  function settle(success){busy=false;if(!success)pending=null;buttons();}
+  function scene(next){
+    data=clone(next);if(historyMode!==mode())restoreHistory();
+    if(next.renderedState)setActiveState(next.renderedState);
+    coverage.scenes[(next.gameMode||mode())+':'+(next.sceneId||next.sceneNumber)]=true;
+    const h=active().choiceHistory||[],last=h[h.length-1];if(last)coverage.edges[mode()+':'+last.scene+':'+last.choice]=true;
+    write('ef_coverage_v524',coverage);checkpoint();present();
+  }
+  function present(){
+    $('rf-tools').hidden=!toolsOpen||!$('accueil-screen').classList.contains('hidden');buttons();
+    document.body.classList.add('game-live');
+    document.body.classList.toggle('rf-ground-frost',!!data?.presentation?.groundFrozen);
+    document.body.classList.toggle('rf-ice-aftermath',!!data?.presentation?.iceStormAftermath);
+    document.querySelectorAll('.header,.body-content,.footer').forEach(el=>el.inert=false);
+    const label=$('rf-ground-label');label.hidden=!data?.presentation?.groundFrozen;label.textContent='Le givre que tu as créé recouvre encore le sol.';
+    const frozen=data?.presentation?.frozenCharacter;['left','right','center'].forEach(side=>{const layer=$('sprite-'+side),url=layer.dataset.current||'';layer.classList.toggle('rf-frozen',!!frozen&&(frozen==='both'||url.toLowerCase().includes(frozen.toLowerCase())));});
+    setAmbience(data?.presentation?.ambience||'quiet');
+    if(prefs.narrator&&!document.body.classList.contains('video-playing'))speak();
+    scheduleAuto();
+  }
+  function syncAudioMix(){
+    const bgm=$('bgm');
+    if(bgm)bgm.volume=_isMuted?0:(bgm._baseVolume??prefs.music)*duckLevel;
+    if(ambientGain){ambientGain.gain.cancelScheduledValues(audioContext.currentTime);ambientGain.gain.setTargetAtTime(_isMuted?0:prefs.ambience*.12*duckLevel,audioContext.currentTime,.04);}
+    if(effectsBus)effectsBus.gain.setTargetAtTime(_isMuted?0:prefs.effects*duckLevel,audioContext.currentTime,.04);
+    if(galleryPlayer)galleryPlayer.volume=_isMuted?0:prefs.music*duckLevel;
+  }
+  function getDuckTarget(active){
+    if(!active) return 1;
+    if(prefs.voiceDuck==='mute') return 0;
+    if(prefs.voiceDuck==='keep') return 1;
+    return .25;
+  }
+  function duckOtherAudio(active){
+    if(active===narratorDucking)return;
+    narratorDucking=active;clearInterval(duckTimer);
+    const from=duckLevel,target=getDuckTarget(active),steps=10;let step=0;
+    duckTimer=setInterval(()=>{duckLevel=from+(target-from)*(++step/steps);syncAudioMix();if(step>=steps){clearInterval(duckTimer);duckTimer=null;}},active?20:50);
+  }
+
+  let voicePlayer=null;
+  function getVoicePlayer(){
+    if(!voicePlayer&&typeof Audio!=='undefined'){
+      voicePlayer=new Audio();
+      voicePlayer.id='rf-voice-player';
+    }
+    return voicePlayer;
+  }
+
+  // Lecteur d'aperçu dédié dans les paramètres (séparé du lecteur principal de scène)
+  let previewPlayer=null;
+  function getPreviewPlayer(){
+    if(!previewPlayer&&typeof Audio!=='undefined'){
+      previewPlayer=new Audio();
+      previewPlayer.id='rf-preview-player';
+    }
+    return previewPlayer;
+  }
+
+  function updateNarrateUI(speaking, stateText){
+    const btn=$('btn-rf-narrate');
+    if(btn){
+      btn.textContent=speaking?'⏹️ Arrêter':'🎙️ Narration';
+      btn.classList.toggle('active',speaking);
+      btn.setAttribute('aria-pressed',speaking?'true':'false');
+    }
+    const readBtn=$('rf-read');if(readBtn)readBtn.disabled=speaking;
+    if(stateText) tell(stateText);
+  }
+
+  function frenchVoices(){
+    if(!('speechSynthesis' in window))return [];
+    const score=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?100:0)+(/^fr[-_]FR$/i.test(v.lang)?20:0);
+    return window.speechSynthesis.getVoices().filter(v=>/^fr(?:-|_|$)/i.test(v.lang)).sort((a,b)=>score(b)-score(a)||a.name.localeCompare(b.name,'fr'));
+  }
+
+  function refreshVoiceChoices(){
+    const select=$('rf-voice-select');if(!select)return;
+    const voices=frenchVoices();
+    let html='<option value="">Automatique — français</option>';
+    html+='<optgroup label="Voix candidates Elenya — pack français local">';
+    OFFICIAL_VOICES.forEach(v=>{
+      html+='<option value="'+escapeHtml(v.id)+'">'+escapeHtml(v.gender)+' · '+escapeHtml(v.name)+' — '+escapeHtml(v.desc)+'</option>';
+    });
+    html+='</optgroup>';
+    if(voices.length>0){
+      html+='<optgroup label="Voix du système local (synthèse navigateur)">';
+      voices.forEach(v=>{
+        html+='<option value="'+escapeHtml(v.voiceURI)+'">'+escapeHtml(v.name)+' ('+escapeHtml(v.lang)+')</option>';
+      });
+      html+='</optgroup>';
+    }
+    select.innerHTML=html;
+    select.value=prefs.voiceURI||'';
+    updateVoiceLabel();
+  }
+
+  function updateVoiceLabel(){
+    const el=$('rf-voice-active-label');if(!el)return;
+    const cur=prefs.voiceURI;
+    if(!cur){el.textContent='Voix active : Automatique (meilleure voix française disponible)';return;}
+    const off=OFFICIAL_VOICES.find(v=>v.id===cur);
+    if(off){el.textContent='Voix active : '+off.name+' — '+off.desc;return;}
+    const sys=frenchVoices().find(v=>v.voiceURI===cur);
+    if(sys){el.textContent='Voix active : '+sys.name+' ('+sys.lang+')';return;}
+    el.textContent='Voix active : '+cur;
+  }
+
+  if('speechSynthesis' in window)window.speechSynthesis.addEventListener?.('voiceschanged',refreshVoiceChoices);
+
+  function stopVoice(){
+    isVoiceBusy = false;
+    voiceEpoch++;
+    currentUtterance = null;
+    if (voiceAbortController) {
+      try { voiceAbortController.abort(); } catch (_) {}
+      voiceAbortController = null;
+    }
+    if(voicePlayer){
+      try{voicePlayer.pause();voicePlayer.currentTime=0;voicePlayer.src='';}catch(_){}
+    }
+    if(previewPlayer){
+      try{previewPlayer.pause();previewPlayer.currentTime=0;previewPlayer.src='';}catch(_){}
+    }
+    duckOtherAudio(false);
+    if('speechSynthesis' in window)window.speechSynthesis.cancel();
+    updateNarrateUI(false);
+  }
+
+  function toggleSpeak(){
+    if(isVoiceBusy || currentUtterance || (voicePlayer && (!voicePlayer.paused || voicePlayer.currentTime>0))){
+      stopVoice();tell('Lecture arrêtée.');
+    }else{
+      speak();
+    }
+  }
+
+  // Lecture d'un segment pré-généré depuis le pack statique. Aucune clé API n'est
+  // utilisée côté joueur. Le cache conserve seulement les URLs déjà résolues.
+  async function fetchSegmentAudio(text, voice, style, signal) {
+    const cacheKey = AudioCache.makeKey(text, voice, style);
+    const cachedUrl = await AudioCache.get(cacheKey);
+    if (cachedUrl) return cachedUrl;
+    if (signal && signal.aborted) {
+      const aborted = new Error('Lecture annulée');
+      aborted.name = 'AbortError';
+      throw aborted;
+    }
+    const audioUrl = await VoicePack.resolveSegment(text, voice, style);
+    if (!audioUrl) {
+      const err = new Error('Segment absent du pack vocal local');
+      err.code = 'PACK_MISS';
+      throw err;
+    }
+    await AudioCache.set(cacheKey, audioUrl);
+    return audioUrl;
+  }
+
+  // Préchargement discret du segment suivant en tâche de fond
+  function prefetchSegment(text, voice, style) {
+    if (!text) return;
+    const cacheKey = AudioCache.makeKey(text, voice, style);
+    AudioCache.get(cacheKey).then(cached => {
+      if (!cached) {
+        fetchSegmentAudio(text, voice, style).catch(()=>{});
+      }
+    }).catch(()=>{});
+  }
+
+  // Lecture principale de scène avec segmentation et enchaînement
+  function speak(){
+    stopVoice();
+    if(!data||!$('accueil-screen').classList.contains('hidden'))return;
+    if(document.body.classList.contains('video-playing')){tell('Ferme la cinématique pour écouter la scène.');return;}
+    skipTypeWriter();
+
+    const token = ++voiceEpoch;
+    isVoiceBusy = true;
+    if (typeof AbortController !== 'undefined') {
+      voiceAbortController = new AbortController();
+    }
+
+    // Construction canonique des segments vocaux. Le serveur fournit voiceParts
+    // (titre / réponse de choix / narration) séparément pour maximiser la
+    // réutilisation des fichiers pré-générés. Anciennes versions : repli sur
+    // title+narrative. Chaque choix est aussi un segment indépendant.
+    const canonicalParts = Array.isArray(data.voiceParts) && data.voiceParts.length
+      ? data.voiceParts.map(p => p && p.text).filter(Boolean)
+      : [data.title, data.narrative].filter(Boolean);
+    const segments = [];
+    canonicalParts.forEach(text => segmentNarrative(String(text), 800).forEach(seg => segments.push(seg)));
+    if (prefs.readChoices && Array.isArray(data.choices) && data.choices.length > 0) {
+      data.choices.forEach((c, i) => {
+        const choiceText = `Choix : ${c.text}`;
+        segmentNarrative(choiceText, 800).forEach(seg => segments.push(seg));
+      });
+    }
+    const fullText = segments.join('\n\n');
+
+    const isOfficial = OFFICIAL_VOICES.some(v => v.id === prefs.voiceURI);
+    const canFetch = typeof fetch === 'function' && typeof window !== 'undefined' && window.location && !window._isTestEnv;
+
+    if (isOfficial && canFetch) {
+      if (segments.length === 0) {
+        isVoiceBusy = false;
+        return;
+      }
+
+      updateNarrateUI(true, 'Recherche de la narration dans le pack vocal…');
+      playSegmentsChain(segments, 0, token);
+      return;
+    }
+
+    fallbackSpeech(fullText, token);
+  }
+
+  // Enchaînement des segments audio
+  function playSegmentsChain(segments, index, token) {
+    if (token !== voiceEpoch) {
+      isVoiceBusy = false;
+      return;
+    }
+    if (index >= segments.length) {
+      isVoiceBusy = false;
+      duckOtherAudio(false);
+      updateNarrateUI(false);
+      tell('Lecture terminée. À toi de choisir.');
+      return;
+    }
+
+    const segmentText = segments[index];
+    const remainingText = segments.slice(index).join('\n\n');
+    tell(`Narration en cours (${index + 1}/${segments.length})…`);
+
+    fetchSegmentAudio(segmentText, prefs.voiceURI, prefs.voiceStyle || 'fantasy', voiceAbortController ? voiceAbortController.signal : null)
+      .then(audioUrl => {
+        if (token !== voiceEpoch) return;
+
+        const player = getVoicePlayer();
+        if (!player) {
+          fallbackSpeech(remainingText, token);
+          return;
+        }
+
+        player.src = audioUrl;
+        player.playbackRate = prefs.rate || 1;
+        player.volume = _isMuted ? 0 : (prefs.voice ?? 1);
+
+        player.onplay = () => {
+          if (token === voiceEpoch) {
+            duckOtherAudio(true);
+            // Dès que le segment index démarre, on précharge le suivant
+            if (index + 1 < segments.length) {
+              prefetchSegment(segments[index + 1], prefs.voiceURI, prefs.voiceStyle || 'fantasy');
+            }
+          }
+        };
+
+        player.onended = () => {
+          if (token !== voiceEpoch) return;
+          playSegmentsChain(segments, index + 1, token);
+        };
+
+        player.onerror = () => {
+          if (token !== voiceEpoch) return;
+          handleTtsError(new Error('Erreur de lecture audio'), remainingText, token);
+        };
+
+        player.play().catch(playErr => {
+          if (token !== voiceEpoch) return;
+          isVoiceBusy = false;
+          tell('Lecture bloquée par le navigateur. Clique sur [Lire la scène].');
+          duckOtherAudio(false);
+          updateNarrateUI(false);
+        });
+      })
+      .catch(err => {
+        if (token !== voiceEpoch) return;
+        if (err.name === 'AbortError') return;
+        handleTtsError(err, remainingText, token);
+      });
+  }
+
+  // Si une variante narrative n'est pas encore présente dans le pack, on
+  // bascule immédiatement sur la synthèse vocale locale du navigateur.
+  function handleTtsError(err, fallbackText, token) {
+    isVoiceBusy = false;
+    duckOtherAudio(false);
+    updateNarrateUI(false);
+
+    const code = err && err.code;
+    const userMsg = code === 'PACK_MISS'
+      ? 'Cette variante n’est pas encore pré-générée dans le pack vocal.'
+      : 'Le fichier vocal local n’a pas pu être lu.';
+
+    if (prefs.autoFallback) {
+      tell(userMsg + ' Basculement sur la voix du navigateur…');
+      if (token === voiceEpoch) fallbackSpeech(fallbackText, token);
+    } else {
+      tell(userMsg);
+    }
+  }
+
+  function fallbackSpeech(text, token){
+    if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){
+      updateNarrateUI(false);
+      tell('Lecture vocale indisponible dans ce navigateur. Le texte reste accessible.');
+      return;
+    }
+    updateNarrateUI(true, 'Synthèse vocale du navigateur…');
+    const fragments=(text.match(/[^.!?\n]+[.!?]?/g)||[text]).flatMap(s=>s.match(/.{1,220}(?:\s|$)|.{1,220}/g)||[]).map(x=>x.trim()).filter(Boolean);
+    const pieces=[];for(const fragment of fragments){const last=pieces.length-1;if(last>=0&&pieces[last].length+fragment.length<220)pieces[last]+=' '+fragment;else pieces.push(fragment);}
+    const fr=frenchVoices();const selected=fr.find(v=>v.voiceURI===prefs.voiceURI)||fr[0];
+    let index=0;
+    function next(){
+      if(token!==voiceEpoch||index>=pieces.length||document.hidden)return;
+      const utterance=new SpeechSynthesisUtterance(pieces[index++]);
+      currentUtterance=utterance;
+      utterance.lang=selected?.lang||'fr-FR';
+      utterance.rate=prefs.rate;
+      utterance.volume=_isMuted?0:prefs.voice;
+      if(selected)utterance.voice=selected;
+      utterance.onstart=()=>{if(token===voiceEpoch)duckOtherAudio(true);};
+      utterance.onend=()=>{
+        if(token!==voiceEpoch)return;
+        if(index>=pieces.length){
+          currentUtterance=null;
+          duckOtherAudio(false);
+          updateNarrateUI(false);
+          tell('Lecture terminée. À toi de choisir.');
+        }else next();
+      };
+      utterance.onerror=()=>{
+        if(token===voiceEpoch){
+          currentUtterance=null;
+          duckOtherAudio(false);
+          updateNarrateUI(false);
+          tell('La voix n’a pas démarré. Réessaie « Lire la scène ».');
+        }
+      };
+      try{window.speechSynthesis.speak(utterance);}catch(_){
+        currentUtterance=null;
+        duckOtherAudio(false);
+        updateNarrateUI(false);
+        tell('La voix n’a pas démarré. Réessaie « Lire la scène ».');
+      }
+    }
+    next();
+  }
+
+  function scheduleAuto(){clearTimeout(autoTimer);if(!prefs.auto||!data||data.isEnd)return;
+    const token=requestEpoch;autoTimer=setTimeout(()=>{if(token!==requestEpoch||busy||document.hidden||!$('rf-dialog').hidden||currentUtterance||isTyping||document.body.classList.contains('video-playing')){scheduleAuto();return;}
+      const choices=data.choices||[];if(choices.length===1&&/^continuer[.\s…]*$/i.test(choices[0].text)&&!choices[0].irreversible&&choices[0].importance==='minor')document.querySelector('#choices .choice-btn')?.click();
+    },Math.max(4500,String(data.narrative||'').split(/\s+/).length/3.2*1000));
+  }
+  function ensureAudio(){if(audioContext)return audioContext;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;audioContext=new AC();return audioContext;}
+  function noiseBuffer(ac,seconds){const buf=ac.createBuffer(1,Math.round(ac.sampleRate*seconds),ac.sampleRate),samples=buf.getChannelData(0);let prev=0;for(let i=0;i<samples.length;i++){prev=(prev+Math.random()*.04-.02)/1.02;samples[i]=prev*4;}return buf;}
+  function setAmbience(kind){if(!audioContext)return;if(ambienceKind===kind){if(ambientGain)ambientGain.gain.setTargetAtTime(_isMuted?0:prefs.ambience*.12*duckLevel,audioContext.currentTime,.2);return;}
+    if(ambientNode){try{ambientNode.stop()}catch(_){}ambientNode.disconnect();}ambientFilter?.disconnect();ambientGain?.disconnect();ambientNode=null;ambientGain=null;ambientFilter=null;ambienceKind=kind;if(kind==='quiet')return;
+    const source=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),gain=audioContext.createGain();source.buffer=noiseBuffer(audioContext,4);source.loop=true;filter.type='lowpass';filter.frequency.value=kind==='fire'?1400:450;gain.gain.value=_isMuted?0:prefs.ambience*.12*duckLevel;source.connect(filter).connect(gain).connect(audioContext.destination);source.start();ambientNode=source;ambientGain=gain;ambientFilter=filter;
+  }
+  function effect(kind){if(_isMuted||!prefs.effects)return;const ac=ensureAudio();if(!ac)return;ac.resume().catch(()=>{});if(!effectsBus){effectsBus=ac.createGain();effectsBus.connect(ac.destination);}effectsBus.gain.value=prefs.effects*duckLevel;const now=ac.currentTime,duration=kind==='ice-storm'?.85:kind==='ice-lance'?.4:.16;
+    const source=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain();source.buffer=noiseBuffer(ac,duration);filter.type='highpass';filter.frequency.value=kind==='ui'?2600:900;gain.gain.setValueAtTime((kind==='ui'?.12:.6),now);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);source.connect(filter).connect(gain).connect(effectsBus);source.start();source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect()};
+    if(prefs.vibration&&kind!=='ui'&&navigator.vibrate)navigator.vibrate(kind==='ice-storm'?[18,30,14]:12);
+  }
+  function applyPrefs(){
+    CONFIG.BGM_VOLUME=prefs.music;
+    document.body.classList.toggle('rf-contrast',prefs.contrast);
+    document.body.classList.toggle('rf-reduce-motion',!prefs.motion);
+    const bgm=$('bgm');
+    if(bgm&&!bgm._fadeInterval)bgm._baseVolume=prefs.music;
+    syncAudioMix();
+    write('ef_preferences_v524',prefs);
+  }
+  function open(title,html){stopVoice();clearTimeout(autoTimer);modalFocus=document.activeElement;$('rf-dialog-title').textContent=title;$('rf-dialog-content').innerHTML=html;$('rf-dialog').hidden=false;$('rf-close').focus();}
+  function close(){
+    if($('rf-dialog').hidden)return;
+    previewEpoch++;
+    if(previewAbortController){try{previewAbortController.abort();}catch(_){}previewAbortController=null;}
+    if(previewPlayer){try{previewPlayer.pause();previewPlayer.currentTime=0;previewPlayer.src='';}catch(_){}}
+    if('speechSynthesis' in window)window.speechSynthesis.cancel();
+    if(galleryPlayer){galleryPlayer.pause();galleryPlayer=null;if(data)playAudioForScene(data.mood||'exploration')}
+    $('rf-dialog').hidden=true;
+    if(modalFocus?.isConnected)modalFocus.focus();
+    scheduleAuto();
+  }
+
+  // Modal des paramètres enrichi avec aperçu vocal et gestion du cache
+  function settings(){
+    open('Paramètres',`
+<section>
+  <h3>Audio & Narration</h3>
+  ${[['music','Musique'],['ambience','Ambiances'],['effects','Effets'],['voice','Voix du narrateur']].map(([k,t])=>`
+    <label>${t}<input data-pref="${k}" aria-label="Volume ${t}" type="range" min="0" max="1" step=".05" value="${prefs[k]}"></label>
+  `).join('')}
+
+  <label>Voix du narrateur
+    <select id="rf-voice-select" data-pref="voiceURI" aria-label="Voix du narrateur"></select>
+  </label>
+  <div id="rf-voice-active-label" class="rf-muted" style="font-size:.9em;margin-top:-.3rem;margin-bottom:.5rem;"></div>
+  <div class="rf-muted" style="font-size:.82em;margin-bottom:.6rem;">Les 4 voix candidates utilisent des aperçus français locaux quand ils sont présents. La narration complète lit le pack pré-généré quand la variante existe, sinon la voix française du navigateur prend le relais.</div>
+
+  <!-- Bloc d'aperçu de voix dédié -->
+  <div class="rf-voice-preview-box" style="background:rgba(255,255,255,0.04);border:1px solid var(--rf-line);padding:10px 14px;border-radius:8px;margin:12px 0;">
+    <div style="font-size:0.85rem;color:#d8e6fb;margin-bottom:8px;line-height:1.4;">
+      Écoute un court extrait de la voix choisie. La phrase de démonstration peut être différente du texte du jeu.
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rf-btn-preview-voice" style="padding:6px 14px;min-height:38px;">🔊 Tester cette voix</button>
+      <button type="button" id="rf-btn-preview-stop" style="padding:6px 14px;min-height:38px;display:none;">⏹️ Arrêter l'aperçu</button>
+      <span id="rf-preview-status" style="font-size:0.85rem;color:#b4c5e1;">Prêt</span>
+    </div>
+  </div>
+
+  <label>Style narratif
+    <select id="rf-style-select" data-pref="voiceStyle" aria-label="Style narratif">
+      <option value="fantasy" ${prefs.voiceStyle==='fantasy'?'selected':''}>Livre audio fantasy (immersif & posé)</option>
+      <option value="mystic" ${prefs.voiceStyle==='mystic'?'selected':''}>Présence ancienne (mystique & confidentiel)</option>
+    </select>
+  </label>
+
+  <label>Sons pendant la narration
+    <select id="rf-duck-select" data-pref="voiceDuck" aria-label="Sons pendant la narration">
+      <option value="reduce" ${prefs.voiceDuck==='reduce'?'selected':''}>Atténuer musiques et ambiances à 25 % (recommandé)</option>
+      <option value="mute" ${prefs.voiceDuck==='mute'?'selected':''}>Couper temporairement (silence)</option>
+      <option value="keep" ${prefs.voiceDuck==='keep'?'selected':''}>Conserver le volume normal (100 %)</option>
+    </select>
+  </label>
+
+  <label>
+    <input type="checkbox" data-pref="readChoices" ${prefs.readChoices?'checked':''}>
+    Lire aussi les choix proposés à la fin du récit
+  </label>
+
+  <label>
+    <input type="checkbox" data-pref="autoFallback" ${prefs.autoFallback?'checked':''}>
+    Basculement automatique sur la voix du navigateur si une variante manque au pack local
+  </label>
+
+  <label>
+    <input type="checkbox" data-pref="narrator" ${prefs.narrator?'checked':''}>
+    Lecture vocale automatique à chaque scène
+  </label>
+
+  <label>Vitesse de la voix
+    <input aria-label="Vitesse du narrateur" type="range" data-pref="rate" min=".7" max="1.4" step=".05" value="${prefs.rate}">
+  </label>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+    <button type="button" id="rf-test-voice">Écouter la scène actuelle</button>
+    <button type="button" id="rf-clear-cache">🗑️ Vider le cache vocal</button>
+  </div>
+  <div id="rf-cache-status" class="rf-muted" style="font-size:0.82rem;margin-top:4px;"></div>
+</section>
+
+<section>
+  <h3>Lecture et accessibilité</h3>
+  ${[['contrast','Contraste renforcé'],['motion','Animations et effets visuels'],['vibration','Vibrations légères'],['auto','Passer automatiquement les simples « Continuer » après lecture']].map(([k,t])=>`
+    <label><input data-pref="${k}" type="checkbox" ${prefs[k]?'checked':''}>${t}</label>
+  `).join('')}
+  <p class="rf-muted">Flèches haut/bas pour choisir, Entrée pour valider. Les décisions sont définitives pendant la partie ; utilise une sauvegarde pour conserver un point de reprise.</p>
+  <button type="button" id="rf-text-less">Texte −</button> <button type="button" id="rf-text-more">Texte +</button>
+</section>
+`);
+
+    refreshVoiceChoices();
+
+    $('rf-dialog-content').querySelectorAll('[data-pref]').forEach(el => {
+      el.addEventListener('input', () => {
+        prefs[el.dataset.pref] = el.type === 'checkbox'
+          ? el.checked
+          : ['voiceURI','voiceStyle','voiceDuck'].includes(el.dataset.pref)
+            ? el.value
+            : Number(el.value);
+        updateVoiceLabel();
+        applyPrefs();
+        if (el.dataset.pref === 'narrator' && !prefs.narrator) stopVoice();
+      });
+    });
+
+    $('rf-test-voice').onclick = () => { close(); speak(); };
+    $('rf-text-less').onclick = () => textSizeStep(-1);
+    $('rf-text-more').onclick = () => textSizeStep(1);
+
+    // Bouton de vidage du cache audio
+    $('rf-clear-cache').onclick = async () => {
+      const status = $('rf-cache-status');
+      status.textContent = 'Vidage en cours…';
+      const count = await AudioCache.clear();
+      status.textContent = `Cache audio vidé (${count} fichier${count > 1 ? 's' : ''} supprimé${count > 1 ? 's' : ''}).`;
+    };
+
+    // Bouton d'aperçu de voix
+    const btnPreview = $('rf-btn-preview-voice');
+    const btnStopPreview = $('rf-btn-preview-stop');
+    const previewStatus = $('rf-preview-status');
+    const PREVIEW_SAMPLE_TEXT = "Sur les crêtes de givre, le vent murmure les légendes d'Elenya. Les cristaux d'éther s'illuminent dans la pénombre glaciale.";
+
+    btnPreview.onclick = async () => {
+      const p = getPreviewPlayer();
+      try { p.pause(); p.currentTime = 0; } catch(_) {}
+      btnPreview.disabled = true;
+      btnStopPreview.style.display = 'inline-block';
+
+      const token = ++previewEpoch;
+      if (previewAbortController) {
+        try { previewAbortController.abort(); } catch(_) {}
+      }
+      if (typeof AbortController !== 'undefined') {
+        previewAbortController = new AbortController();
+      }
+
+      try {
+        const isOfficial = OFFICIAL_VOICES.some(v => v.id === prefs.voiceURI);
+        if (isOfficial) {
+          const audioUrls = VoicePack.previewUrls(prefs.voiceURI);
+          if (!audioUrls.length) throw new Error('Aperçu français local indisponible');
+          let previewSourceIndex = 0;
+          previewStatus.textContent = '⏳ Chargement de l’aperçu de la voix…';
+          p.src = audioUrls[previewSourceIndex];
+          p.playbackRate = prefs.rate || 1;
+          p.volume = _isMuted ? 0 : (prefs.voice ?? 1);
+
+          p.onplay = () => {
+            if (token === previewEpoch) previewStatus.textContent = '▶️ Aperçu français pré-généré — aucune clé API';
+          };
+          p.onended = () => {
+            if (token === previewEpoch) {
+              btnPreview.disabled = false;
+              btnStopPreview.style.display = 'none';
+              previewStatus.textContent = 'Prêt';
+            }
+          };
+          p.onerror = () => {
+            if (token !== previewEpoch) return;
+            previewSourceIndex++;
+            if (previewSourceIndex < audioUrls.length) {
+              previewStatus.textContent = '⏳ Source de secours…';
+              p.src = audioUrls[previewSourceIndex];
+              p.play().catch(()=>{});
+              return;
+            }
+            // Tant que le pack français exact n'a pas été généré, on évite
+            // l'ancien échantillon anglais et on propose un aperçu français de
+            // secours avec la meilleure voix système disponible.
+            if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
+              try {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(PREVIEW_SAMPLE_TEXT);
+                u.lang = 'fr-FR';
+                u.rate = prefs.rate || 1;
+                u.volume = _isMuted ? 0 : (prefs.voice ?? 1);
+                const fr = frenchVoices();
+                if (fr[0]) u.voice = fr[0];
+                u.onstart = () => { if (token === previewEpoch) previewStatus.textContent = '▶️ Aperçu français de secours — voix système'; };
+                u.onend = () => { if (token === previewEpoch) { btnPreview.disabled = false; btnStopPreview.style.display = 'none'; previewStatus.textContent = 'Prêt'; } };
+                u.onerror = () => { if (token === previewEpoch) { btnPreview.disabled = false; btnStopPreview.style.display = 'none'; previewStatus.textContent = 'Aperçu français indisponible'; } };
+                window.speechSynthesis.speak(u);
+                return;
+              } catch (_) {}
+            }
+            btnPreview.disabled = false;
+            btnStopPreview.style.display = 'none';
+            previewStatus.textContent = 'Aperçu français indisponible';
+          };
+          // Ne pas await ici : sur un fichier absent, certains navigateurs
+          // rejettent play() avant d'émettre `error`. Le gestionnaire `onerror`
+          // doit rester maître du passage .ogg -> .wav -> voix système française.
+          p.play().catch(()=>{});
+        } else {
+          // Synthèse navigateur
+          if (!('speechSynthesis' in window)) throw new Error('Synthèse navigateur non supportée');
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance("Sur les crêtes de givre, le vent murmure les légendes d'Elenya.");
+          u.lang = 'fr-FR';
+          u.rate = prefs.rate || 1;
+          const fr = frenchVoices();
+          const sel = fr.find(v => v.voiceURI === prefs.voiceURI) || fr[0];
+          if (sel) u.voice = sel;
+          u.onstart = () => {
+            if (token === previewEpoch) previewStatus.textContent = '▶️ Lecture en cours…';
+          };
+          u.onend = () => {
+            if (token === previewEpoch) {
+              btnPreview.disabled = false;
+              btnStopPreview.style.display = 'none';
+              previewStatus.textContent = 'Prêt';
+            }
+          };
+          u.onerror = () => {
+            if (token === previewEpoch) {
+              btnPreview.disabled = false;
+              btnStopPreview.style.display = 'none';
+              previewStatus.textContent = 'Erreur synthèse';
+            }
+          };
+          window.speechSynthesis.speak(u);
+        }
+      } catch (err) {
+        if (token === previewEpoch) {
+          btnPreview.disabled = false;
+          btnStopPreview.style.display = 'none';
+          previewStatus.textContent = (err.name === 'AbortError') ? 'Arrêté' : (err.message || 'Erreur aperçu');
+        }
+      }
+    };
+
+    btnStopPreview.onclick = () => {
+      previewEpoch++;
+      if (previewAbortController) {
+        try { previewAbortController.abort(); } catch(_) {}
+        previewAbortController = null;
+      }
+      if (previewPlayer) {
+        try { previewPlayer.pause(); previewPlayer.currentTime = 0; previewPlayer.src = ''; } catch(_) {}
+      }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      btnPreview.disabled = false;
+      btnStopPreview.style.display = 'none';
+      previewStatus.textContent = 'Arrêté';
+    };
+  }
+
+  function loadExplorer(){if(explorer)return Promise.resolve(explorer);return new Promise((resolve,reject)=>google.script.run.withSuccessHandler(r=>{explorer=r;resolve(r)}).withFailureHandler(reject).serverGetExplorer());}
+  const known=(s)=>!!coverage.scenes[s.mode+':'+s.id]||_visitedScenes.has(s.id)||_visitedScenes.has(s.sceneNumber);
+  async function map(){open('Arbre des parcours','<p>Chargement des scènes…</p>');try{const result=await loadExplorer();if($('rf-dialog').hidden||$('rf-dialog-title').textContent!=='Arbre des parcours')return;
+    const all=result.scenes,seen=all.filter(known),ends=all.filter(s=>s.end),found=ends.filter(s=>known(s)||getAllAchievements().includes(s.achievement));
+    $('rf-dialog-content').innerHTML=`<div class="rf-progress"><span>${seen.length}/${all.length} scènes découvertes</span><span>${found.length}/${ends.length} fins découvertes</span><span>${Object.keys(coverage.edges).length} choix parcourus depuis la mise à jour</span></div><p class="rf-muted">Les titres et destinations inconnus restent masqués. Cette carte consulte les routes ; elle ne modifie pas la partie.</p>${['classic','ngplus'].map(m=>`<details ${m===mode()?'open':''}><summary>${m==='classic'?'Classique':'Nouvelle Partie+'}</summary>${all.filter(s=>s.mode===m).map(s=>`<article class="rf-map-node" id="rf-node-${escapeHtml(s.id)}"><h3>${known(s)?escapeHtml(s.title):'Scène non découverte'} <span class="rf-muted">· Acte ${s.chapter}</span></h3>${known(s)?`<ul class="rf-map-choices">${s.choices.map(c=>{const target=all.find(n=>n.mode===m&&n.id===c.next),visited=!!coverage.edges[m+':'+s.id+':'+c.key];return `<li>${visited?'✓':'○'} ${escapeHtml(c.text)} → ${target&&known(target)?`<button type="button" data-node="${escapeHtml(target.id)}">${escapeHtml(target.title)}</button>`:c.next==='RETURN'?'Retour au parcours':c.next==='END'?'Fin du parcours':'Destination à découvrir'}${c.conditional?' · sous condition':''}</li>`}).join('')}</ul>`:''}</article>`).join('')}</details>`).join('')}`;
+    $('rf-dialog-content').querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>{const node=$('rf-node-'+b.dataset.node);node.closest('details').open=true;node.scrollIntoView({block:'start',behavior:prefs.motion?'smooth':'auto'})});
+  }catch(_){$('rf-dialog-content').textContent='La carte n’a pas pu être chargée. Réessaie après reconnexion.'}}
+
+  const codexEntries=[
+    ['Le réveil','ACTE1_01_REVEIL','Elenya se réveille dans le givre, avec une mémoire lacunaire. Son identité et la nature de son pouvoir sont les premières questions du parcours.'],
+    ['Kaelen','ACTE1_02_RENCONTRE_1','Kaelen appartient au versant de l’Ombre. La proximité ne suffit pas à effacer ses obligations : ses gestes et ses décisions comptent autant que ses déclarations.'],
+    ['Alistair','ACTE1_02_RENCONTRE_1','Alistair porte la lumière et le sceau de l’Ordre. Protéger Elenya et respecter sa liberté ne sont pas toujours la même décision.'],
+    ['Fen','ACTE1_03_FAMILIER_1','Le furet accompagne Elenya. Ses réactions et son venin occupent une place singulière dans son rapport au givre et aux souvenirs.'],
+    ['La fresque','ACTE1_04_FRESQUE','La pierre montre une souveraine et le Gel. Ce témoignage est une trace à interpréter, pas une connaissance immédiate de toute l’histoire.'],
+    ['Lyra','ACTE3_03_LA_SIRENE','Lyra raconte que l’Ordre a brisé sa voix pour en faire une arme. Reconnaître son histoire ne signifie pas renoncer à toute prudence.'],
+    ['Le sceau Leonhart','NGP_05B_SCEAU','Le Cycle Brisé permet d’examiner le mécanisme du sceau et de distinguer la foi d’Alistair du droit que ce sceau prétend exercer sur Elenya.'],
+    ['Les contrats','NGP_05A_ARCHIVES','Les copies du contrat permettent de distinguer les ordres hérités des décisions personnelles. Conserver une preuve ne donne pas le droit de posséder celui qu’elle concerne.'],
+    ['Le Cycle Brisé','NGP_10_ORAYA','Oraya explique que le rituel a rendu le cycle possible. Le réduire à un coupable unique empêcherait de voir ce qui le perpétue.'],
+    ['Le Brasier','NGP_13_BRASIER','L’Entité de Calcination pousse au recommencement. Les moyens de lui résister n’ont pas tous le même coût pour Elenya.']
+  ];
+
+  async function codex(){open('Codex et chronologie','<p>Chargement…</p>');try{const result=await loadExplorer();if($('rf-dialog').hidden||$('rf-dialog-title').textContent!=='Codex et chronologie')return;const available=id=>result.scenes.some(s=>s.id===id&&known(s));
+    $('rf-dialog-content').innerHTML=codexEntries.filter(e=>available(e[1])).map(([title,id,body])=>`<section><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></section>`).join('')||'<p>Les premières entrées apparaîtront au fil de tes découvertes.</p>';
+    if(data?.arcObjective)$('rf-dialog-content').insertAdjacentHTML('afterbegin',`<section><h3>Objectif de l’acte en cours</h3><p>${escapeHtml(data.arcObjective)}</p></section>`);
+    const scenes=result.scenes.filter(known).sort((a,b)=>a.chapter-b.chapter);$('rf-dialog-content').insertAdjacentHTML('beforeend',`<details><summary>Scènes découvertes par acte</summary><p class="rf-muted">Classement par acte, pas chronologie absolue des souvenirs.</p>${scenes.map(s=>`<p>${s.mode==='ngplus'?'NG+':'Classique'} · Acte ${s.chapter} — ${escapeHtml(s.title)}</p>`).join('')}</details>`);
+  }catch(_){$('rf-dialog-content').textContent='Codex indisponible. Réessaie après reconnexion.'}}
+
+  function music(){const urls=[...new Set(Object.values(CONFIG.AUDIO_MAP).flat())];open('Musiques découvertes',urls.map((url,i)=>`<div class="rf-track"><span>${coverage.music.includes(url)?escapeHtml(decodeURIComponent(url.split('/').pop().replace(/\.mp3$/,'').replace(/-/g,' '))):'Morceau non découvert'}</span><button type="button" data-track="${i}" ${coverage.music.includes(url)?'':'disabled'}>Écouter</button></div>`).join('')+'<button type="button" id="rf-music-stop">Arrêter</button>');
+    $('rf-dialog-content').querySelectorAll('[data-track]').forEach(b=>b.onclick=()=>{if(galleryPlayer)galleryPlayer.pause();pauseBgm();galleryPlayer=new Audio(urls[Number(b.dataset.track)]);galleryPlayer.volume=_isMuted?0:prefs.music*duckLevel;galleryPlayer.play().catch(()=>tell('Ce morceau n’a pas pu être chargé.'));});$('rf-music-stop').onclick=()=>{galleryPlayer?.pause()};
+  }
+  function pauseBgm(){const bgm=$('bgm');if(bgm._fadeInterval){clearInterval(bgm._fadeInterval);bgm._fadeInterval=null;}bgm.pause();_currentAudioMood=null;_currentAudioUrl=null;}
+  function resumeBgm(){if(data&&!$('gallery-lightbox').classList.contains('show')&&!galleryPlayer&&$('accueil-screen').classList.contains('hidden'))playAudioForScene(data.mood||'exploration');}
+  function noteTrack(url){if(url&&!coverage.music.includes(url)){coverage.music.push(url);write('ef_coverage_v524',coverage)}}
+
+  async function galleryExtras(){try{const result=await loadExplorer();if(!$('gallery-modal').classList.contains('show'))return;const unlocked=read('ef_gallery',[]);for(const bg of result.backgrounds){if($('gallery-grid').querySelector('[data-refonte="'+bg.url.split('/').pop()+'"]'))continue;const item=document.createElement('div');item.dataset.refonte=bg.url.split('/').pop();item.className='gallery-item'+(unlocked.includes(bg.url)?'':' locked');if(unlocked.includes(bg.url)){item.innerHTML=`<img src="${bg.url}" alt="${escapeHtml(bg.name)}"><span class="gallery-label">Nouveau décor</span>`;item.tabIndex=0;item.setAttribute('role','button');item.onclick=()=>openGalleryMedia(bg.url,bg.name,'image');item.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();item.click()}};}else item.innerHTML=`<div class="gallery-locked-name">${escapeHtml(bg.name)}</div><span class="gallery-label">Nouveau décor</span>`;$('gallery-grid').appendChild(item)}}catch(_){tell('Les nouveaux décors n’ont pas pu être chargés dans la galerie. Les autres restent consultables.')}}
+
+  function toggleTools(){toolsOpen=!toolsOpen;$('rf-tools').hidden=!toolsOpen||!$('accueil-screen').classList.contains('hidden');$('btn-rf-tools')?.classList.toggle('active',toolsOpen);}
+  function cleanup(){requestEpoch++;busy=false;pending=null;data=null;toolsOpen=false;stopVoice();close();clearTimeout(autoTimer);if(audioContext)audioContext.suspend().catch(()=>{});$('rf-tools').hidden=true;$('rf-reveal').hidden=true;$('rf-ground-label').hidden=true;document.body.classList.remove('rf-ui-hidden','rf-ground-frost','rf-ice-aftermath');document.querySelectorAll('.header,.body-content,.footer').forEach(el=>el.inert=true);hideOverlay();tell('');}
+
+  $('rf-read').onclick=speak;$('rf-stop').onclick=()=>{stopVoice();tell('Lecture arrêtée.')};$('rf-settings').onclick=settings;$('rf-map').onclick=map;$('rf-codex').onclick=codex;$('rf-close').onclick=close;
+  $('rf-hide').onclick=()=>{document.body.classList.add('rf-ui-hidden');$('rf-reveal').hidden=false;$('rf-reveal').focus()};$('rf-reveal').onclick=()=>{document.body.classList.remove('rf-ui-hidden');$('rf-reveal').hidden=true;$('rf-hide').focus()};
+
+  document.querySelector('.body-content').before($('rf-tools'),$('rf-live'),$('rf-ground-label'));
+  for(const [text,handler] of [['Paramètres',settings],['Musiques',music]]){const b=document.createElement('button');b.type='button';b.className='accueil-btn';b.textContent=text;b.onclick=handler;document.querySelector('.accueil-menu').appendChild(b);}
+
+  document.addEventListener('keydown',e=>{
+    if(busy&&['Enter',' '].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();return;}
+    if(!$('rf-dialog').hidden){e.stopImmediatePropagation();if(e.key==='Escape'){e.preventDefault();close();return;}if(e.key==='Tab'){const nodes=[...$('rf-dialog').querySelectorAll('button:not(:disabled),input:not(:disabled),select,summary')].filter(n=>n.offsetParent!==null),first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}return;}
+    if(e.target.matches('input,textarea,select')||e.target.isContentEditable||document.querySelector('[id$="-modal"].show,#gallery-lightbox.show,#history-drawer.open'))return;
+    if(document.body.classList.contains('rf-ui-hidden')){e.stopImmediatePropagation();if(e.key==='Escape')$('rf-reveal').click();return;}
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){if(!$('accueil-screen').classList.contains('hidden'))return;e.preventDefault();e.stopImmediatePropagation();if(isTyping)skipTypeWriter();const choices=[...document.querySelectorAll('#choices button:not(:disabled)')],index=choices.indexOf(document.activeElement),next=(index+(e.key==='ArrowDown'?1:-1)+choices.length)%choices.length;choices[next]?.focus();}
+  },true);
+
+  document.addEventListener('click',e=>{if(e.target.closest('button')){const ac=ensureAudio();ac?.resume().catch(()=>{});setAmbience(data?.presentation?.ambience||'quiet');effect('ui');}},true);
+
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){if(data)updateStats(false);stopVoice();clearTimeout(autoTimer);audioContext?.suspend().catch(()=>{});}else{const s=active();if(s.currentSceneId){s.sessionStartedAt=Date.now();setActiveState(s)}scheduleAuto();}});
+
+  document.querySelectorAll('.header,.body-content,.footer').forEach(el=>el.inert=true);
+
+  applyPrefs();restoreHistory();
+
+  return {
+    prefs,scene,prepareChoice,settle,rollback,resetHistory,restoreHistory,cleanup,speak,stopVoice,toggleSpeak,noteTrack,effect,applyPrefs,
+    get audioFactor(){return duckLevel},get busy(){return busy},get epoch(){return requestEpoch},get current(){return data},settings,map,codex,music,galleryExtras,pauseBgm,resumeBgm,toggleTools,tell,write,read,coverage
+  };
+})();
+
+const originalRender=renderScene;
+renderScene=function(data){if(!document.getElementById('accueil-screen').classList.contains('hidden'))return;if(data.renderedState)setActiveState(data.renderedState);originalRender(data);RF.scene(data);};
+const originalMenu=returnToMenu;
+returnToMenu=function(){stopAmbientMedia(false);RF.cleanup();originalMenu();};
+const originalStopMedia=stopAmbientMedia;
+stopAmbientMedia=function(restore=true){originalStopMedia(restore);if(restore&&RF.prefs.narrator)RF.speak();};
+const originalLoadSave=loadSave;
+loadSave=function(slot){RF.cleanup();RF.resetHistory();originalLoadSave(slot);};
+const originalMute=toggleMute;
+toggleMute=function(){originalMute();RF.applyPrefs();if(_isMuted)RF.stopVoice();};
+const originalGallery=showGallery;
+showGallery=function(){originalGallery();RF.galleryExtras();};
+const musicButton=document.createElement('button');musicButton.type='button';musicButton.className='modal-close';musicButton.textContent='Musiques';musicButton.onclick=()=>RF.music();document.querySelector('#gallery-modal .modal-header').appendChild(musicButton);
+const originalGalleryMedia=openGalleryMedia,originalCloseGallery=closeGalleryImage;
+openGalleryMedia=function(url,name,type){RF.stopVoice();if(type==='video')RF.pauseBgm();originalGalleryMedia(url,name,type);};
+closeGalleryImage=function(event){originalCloseGallery(event);RF.resumeBgm();};
+const originalSaveModal=showSaveModal;
+showSaveModal=function(){
+  originalSaveModal();
+  for(const [suffix,label] of [['before_choice','Avant le dernier choix'],['autosave','Sauvegarde automatique']]){
+    const saved=RF.read('elenya_'+getCurrentMode()+'_'+suffix,null);
+    if(!saved?.state?.currentSceneId)continue;
+    const row=document.createElement('div');
+    row.className='save-item';
+    const title=document.createElement('span');
+    title.textContent=label+' — '+(saved.sceneName||saved.state.currentSceneId);
+    row.appendChild(title);
+    const b=document.createElement('button');
+    b.className='save-btn';
+    b.textContent='Charger';
+    b.onclick=()=>{
+      RF.cleanup();
+      RF.resetHistory();
+      const restored=JSON.parse(JSON.stringify(saved.state));
+      restored.achievements=[...new Set([...getAllAchievements(),...(restored.achievements||[])])];
+      setActiveState(restored);
+      hideSaveModal();
+      document.getElementById('accueil-screen').classList.add('hidden');
+      document.body.classList.add('game-live');
+      renderSceneDataFromServer(restored);
+    };
+    row.appendChild(b);
+    document.getElementById('save-list').appendChild(row);
+  }
+};
+</script>
