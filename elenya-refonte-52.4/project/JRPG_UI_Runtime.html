@@ -1,0 +1,399 @@
+<script id="elenya-jrpg-ui-runtime-v1">
+/*
+ * ELENYA — JRPG READING UI v1.0
+ * Pagination VISUELLE uniquement : la donnée narrative complète reste intacte pour
+ * l'historique, la voix, les sauvegardes et le moteur.
+ * À charger APRES Scripts_Refonte.html.
+ */
+(function () {
+  'use strict';
+
+  if (window.ELENYA_JRPG_UI && window.ELENYA_JRPG_UI.version) return;
+
+  const state = {
+    version: '1.0.0',
+    sceneId: '',
+    fullText: '',
+    pages: [''],
+    index: 0,
+    pageComplete: false,
+    renderToken: 0,
+    lastTarget: 0
+  };
+
+  const byId = (id) => document.getElementById(id);
+  const norm = (value) => {
+    const text = String(value == null ? '' : value);
+    if (typeof normalizeNewlines === 'function') return normalizeNewlines(text).trim();
+    return text.replace(/\r\n?/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  };
+
+  function targetChars() {
+    const root = getComputedStyle(document.documentElement);
+    const scale = Math.max(.8, Math.min(1.8, parseFloat(root.getPropertyValue('--text-scale')) || 1));
+    const w = window.innerWidth || 1280;
+    const h = window.innerHeight || 800;
+    let target = 465;
+    if (w <= 430) target = 235;
+    else if (w <= 760) target = 305;
+    else if (h <= 560) target = 330;
+    else if (w <= 1100) target = 405;
+    return Math.max(190, Math.round(target / scale));
+  }
+
+  function splitLongUnit(text, limit) {
+    const out = [];
+    let rest = String(text || '').trim();
+    while (rest.length > limit * 1.18) {
+      const floor = Math.floor(limit * .64);
+      const ceiling = Math.min(rest.length - 1, Math.floor(limit * 1.08));
+      const windowText = rest.slice(floor, ceiling + 1);
+      let local = -1;
+      for (const re of [/[;:—–]\s+/g, /,\s+/g, /\s+/g]) {
+        let m, candidate = -1;
+        while ((m = re.exec(windowText))) candidate = m.index + m[0].length;
+        if (candidate > 0) { local = candidate; break; }
+      }
+      const cut = local > 0 ? floor + local : Math.min(limit, rest.length);
+      out.push(rest.slice(0, cut).trim());
+      rest = rest.slice(cut).trim();
+    }
+    if (rest) out.push(rest);
+    return out;
+  }
+
+  function sentenceUnits(paragraph, limit) {
+    const p = String(paragraph || '').trim();
+    if (!p) return [];
+    const matches = p.match(/[^.!?…]+(?:[.!?…]+(?:[»”"']+)?|$)/g) || [p];
+    const units = [];
+    matches.map(s => s.trim()).filter(Boolean).forEach(s => {
+      if (s.length > limit * 1.18) units.push(...splitLongUnit(s, limit));
+      else units.push(s);
+    });
+    return units;
+  }
+
+  function paginate(text) {
+    const full = norm(text);
+    if (!full) return [''];
+    const limit = targetChars();
+    state.lastTarget = limit;
+    const paragraphs = full.split(/\n+/).map(p => p.trim()).filter(Boolean);
+    const pages = [];
+    let current = [];
+    let length = 0;
+
+    const flush = () => {
+      if (!current.length) return;
+      pages.push(current.join('\n\n').trim());
+      current = [];
+      length = 0;
+    };
+
+    paragraphs.forEach(paragraph => {
+      const units = sentenceUnits(paragraph, limit);
+      let paraBuffer = '';
+      const pushPara = () => {
+        if (!paraBuffer) return;
+        const add = paraBuffer.length + (current.length ? 2 : 0);
+        if (current.length && length + add > limit * 1.08) flush();
+        current.push(paraBuffer);
+        length += paraBuffer.length + (current.length > 1 ? 2 : 0);
+        paraBuffer = '';
+      };
+
+      units.forEach(unit => {
+        const candidate = paraBuffer ? paraBuffer + ' ' + unit : unit;
+        if (candidate.length <= limit * .92 || !paraBuffer) {
+          paraBuffer = candidate;
+        } else {
+          pushPara();
+          paraBuffer = unit;
+        }
+      });
+      pushPara();
+
+      if (length >= limit * .82) flush();
+    });
+    flush();
+    return pages.length ? pages : [full];
+  }
+
+  function ensureChrome() {
+    const narrative = byId('narrative');
+    const choices = byId('choices');
+    if (!narrative || !choices) return;
+
+    if (!byId('jrpg-page-ui')) {
+      const ui = document.createElement('div');
+      ui.id = 'jrpg-page-ui';
+      ui.setAttribute('aria-hidden', 'true');
+      ui.innerHTML = '<span id="jrpg-page-count"></span><span id="jrpg-next"><span>Continuer</span><b><span>⌄</span></b></span>';
+      narrative.insertAdjacentElement('afterend', ui);
+    }
+    if (!byId('jrpg-choice-label')) {
+      const label = document.createElement('div');
+      label.id = 'jrpg-choice-label';
+      label.textContent = 'Décision';
+      choices.insertAdjacentElement('beforebegin', label);
+    }
+    narrative.setAttribute('aria-live', 'polite');
+    narrative.setAttribute('aria-label', 'Texte narratif. Cliquer pour afficher ou continuer.');
+  }
+
+  function isLastPage() { return state.index >= state.pages.length - 1; }
+  function pageText() { return state.pages[state.index] || ''; }
+
+  function updateChrome() {
+    ensureChrome();
+    const count = byId('jrpg-page-count');
+    const next = byId('jrpg-next');
+    if (count) count.textContent = state.pages.length > 1 ? `${state.index + 1} / ${state.pages.length}` : '';
+    if (next) {
+      const show = state.pageComplete && !isLastPage();
+      next.classList.toggle('ready', show);
+      const label = next.querySelector('span:first-child');
+      if (label) label.textContent = show ? 'Continuer' : '';
+    }
+  }
+
+  function lockOrRevealChoices() {
+    const container = byId('choices');
+    const label = byId('jrpg-choice-label');
+    if (!container) return;
+    const ready = state.pageComplete && isLastPage();
+    container.classList.toggle('jrpg-ready', ready);
+    container.classList.toggle('jrpg-locked', !ready);
+    container.setAttribute('aria-hidden', ready ? 'false' : 'true');
+    if (label) label.classList.toggle('visible', ready && container.children.length > 0);
+
+    container.querySelectorAll('.choice-btn').forEach(btn => {
+      if (!ready) {
+        if (!btn.disabled) {
+          btn.disabled = true;
+          btn.dataset.jrpgLock = '1';
+        }
+      } else if (btn.dataset.jrpgLock === '1') {
+        btn.disabled = false;
+        delete btn.dataset.jrpgLock;
+      }
+    });
+  }
+
+  function markPageComplete() {
+    state.pageComplete = true;
+    updateChrome();
+    lockOrRevealChoices();
+  }
+
+  function beginScene(data) {
+    const full = norm(data && data.narrative || '');
+    state.sceneId = String(data && (data.sceneNumber || data.title) || '');
+    state.fullText = full;
+    state.pages = paginate(full);
+    state.index = 0;
+    state.pageComplete = false;
+    state.renderToken++;
+    ensureChrome();
+    updateChrome();
+    lockOrRevealChoices();
+  }
+
+  function ensureText(text) {
+    const full = norm(text);
+    if (!state.fullText || full !== state.fullText) {
+      state.fullText = full;
+      state.pages = paginate(full);
+      state.index = 0;
+      state.pageComplete = false;
+      state.renderToken++;
+    }
+  }
+
+  let nativeRenderNarrativeAsHTML = typeof renderNarrativeAsHTML === 'function' ? renderNarrativeAsHTML : null;
+  let nativeTypeWriter = typeof typeWriter === 'function' ? typeWriter : null;
+  let nativeRenderChoices = typeof renderChoices === 'function' ? renderChoices : null;
+  let nativeFocusFirstChoice = typeof focusFirstChoice === 'function' ? focusFirstChoice : null;
+  let nativeRenderScene = typeof renderScene === 'function' ? renderScene : null;
+  let nativeFadeInText = typeof fadeInText === 'function' ? fadeInText : null;
+
+  if (nativeRenderNarrativeAsHTML) {
+    window.renderNarrativeAsHTML = function (text) {
+      ensureText(text);
+      nativeRenderNarrativeAsHTML(pageText());
+      const el = byId('narrative');
+      if (el) el.scrollTop = 0;
+      updateChrome();
+    };
+  }
+
+  if (nativeTypeWriter) {
+    window.typeWriter = function (text) {
+      ensureText(text);
+      state.pageComplete = false;
+      state.renderToken++;
+      lockOrRevealChoices();
+      updateChrome();
+      nativeTypeWriter(pageText());
+      /* L'historique et le système de voix doivent conserver la scène complète. */
+      if (typeof currentFullText !== 'undefined') window.currentFullText = state.fullText;
+    };
+  }
+
+  if (nativeFadeInText) {
+    window.fadeInText = function (text) {
+      ensureText(text);
+      state.pageComplete = false;
+      const token = ++state.renderToken;
+      if (typeof window.typingRafId !== 'undefined' && window.typingRafId) cancelAnimationFrame(window.typingRafId);
+      if (typeof window.isTyping !== 'undefined') window.isTyping = false;
+      if (typeof window.currentFullText !== 'undefined') window.currentFullText = state.fullText;
+      lockOrRevealChoices();
+      updateChrome();
+
+      const el = byId('narrative');
+      if (!el) return;
+      el.style.opacity = '0';
+      if (nativeRenderNarrativeAsHTML) nativeRenderNarrativeAsHTML(pageText());
+      el.scrollTop = 0;
+      el.style.transition = 'opacity .42s ease';
+      requestAnimationFrame(() => { el.style.opacity = '1'; });
+      setTimeout(() => {
+        if (token !== state.renderToken) return;
+        el.style.transition = '';
+        if (typeof window.focusFirstChoice === 'function') window.focusFirstChoice();
+      }, 470);
+    };
+  }
+
+  if (nativeFocusFirstChoice) {
+    window.focusFirstChoice = function () {
+      if (state.fullText || state.pages.length) {
+        markPageComplete();
+        if (!isLastPage()) return;
+      }
+      nativeFocusFirstChoice();
+    };
+  }
+
+  if (nativeRenderChoices) {
+    window.renderChoices = function (choices, isEnd, postEnding) {
+      nativeRenderChoices(choices, isEnd, postEnding);
+      const container = byId('choices');
+      if (container) {
+        container.querySelectorAll('.choice-btn').forEach((btn, i) => {
+          if (!btn.dataset.index) btn.dataset.index = String(i + 1);
+        });
+      }
+      lockOrRevealChoices();
+    };
+  }
+
+  function showCurrentPageInstantly() {
+    state.renderToken++;
+    if (typeof window.typingRafId !== 'undefined' && window.typingRafId) cancelAnimationFrame(window.typingRafId);
+    if (typeof window.isTyping !== 'undefined') window.isTyping = false;
+    if (typeof window.currentFullText !== 'undefined') window.currentFullText = state.fullText;
+    if (nativeRenderNarrativeAsHTML) nativeRenderNarrativeAsHTML(pageText());
+    const el = byId('narrative');
+    if (el) {
+      el.style.opacity = '1';
+      el.style.transition = '';
+      el.scrollTop = 0;
+    }
+    markPageComplete();
+  }
+
+  function nextPage() {
+    if (isLastPage()) return false;
+    state.index++;
+    state.pageComplete = false;
+    state.renderToken++;
+    lockOrRevealChoices();
+    updateChrome();
+    document.body.classList.remove('jrpg-page-turn');
+    void document.body.offsetWidth;
+    document.body.classList.add('jrpg-page-turn');
+    setTimeout(() => document.body.classList.remove('jrpg-page-turn'), 280);
+
+    if (typeof window._fadeMode !== 'undefined' && window._fadeMode && nativeFadeInText) {
+      window.fadeInText(state.fullText);
+    } else if (nativeTypeWriter) {
+      window.typeWriter(state.fullText);
+    }
+    const el = byId('narrative');
+    if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    return true;
+  }
+
+  function handleAdvance() {
+    if (!state.fullText && !state.pages.length) return false;
+    if (typeof window.isTyping !== 'undefined' && window.isTyping) {
+      if (typeof window.skipTypeWriter === 'function') window.skipTypeWriter();
+      return true;
+    }
+    if (!state.pageComplete) {
+      showCurrentPageInstantly();
+      return true;
+    }
+    return nextPage();
+  }
+
+  if (nativeRenderScene) {
+    window.renderScene = function (data) {
+      beginScene(data || {});
+      const result = nativeRenderScene(data);
+      ensureChrome();
+      const narrative = byId('narrative');
+      if (narrative) narrative.onclick = () => { handleAdvance(); };
+      lockOrRevealChoices();
+      updateChrome();
+      return result;
+    };
+  }
+
+  /* Capture avant les raccourcis historiques d'Elenya : espace/entrée tournent la page,
+     mais ne valident JAMAIS un choix à la place du joueur. */
+  document.addEventListener('keydown', function (event) {
+    const target = event.target;
+    if (!document.body.classList.contains('game-live')) return;
+    if (target && (target.matches('input,textarea,select') || target.isContentEditable)) return;
+    if (event.ctrlKey || event.altKey || event.metaKey) return;
+    if (document.querySelector('[id$="-modal"].show,#gallery-lightbox.show,#history-drawer.open,#rf-dialog:not([hidden])')) return;
+    const advanceKey = event.key === ' ' || event.code === 'Space' || event.key === 'Enter';
+    if (!advanceKey) return;
+    if (target && target.closest && target.closest('button,a')) return;
+    if ((typeof window.isTyping !== 'undefined' && window.isTyping) || !state.pageComplete || !isLastPage()) {
+      if (handleAdvance()) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }
+  }, true);
+
+  /* Si le joueur change la taille du texte, la scène suivante sera repaginée avec
+     la nouvelle taille. On ne bouge pas la page en cours pour éviter un saut visuel. */
+  ensureChrome();
+
+  window.ELENYA_JRPG_UI = {
+    version: state.version,
+    state,
+    nextPage,
+    reveal: showCurrentPageInstantly,
+    repaginate: function () {
+      const full = state.fullText;
+      if (!full) return;
+      const oldProgress = state.pages.slice(0, state.index).reduce((n, p) => n + p.length, 0);
+      state.pages = paginate(full);
+      let sum = 0, idx = 0;
+      while (idx < state.pages.length - 1 && sum + state.pages[idx].length < oldProgress) {
+        sum += state.pages[idx].length;
+        idx++;
+      }
+      state.index = idx;
+      showCurrentPageInstantly();
+    }
+  };
+})();
+</script>

@@ -1,0 +1,342 @@
+<style id="elenya-jrpg-ui-v1">
+/*
+ * ELENYA — JRPG READING UI v1.0
+ * Couche purement visuelle. Aucun changement de narration, de sauvegarde ou de logique de choix.
+ * À charger APRES Styles_Game.html.
+ */
+:root {
+  --jrpg-panel: rgba(6, 10, 22, 0.86);
+  --jrpg-panel-strong: rgba(7, 12, 28, 0.95);
+  --jrpg-line: rgba(185, 214, 255, 0.28);
+  --jrpg-line-hot: rgba(205, 228, 255, 0.72);
+  --jrpg-text: #f5f7ff;
+  --jrpg-muted: rgba(214, 225, 247, 0.58);
+  --jrpg-accent: #bfdcff;
+  --jrpg-accent-soft: rgba(156, 195, 255, 0.18);
+  --jrpg-shadow: 0 22px 70px rgba(0, 0, 0, 0.46);
+  --jrpg-dialog-width: 980px;
+  --jrpg-choice-width: 920px;
+}
+
+/* Le décor reste la vedette : l'interface se tasse dans le bas de l'écran. */
+body.game-live .body-content {
+  position: relative;
+  max-width: 1180px !important;
+  width: 100%;
+  margin: 0 auto;
+  padding: 14px 22px 20px !important;
+  gap: 8px !important;
+  justify-content: flex-end !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scroll-padding-bottom: 24px;
+}
+
+/* Fenêtre de lecture : plus RPG, moins « texte posé sur l'image ». */
+body.game-live .narrative {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, var(--jrpg-dialog-width));
+  min-height: clamp(150px, 20vh, 218px);
+  max-height: none !important;
+  margin: auto auto 0 !important;
+  padding: clamp(18px, 2.2vw, 27px) clamp(20px, 3.1vw, 38px) clamp(17px, 2vw, 24px) !important;
+  overflow: visible !important;
+  border: 1px solid var(--jrpg-line) !important;
+  border-radius: 8px !important;
+  background:
+    linear-gradient(110deg, rgba(14, 23, 48, 0.9), rgba(5, 9, 21, 0.88) 56%, rgba(9, 14, 31, 0.93)),
+    radial-gradient(circle at 8% 0%, rgba(167, 211, 255, 0.14), transparent 38%) !important;
+  box-shadow: var(--jrpg-shadow), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  backdrop-filter: blur(13px) saturate(112%);
+  -webkit-backdrop-filter: blur(13px) saturate(112%);
+  color: var(--jrpg-text) !important;
+  font-family: "Crimson Pro", Georgia, serif !important;
+  font-style: normal !important;
+  font-size: calc(clamp(1.15rem, 1.42vw, 1.42rem) * var(--text-scale)) !important;
+  font-weight: 400 !important;
+  line-height: 1.58 !important;
+  letter-spacing: .008em !important;
+  text-wrap: pretty;
+  text-shadow: 0 2px 12px rgba(0,0,0,.86) !important;
+  cursor: pointer;
+}
+
+body.game-live .narrative::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 18px;
+  right: 18px;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(207,229,255,.78), transparent);
+  box-shadow: 0 0 14px rgba(166,205,255,.24);
+}
+
+body.game-live .narrative::after {
+  content: "✦";
+  position: absolute;
+  right: 13px;
+  top: 9px;
+  color: rgba(201,225,255,.31);
+  font: 600 .6rem/1 "Cinzel", serif;
+  text-shadow: 0 0 12px rgba(185,220,255,.5);
+}
+
+body.game-live .narrative p {
+  margin: 0 0 .68em !important;
+  color: var(--jrpg-text) !important;
+}
+body.game-live .narrative p:last-child { margin-bottom: 0 !important; }
+
+/* Micro transition entre deux pages d'une même scène. */
+body.jrpg-page-turn .narrative {
+  animation: jrpgPageIn .24s cubic-bezier(.2,.75,.25,1);
+}
+@keyframes jrpgPageIn {
+  from { opacity: .15; transform: translateY(5px); filter: blur(1.5px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+
+/* Ligne discrète sous le texte : pagination + invitation à continuer. */
+#jrpg-page-ui {
+  width: min(100%, var(--jrpg-dialog-width));
+  min-height: 27px;
+  margin: 0 auto 3px;
+  padding: 0 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--jrpg-muted);
+  font: 600 .62rem/1.2 "Cinzel", serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+}
+#jrpg-page-count { font-variant-numeric: tabular-nums; }
+#jrpg-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+#jrpg-next.ready { opacity: .9; transform: none; }
+#jrpg-next b {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(194,221,255,.34);
+  transform: rotate(45deg);
+  color: var(--jrpg-accent);
+  animation: jrpgPrompt 1.35s ease-in-out infinite;
+}
+#jrpg-next b > span { transform: rotate(-45deg); }
+@keyframes jrpgPrompt {
+  0%,100% { translate: 0 0; opacity: .58; }
+  50% { translate: 0 3px; opacity: 1; }
+}
+
+/* Le mot DÉCISION n'apparaît qu'une fois le texte réellement lu/affiché. */
+#jrpg-choice-label {
+  width: min(100%, var(--jrpg-choice-width));
+  margin: 2px auto 0;
+  padding: 0 4px;
+  color: rgba(203,221,248,.48);
+  font: 600 .62rem/1 "Cinzel", serif;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity .22s ease, transform .22s ease;
+  pointer-events: none;
+}
+#jrpg-choice-label.visible { opacity: 1; transform: none; }
+
+/* Choix façon JRPG : cartes fines, sélection claire, pas de code couleur moral. */
+body.game-live .choices {
+  width: min(100%, var(--jrpg-choice-width));
+  max-width: var(--jrpg-choice-width) !important;
+  margin: 0 auto 4px !important;
+  display: grid !important;
+  gap: 7px !important;
+  flex-shrink: 0;
+  transition: opacity .22s ease, transform .22s ease;
+}
+body.game-live .choices.jrpg-locked {
+  height: 0;
+  min-height: 0;
+  margin: 0 auto !important;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+body.game-live .choices.jrpg-ready {
+  height: auto;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  animation: jrpgChoicesIn .32s cubic-bezier(.2,.8,.25,1) both;
+}
+@keyframes jrpgChoicesIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+body.game-live .choice-btn {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 36px minmax(0,1fr) 18px;
+  align-items: center !important;
+  column-gap: 12px !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  margin: 0 !important;
+  padding: 10px 15px 10px 10px !important;
+  overflow: hidden;
+  border: 1px solid rgba(164,194,235,.19) !important;
+  border-left: 2px solid rgba(191,220,255,.24) !important;
+  border-radius: 6px !important;
+  background:
+    linear-gradient(90deg, rgba(17,29,57,.76), rgba(7,12,27,.68) 54%, rgba(5,9,20,.76)) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.025), 0 7px 20px rgba(0,0,0,.18) !important;
+  color: rgba(236,243,255,.9) !important;
+  font-family: "Crimson Pro", Georgia, serif !important;
+  font-size: calc(clamp(1rem,1.15vw,1.13rem) * var(--text-scale)) !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  line-height: 1.35 !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,.75) !important;
+  transform: none;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease, color .18s ease, box-shadow .18s ease !important;
+}
+body.game-live .choice-btn::before {
+  content: attr(data-index) !important;
+  position: static !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 27px !important;
+  height: 27px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(184,212,248,.29) !important;
+  border-radius: 3px !important;
+  background: rgba(111,155,218,.055) !important;
+  color: rgba(205,224,250,.62) !important;
+  font: 600 .65rem/1 "Cinzel", serif !important;
+  letter-spacing: 0 !important;
+  transition: inherit;
+}
+body.game-live .choice-btn::after {
+  content: "›";
+  display: grid;
+  place-items: center;
+  color: rgba(194,217,247,.34);
+  font: 400 1.38rem/1 Georgia, serif;
+  transform: translateX(-3px);
+  transition: color .18s ease, transform .18s ease;
+}
+body.game-live .choice-btn > span {
+  min-width: 0 !important;
+  overflow-wrap: anywhere;
+}
+body.game-live .choice-btn:hover:not(:disabled),
+body.game-live .choice-btn:focus-visible:not(:disabled) {
+  border-color: rgba(190,219,255,.58) !important;
+  border-left-color: rgba(218,235,255,.94) !important;
+  background:
+    linear-gradient(90deg, rgba(48,77,126,.72), rgba(13,23,46,.82) 50%, rgba(7,13,28,.88)) !important;
+  color: #fff !important;
+  transform: translateX(5px) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.06), 0 9px 28px rgba(0,0,0,.28), -8px 0 30px rgba(131,181,255,.08) !important;
+  outline: none !important;
+}
+body.game-live .choice-btn:hover:not(:disabled)::before,
+body.game-live .choice-btn:focus-visible:not(:disabled)::before {
+  border-color: rgba(218,236,255,.7) !important;
+  background: rgba(166,204,255,.14) !important;
+  color: #fff !important;
+}
+body.game-live .choice-btn:hover:not(:disabled)::after,
+body.game-live .choice-btn:focus-visible:not(:disabled)::after {
+  color: #fff;
+  transform: translateX(1px);
+}
+body.game-live .choice-btn[data-importance="major"] {
+  border-color: rgba(190,219,255,.31) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.04), 0 8px 26px rgba(0,0,0,.24), 0 0 22px rgba(129,174,240,.035) !important;
+}
+body.game-live .choice-btn.active {
+  border-color: rgba(215,234,255,.84) !important;
+  background: linear-gradient(90deg, rgba(73,103,151,.82), rgba(14,24,46,.9)) !important;
+  color: #fff !important;
+  transform: translateX(7px) scale(.995) !important;
+}
+body.game-live .choice-btn:disabled:not(.active) { opacity: .42 !important; }
+
+/* Améliore la lisibilité sans voler l'écran sur petits formats. */
+@media (max-width: 760px) {
+  body.game-live .body-content {
+    padding: 9px 9px max(12px, env(safe-area-inset-bottom)) !important;
+    gap: 5px !important;
+  }
+  body.game-live .narrative {
+    width: 100%;
+    min-height: 132px;
+    padding: 15px 16px 14px !important;
+    border-radius: 7px !important;
+    font-size: calc(clamp(1.06rem, 4.35vw, 1.22rem) * var(--text-scale)) !important;
+    line-height: 1.48 !important;
+  }
+  #jrpg-page-ui { padding: 0 4px; min-height: 23px; }
+  #jrpg-next span:first-child { display: none; }
+  #jrpg-choice-label { padding-left: 2px; }
+  body.game-live .choice-btn {
+    grid-template-columns: 31px minmax(0,1fr) 14px;
+    column-gap: 9px !important;
+    min-height: 49px !important;
+    padding: 9px 10px 9px 8px !important;
+    font-size: calc(clamp(.98rem,4.1vw,1.09rem) * var(--text-scale)) !important;
+  }
+  body.game-live .choice-btn::before { width: 25px !important; height: 25px !important; }
+  body.game-live .choice-btn:hover:not(:disabled),
+  body.game-live .choice-btn:focus-visible:not(:disabled) { transform: translateX(2px) !important; }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  body.game-live .body-content { padding: 5px 12px 7px !important; gap: 3px !important; }
+  body.game-live .narrative {
+    min-height: 96px;
+    padding: 10px 17px !important;
+    font-size: calc(.98rem * var(--text-scale)) !important;
+    line-height: 1.38 !important;
+  }
+  #jrpg-page-ui { min-height: 19px; }
+  body.game-live .choice-btn { min-height: 38px !important; padding-block: 6px !important; }
+  #jrpg-choice-label { display: none; }
+}
+
+/* Les préférences d'accessibilité existantes d'Elenya restent prioritaires. */
+body.rf-contrast .narrative {
+  background: #070b13 !important;
+  border: 2px solid #e2efff !important;
+  color: #fff !important;
+  backdrop-filter: none !important;
+}
+body.rf-contrast .choice-btn { background: #101a2a !important; border: 2px solid #dcecff !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.jrpg-page-turn .narrative,
+  body.game-live .choices.jrpg-ready,
+  #jrpg-next b { animation: none !important; }
+  body.game-live .choice-btn,
+  #jrpg-next { transition: none !important; }
+}
+</style>

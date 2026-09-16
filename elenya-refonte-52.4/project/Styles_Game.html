@@ -18,6 +18,7 @@ color: #c0d0ff;
 display: flex;
 flex-direction: column;
 height: 100vh;
+height: 100dvh;
 overflow: hidden;
 position: relative;
 cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23c0d0ff' d='M16 2l1.6 4.7L22 8.5l-4.4 2 1.6 4.7L16 13.5l-3.2 1.7 1.6-4.7L10 8.5l4.4-1.8L16 2zm0 18.5l1.6 4.7L22 27l-4.4-1.8 1.6-4.7L16 22l-3.2 1.5 1.6-4.7L10 27l4.4-1.8L16 20.5z'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23e0ecff'/%3E%3C/svg%3E") 16 16, auto;
@@ -457,10 +458,12 @@ opacity: 0; pointer-events: none; transition: opacity 0.3s;
 position: fixed; inset: 0; z-index: 90; background-color: #04050a;
 display: flex; flex-direction: column; align-items: center; justify-content: center;
 transition: opacity 0.6s ease; padding: 20px;
+height: 100vh; height: 100dvh; overflow-y: auto;
 }
 #accueil-screen::before {
-content: ''; position: absolute; inset: 0; opacity: 0.45;
+content: ''; position: fixed; inset: 0; opacity: 0.45;
 background: url('https://drive.google.com/thumbnail?id=1hJUSnRlJPX8IAKNufirUKPmOR7ZJ_864&sz=w1920') center/cover no-repeat;
+background-attachment: fixed;
 z-index: -1; pointer-events: none;
 }
 #accueil-screen.hidden { opacity: 0; pointer-events: none; }
