@@ -3923,7 +3923,7 @@ const RF = (() => {
 
   function frenchVoices(){
     if(!('speechSynthesis' in window))return [];
-    const score=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?100:0)+(/^fr[-_]FR$/i.test(v.lang)?20:0);
+    const score=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?100:0) + (/^fr[-_]CA$/i.test(v.lang)?30:0);
     return window.speechSynthesis.getVoices().filter(v=>/^fr(?:-|_|$)/i.test(v.lang)).sort((a,b)=>score(b)-score(a)||a.name.localeCompare(b.name,'fr'));
   }
 
@@ -3931,11 +3931,6 @@ const RF = (() => {
     const select=$('rf-voice-select');if(!select)return;
     const voices=frenchVoices();
     let html='<option value="">Automatique — français</option>';
-    html+='<optgroup label="Voix candidates Elenya — pack français local">';
-    OFFICIAL_VOICES.forEach(v=>{
-      html+='<option value="'+escapeHtml(v.id)+'">'+escapeHtml(v.gender)+' · '+escapeHtml(v.name)+' — '+escapeHtml(v.desc)+'</option>';
-    });
-    html+='</optgroup>';
     if(voices.length>0){
       html+='<optgroup label="Voix du système local (synthèse navigateur)">';
       voices.forEach(v=>{
@@ -3952,8 +3947,6 @@ const RF = (() => {
     const el=$('rf-voice-active-label');if(!el)return;
     const cur=prefs.voiceURI;
     if(!cur){el.textContent='Voix active : Automatique (meilleure voix française disponible)';return;}
-    const off=OFFICIAL_VOICES.find(v=>v.id===cur);
-    if(off){el.textContent='Voix active : '+off.name+' — '+off.desc;return;}
     const sys=frenchVoices().find(v=>v.voiceURI===cur);
     if(sys){el.textContent='Voix active : '+sys.name+' ('+sys.lang+')';return;}
     el.textContent='Voix active : '+cur;
@@ -4165,12 +4158,22 @@ const RF = (() => {
     const pieces=[];for(const fragment of fragments){const last=pieces.length-1;if(last>=0&&pieces[last].length+fragment.length<220)pieces[last]+=' '+fragment;else pieces.push(fragment);}
     const fr=frenchVoices();const selected=fr.find(v=>v.voiceURI===prefs.voiceURI)||fr[0];
     let index=0;
+    
+    function getPitch(str) {
+      if (str.endsWith('?')) return 1.15;
+      if (str.endsWith('!')) return 1.10;
+      if (str.endsWith('…') || str.endsWith('...')) return 0.90;
+      return 1.0;
+    }
+    
     function next(){
       if(token!==voiceEpoch||index>=pieces.length||document.hidden)return;
-      const utterance=new SpeechSynthesisUtterance(pieces[index++]);
+      const piece=pieces[index++];
+      const utterance=new SpeechSynthesisUtterance(piece);
       currentUtterance=utterance;
       utterance.lang=selected?.lang||'fr-FR';
       utterance.rate=prefs.rate;
+      utterance.pitch=getPitch(piece);
       utterance.volume=_isMuted?0:prefs.voice;
       if(selected)utterance.voice=selected;
       utterance.onstart=()=>{if(token===voiceEpoch)duckOtherAudio(true);};
@@ -4181,7 +4184,7 @@ const RF = (() => {
           duckOtherAudio(false);
           updateNarrateUI(false);
           tell('Lecture terminée. À toi de choisir.');
-        }else next();
+        }else setTimeout(next, 100);
       };
       utterance.onerror=()=>{
         if(token===voiceEpoch){
