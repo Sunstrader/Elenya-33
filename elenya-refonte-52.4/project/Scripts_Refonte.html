@@ -43,218 +43,7 @@ Object.assign(ACHIEVEMENTS_REGISTRY,{
 });
 
 // Cache audio local IndexedDB avec fallback transparent en mémoire LRU (35 éléments max)
-const AudioCache = (function() {
-  const DB_NAME = 'elenya_audio_cache_v1';
-  const STORE_NAME = 'audios';
-  const MAX_ITEMS = 35;
-  let dbPromise = null;
-  const memoryMap = new Map();
 
-  function getDB() {
-    if (!dbPromise) {
-      dbPromise = new Promise(resolve => {
-        if (typeof indexedDB === 'undefined') return resolve(null);
-        try {
-          const req = indexedDB.open(DB_NAME, 1);
-          req.onupgradeneeded = e => {
-            const db = e.target.result;
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-              db.createObjectStore(STORE_NAME, { keyPath: 'key' });
-            }
-          };
-          req.onsuccess = () => resolve(req.result);
-          req.onerror = () => resolve(null);
-        } catch (_) {
-          resolve(null);
-        }
-      });
-    }
-    return dbPromise;
-  }
-
-  function sha256(str) {
-    function utf8Encode(s) {
-      const bytes = [];
-      for (let i = 0; i < s.length; i++) {
-        let code = s.charCodeAt(i);
-        if (code < 0x80) {
-          bytes.push(code);
-        } else if (code < 0x800) {
-          bytes.push(0xc0 | (code >> 6), 0x80 | (code & 0x3f));
-        } else if (code < 0xd800 || code >= 0xe000) {
-          bytes.push(0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
-        } else {
-          i++;
-          code = 0x10000 + (((code & 0x3ff) << 10) | (s.charCodeAt(i) & 0x3ff));
-          bytes.push(0xf0 | (code >> 18), 0x80 | ((code >> 12) & 0x3f), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
-        }
-      }
-      return bytes;
-    }
-
-    const K = [
-      0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-      0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-      0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-      0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-      0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-      0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-      0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-      0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
-    ];
-
-    function rotr(n, x) { return (x >>> n) | (x << (32 - n)); }
-
-    const bytes = utf8Encode(String(str || ''));
-    const bitLength = bytes.length * 8;
-    bytes.push(0x80);
-    while ((bytes.length % 64) !== 56) bytes.push(0);
-    const hi = Math.floor(bitLength / 0x100000000);
-    const lo = bitLength >>> 0;
-    for (let i = 3; i >= 0; i--) bytes.push((hi >>> (i * 8)) & 0xff);
-    for (let i = 3; i >= 0; i--) bytes.push((lo >>> (i * 8)) & 0xff);
-
-    let H0 = 0x6a09e667, H1 = 0xbb67ae85, H2 = 0x3c6ef372, H3 = 0xa54ff53a;
-    let H4 = 0x510e527f, H5 = 0x9b05688c, H6 = 0x1f83d9ab, H7 = 0x5be0cd19;
-
-    const W = new Int32Array(64);
-    for (let i = 0; i < bytes.length; i += 64) {
-      for (let t = 0; t < 16; t++) {
-        W[t] = (bytes[i + t * 4] << 24) | (bytes[i + t * 4 + 1] << 16) | (bytes[i + t * 4 + 2] << 8) | bytes[i + t * 4 + 3];
-      }
-      for (let t = 16; t < 64; t++) {
-        const s0 = rotr(7, W[t - 15]) ^ rotr(18, W[t - 15]) ^ (W[t - 15] >>> 3);
-        const s1 = rotr(17, W[t - 2]) ^ rotr(19, W[t - 2]) ^ (W[t - 2] >>> 10);
-        W[t] = (W[t - 16] + s0 + W[t - 7] + s1) | 0;
-      }
-      let a = H0, b = H1, c = H2, d = H3, e = H4, f = H5, g = H6, h = H7;
-      for (let t = 0; t < 64; t++) {
-        const S1 = rotr(6, e) ^ rotr(11, e) ^ rotr(25, e);
-        const ch = (e & f) ^ ((~e) & g);
-        const temp1 = (h + S1 + ch + K[t] + W[t]) | 0;
-        const S0 = rotr(2, a) ^ rotr(13, a) ^ rotr(22, a);
-        const maj = (a & b) ^ (a & c) ^ (b & c);
-        const temp2 = (S0 + maj) | 0;
-        h = g; g = f; f = e; e = (d + temp1) | 0;
-        d = c; c = b; b = a; a = (temp1 + temp2) | 0;
-      }
-      H0 = (H0 + a) | 0; H1 = (H1 + b) | 0; H2 = (H2 + c) | 0; H3 = (H3 + d) | 0;
-      H4 = (H4 + e) | 0; H5 = (H5 + f) | 0; H6 = (H6 + g) | 0; H7 = (H7 + h) | 0;
-    }
-
-    return [H0, H1, H2, H3, H4, H5, H6, H7]
-      .map(val => (val >>> 0).toString(16).padStart(8, '0'))
-      .join('');
-  }
-
-  return {
-    makeKey(text, voice, style) {
-      return 'sha256_' + sha256(`${String(text||'').trim()}|${voice||''}|${style||''}`);
-    },
-    async get(key) {
-      const db = await getDB();
-      if (!db) return memoryMap.get(key) || null;
-      return new Promise(resolve => {
-        try {
-          const tx = db.transaction(STORE_NAME, 'readonly');
-          const store = tx.objectStore(STORE_NAME);
-          const req = store.get(key);
-          req.onsuccess = () => {
-            if (req.result && req.result.audioUrl) {
-              AudioCache.touch(key).catch(()=>{});
-              resolve(req.result.audioUrl);
-            } else {
-              resolve(null);
-            }
-          };
-          req.onerror = () => resolve(null);
-        } catch (_) {
-          resolve(null);
-        }
-      });
-    },
-    async set(key, audioUrl) {
-      const db = await getDB();
-      if (!db) {
-        if (memoryMap.size >= MAX_ITEMS) {
-          const firstKey = memoryMap.keys().next().value;
-          memoryMap.delete(firstKey);
-        }
-        memoryMap.set(key, audioUrl);
-        return;
-      }
-      return new Promise(resolve => {
-        try {
-          const tx = db.transaction(STORE_NAME, 'readwrite');
-          const store = tx.objectStore(STORE_NAME);
-          store.put({ key, audioUrl, timestamp: Date.now() });
-          tx.oncomplete = () => {
-            AudioCache.prune().catch(()=>{});
-            resolve();
-          };
-          tx.onerror = () => resolve();
-        } catch (_) {
-          resolve();
-        }
-      });
-    },
-    async touch(key) {
-      const db = await getDB();
-      if (!db) return;
-      try {
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        const store = tx.objectStore(STORE_NAME);
-        const req = store.get(key);
-        req.onsuccess = () => {
-          if (req.result) {
-            req.result.timestamp = Date.now();
-            store.put(req.result);
-          }
-        };
-      } catch (_) {}
-    },
-    async prune() {
-      const db = await getDB();
-      if (!db) return;
-      try {
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        const store = tx.objectStore(STORE_NAME);
-        const req = store.getAll();
-        req.onsuccess = () => {
-          const all = req.result || [];
-          if (all.length > MAX_ITEMS) {
-            all.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-            const toRemove = all.slice(0, all.length - MAX_ITEMS);
-            toRemove.forEach(item => store.delete(item.key));
-          }
-        };
-      } catch (_) {}
-    },
-    async clear() {
-      memoryMap.clear();
-      const db = await getDB();
-      if (!db) return 0;
-      return new Promise(resolve => {
-        try {
-          const tx = db.transaction(STORE_NAME, 'readwrite');
-          const store = tx.objectStore(STORE_NAME);
-          const countReq = store.count();
-          countReq.onsuccess = () => {
-            const count = countReq.result || 0;
-            store.clear();
-            resolve(count);
-          };
-          countReq.onerror = () => {
-            store.clear();
-            resolve(0);
-          };
-        } catch (_) {
-          resolve(0);
-        }
-      });
-    }
-  };
-})();
 
 // Découpage du récit sans perte ni omission (max 800 caractères par segment)
 function segmentNarrative(fullText, maxChunkSize = 800) {
@@ -314,63 +103,13 @@ const RF = (() => {
   const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(_){tell('Stockage local indisponible ou plein : exporte une sauvegarde.');return false}};
   const defaults={music:.35,ambience:.1,effects:.16,voice:1,narrator:false,voiceURI:"",voiceStyle:"fantasy",voiceDuck:"reduce",rate:.95,readChoices:false,autoFallback:true,contrast:false,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,vibration:false,auto:false};
 
-  // 4 voix candidates retenues pour Elenya. Les aperçus français sont lus
-  // depuis le pack local une fois généré; aucun appel TTS n'est fait côté joueur.
-  const VOICE_PACK_BASE = (() => {
-    // Sur le serveur Node/Railway, les fichiers sont servis localement.
-    // Dans Apps Script, on charge le même pack depuis le dépôt public afin
-    // de ne jamais dépendre d'une API TTS côté joueur.
-    const host = String((typeof location !== 'undefined' && location.hostname) || '').toLowerCase();
-    if (host.includes('script.google.com') || host.includes('googleusercontent.com')) {
-      return 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-52-audio@main/elenya-refonte-52.4/assets/voices/';
-    }
-    return '/assets/voices/';
-  })();
+  
+  
+  
 
-  const OFFICIAL_VOICES = [
-    { id: 'Algenib', name: 'Algenib', gender: 'Masculine', desc: 'Grave, rocailleux & dramatique', previews: [VOICE_PACK_BASE+'previews/algenib.ogg',VOICE_PACK_BASE+'previews/algenib.wav'] },
-    { id: 'Achird', name: 'Achird', gender: 'Masculine', desc: 'Amical, naturel & chaleureux', previews: [VOICE_PACK_BASE+'previews/achird.ogg',VOICE_PACK_BASE+'previews/achird.wav'] },
-    { id: 'Sulafat', name: 'Sulafat', gender: 'Féminine', desc: 'Chaude, posée & enveloppante', previews: [VOICE_PACK_BASE+'previews/sulafat.ogg',VOICE_PACK_BASE+'previews/sulafat.wav'] },
-    { id: 'Leda', name: 'Leda', gender: 'Féminine', desc: 'Jeune, claire & légère', previews: [VOICE_PACK_BASE+'previews/leda.ogg',VOICE_PACK_BASE+'previews/leda.wav'] }
-  ];
+  
 
-  const VoicePack = (() => {
-    const manifestUrl = VOICE_PACK_BASE + 'pack-manifest.json';
-    let manifest = null;
-    let loadPromise = null;
-
-    async function load() {
-      if (manifest) return manifest;
-      if (loadPromise) return loadPromise;
-      loadPromise = fetch(manifestUrl, { cache: 'no-store' })
-        .then(r => r.ok ? r.json() : null)
-        .catch(() => null)
-        .then(m => { manifest = m || { entries: {}, voices: {} }; return manifest; });
-      return loadPromise;
-    }
-
-    function getVoice(voiceId) {
-      return OFFICIAL_VOICES.find(v => v.id === voiceId) || null;
-    }
-
-    async function resolveSegment(text, voice, style) {
-      const m = await load();
-      const key = AudioCache.makeKey(text, voice, style);
-      const entry = m && m.entries ? m.entries[key] : null;
-      if (!entry) return null;
-      if (typeof entry === 'string') return entry.startsWith('/') ? entry : '/assets/voices/' + entry.replace(/^\/+/, '');
-      if (entry.url) return entry.url;
-      if (entry.file) return VOICE_PACK_BASE + String(entry.file).replace(/^\/+/, '');
-      return null;
-    }
-
-    function previewUrls(voiceId) {
-      const v = getVoice(voiceId);
-      return v && Array.isArray(v.previews) ? v.previews.slice() : [];
-    }
-
-    return { load, getVoice, resolveSegment, previewUrls };
-  })();
+  
 
   const legacyPrefs=read('ef_preferences_v524',{}),prefs={...defaults,...legacyPrefs};
   const legacyDefaults={music:.7,ambience:.18,effects:.3,voice:.8};
@@ -414,6 +153,19 @@ const RF = (() => {
     write('ef_coverage_v524',coverage);checkpoint();present();
   }
   function present(){
+    if (prefs.onboarded_narration === undefined && !$('accueil-screen').classList.contains('hidden')) {
+      // not yet playing
+    } else if (prefs.onboarded_narration === undefined) {
+      prefs.onboarded_narration = true;
+      write('ef_preferences_v524', prefs);
+      open('Narration Vocale', `<p>Souhaitez-vous activer la narration vocale pour les scènes de l'histoire ?</p>
+      <p class="rf-muted">La narration est générée localement par votre appareil. Vous pourrez toujours l'activer ou la désactiver dans les paramètres.</p>
+      <div style="display:flex;gap:12px;margin-top:16px;">
+        <button class="rf-btn" onclick="RF.prefs.narrator=true;RF.applyPrefs();RF.close();RF.speak()">Activer la narration</button>
+        <button class="rf-btn rf-btn-secondary" onclick="RF.prefs.narrator=false;RF.applyPrefs();RF.close()">Ne pas l'activer</button>
+      </div>`);
+      return;
+    }
     $('rf-tools').hidden=!toolsOpen||!$('accueil-screen').classList.contains('hidden');buttons();
     document.body.classList.add('game-live');
     document.body.classList.toggle('rf-ground-frost',!!data?.presentation?.groundFrozen);
@@ -477,8 +229,11 @@ const RF = (() => {
 
   function frenchVoices(){
     if(!('speechSynthesis' in window))return [];
-    const score=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?100:0) + (/^fr[-_]CA$/i.test(v.lang)?30:0);
-    return window.speechSynthesis.getVoices().filter(v=>/^fr(?:-|_|$)/i.test(v.lang)).sort((a,b)=>score(b)-score(a)||a.name.localeCompare(b.name,'fr'));
+    return window.speechSynthesis.getVoices().filter(v=>/^fr(?:-|_|$)/i.test(v.lang)).sort((a,b)=>{
+      const scoreA = /^fr[-_]CA$/i.test(a.lang) ? 1000 : 0;
+      const scoreB = /^fr[-_]CA$/i.test(b.lang) ? 1000 : 0;
+      return scoreB - scoreA || a.name.localeCompare(b.name,'fr');
+    });
   }
 
   function refreshVoiceChoices(){
@@ -528,177 +283,33 @@ const RF = (() => {
   }
 
   function toggleSpeak(){
-    if(isVoiceBusy || currentUtterance || (voicePlayer && (!voicePlayer.paused || voicePlayer.currentTime>0))){
+    if(isVoiceBusy || currentUtterance || (typeof voicePlayer !== 'undefined' && voicePlayer && (!voicePlayer.paused || voicePlayer.currentTime>0))){
       stopVoice();tell('Lecture arrêtée.');
     }else{
       speak();
     }
   }
 
-  // Lecture d'un segment pré-généré depuis le pack statique. Aucune clé API n'est
-  // utilisée côté joueur. Le cache conserve seulement les URLs déjà résolues.
-  async function fetchSegmentAudio(text, voice, style, signal) {
-    const cacheKey = AudioCache.makeKey(text, voice, style);
-    const cachedUrl = await AudioCache.get(cacheKey);
-    if (cachedUrl) return cachedUrl;
-    if (signal && signal.aborted) {
-      const aborted = new Error('Lecture annulée');
-      aborted.name = 'AbortError';
-      throw aborted;
-    }
-    const audioUrl = await VoicePack.resolveSegment(text, voice, style);
-    if (!audioUrl) {
-      const err = new Error('Segment absent du pack vocal local');
-      err.code = 'PACK_MISS';
-      throw err;
-    }
-    await AudioCache.set(cacheKey, audioUrl);
-    return audioUrl;
-  }
-
-  // Préchargement discret du segment suivant en tâche de fond
-  function prefetchSegment(text, voice, style) {
-    if (!text) return;
-    const cacheKey = AudioCache.makeKey(text, voice, style);
-    AudioCache.get(cacheKey).then(cached => {
-      if (!cached) {
-        fetchSegmentAudio(text, voice, style).catch(()=>{});
-      }
-    }).catch(()=>{});
-  }
-
-  // Lecture principale de scène avec segmentation et enchaînement
   function speak(){
     stopVoice();
     if(!data||!$('accueil-screen').classList.contains('hidden'))return;
     if(document.body.classList.contains('video-playing')){tell('Ferme la cinématique pour écouter la scène.');return;}
     skipTypeWriter();
-
     const token = ++voiceEpoch;
     isVoiceBusy = true;
-    if (typeof AbortController !== 'undefined') {
-      voiceAbortController = new AbortController();
+    
+    let text = String(data.narrative || '').trim();
+    if (!text) {
+       isVoiceBusy = false;
+       return;
     }
+    
+    // Strip HTML tags for clean reading
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = text;
+    text = tempDiv.textContent || tempDiv.innerText || text;
 
-    // Construction canonique des segments vocaux. Le serveur fournit voiceParts
-    // (titre / réponse de choix / narration) séparément pour maximiser la
-    // réutilisation des fichiers pré-générés. Anciennes versions : repli sur
-    // title+narrative. Chaque choix est aussi un segment indépendant.
-    const canonicalParts = Array.isArray(data.voiceParts) && data.voiceParts.length
-      ? data.voiceParts.map(p => p && p.text).filter(Boolean)
-      : [data.title, data.narrative].filter(Boolean);
-    const segments = [];
-    canonicalParts.forEach(text => segmentNarrative(String(text), 800).forEach(seg => segments.push(seg)));
-    if (prefs.readChoices && Array.isArray(data.choices) && data.choices.length > 0) {
-      data.choices.forEach((c, i) => {
-        const choiceText = `Choix : ${c.text}`;
-        segmentNarrative(choiceText, 800).forEach(seg => segments.push(seg));
-      });
-    }
-    const fullText = segments.join('\n\n');
-
-    const isOfficial = OFFICIAL_VOICES.some(v => v.id === prefs.voiceURI);
-    const canFetch = typeof fetch === 'function' && typeof window !== 'undefined' && window.location && !window._isTestEnv;
-
-    if (isOfficial && canFetch) {
-      if (segments.length === 0) {
-        isVoiceBusy = false;
-        return;
-      }
-
-      updateNarrateUI(true, 'Recherche de la narration dans le pack vocal…');
-      playSegmentsChain(segments, 0, token);
-      return;
-    }
-
-    fallbackSpeech(fullText, token);
-  }
-
-  // Enchaînement des segments audio
-  function playSegmentsChain(segments, index, token) {
-    if (token !== voiceEpoch) {
-      isVoiceBusy = false;
-      return;
-    }
-    if (index >= segments.length) {
-      isVoiceBusy = false;
-      duckOtherAudio(false);
-      updateNarrateUI(false);
-      tell('Lecture terminée. À toi de choisir.');
-      return;
-    }
-
-    const segmentText = segments[index];
-    const remainingText = segments.slice(index).join('\n\n');
-    tell(`Narration en cours (${index + 1}/${segments.length})…`);
-
-    fetchSegmentAudio(segmentText, prefs.voiceURI, prefs.voiceStyle || 'fantasy', voiceAbortController ? voiceAbortController.signal : null)
-      .then(audioUrl => {
-        if (token !== voiceEpoch) return;
-
-        const player = getVoicePlayer();
-        if (!player) {
-          fallbackSpeech(remainingText, token);
-          return;
-        }
-
-        player.src = audioUrl;
-        player.playbackRate = prefs.rate || 1;
-        player.volume = _isMuted ? 0 : (prefs.voice ?? 1);
-
-        player.onplay = () => {
-          if (token === voiceEpoch) {
-            duckOtherAudio(true);
-            // Dès que le segment index démarre, on précharge le suivant
-            if (index + 1 < segments.length) {
-              prefetchSegment(segments[index + 1], prefs.voiceURI, prefs.voiceStyle || 'fantasy');
-            }
-          }
-        };
-
-        player.onended = () => {
-          if (token !== voiceEpoch) return;
-          playSegmentsChain(segments, index + 1, token);
-        };
-
-        player.onerror = () => {
-          if (token !== voiceEpoch) return;
-          handleTtsError(new Error('Erreur de lecture audio'), remainingText, token);
-        };
-
-        player.play().catch(playErr => {
-          if (token !== voiceEpoch) return;
-          isVoiceBusy = false;
-          tell('Lecture bloquée par le navigateur. Clique sur [Lire la scène].');
-          duckOtherAudio(false);
-          updateNarrateUI(false);
-        });
-      })
-      .catch(err => {
-        if (token !== voiceEpoch) return;
-        if (err.name === 'AbortError') return;
-        handleTtsError(err, remainingText, token);
-      });
-  }
-
-  // Si une variante narrative n'est pas encore présente dans le pack, on
-  // bascule immédiatement sur la synthèse vocale locale du navigateur.
-  function handleTtsError(err, fallbackText, token) {
-    isVoiceBusy = false;
-    duckOtherAudio(false);
-    updateNarrateUI(false);
-
-    const code = err && err.code;
-    const userMsg = code === 'PACK_MISS'
-      ? 'Cette variante n’est pas encore pré-générée dans le pack vocal.'
-      : 'Le fichier vocal local n’a pas pu être lu.';
-
-    if (prefs.autoFallback) {
-      tell(userMsg + ' Basculement sur la voix du navigateur…');
-      if (token === voiceEpoch) fallbackSpeech(fallbackText, token);
-    } else {
-      tell(userMsg);
-    }
+    fallbackSpeech(text, token);
   }
 
   function fallbackSpeech(text, token){
@@ -710,15 +321,10 @@ const RF = (() => {
     updateNarrateUI(true, 'Synthèse vocale du navigateur…');
     const fragments=(text.match(/[^.!?\n]+[.!?]?/g)||[text]).flatMap(s=>s.match(/.{1,220}(?:\s|$)|.{1,220}/g)||[]).map(x=>x.trim()).filter(Boolean);
     const pieces=[];for(const fragment of fragments){const last=pieces.length-1;if(last>=0&&pieces[last].length+fragment.length<220)pieces[last]+=' '+fragment;else pieces.push(fragment);}
-    const fr=frenchVoices();const selected=fr.find(v=>v.voiceURI===prefs.voiceURI)||fr[0];
-    let index=0;
     
-    function getPitch(str) {
-      if (str.endsWith('?')) return 1.15;
-      if (str.endsWith('!')) return 1.10;
-      if (str.endsWith('…') || str.endsWith('...')) return 0.90;
-      return 1.0;
-    }
+    const fr=frenchVoices();
+    const selected=fr.find(v=>v.voiceURI===prefs.voiceURI)||fr[0];
+    let index=0;
     
     function next(){
       if(token!==voiceEpoch||index>=pieces.length||document.hidden)return;
@@ -726,8 +332,8 @@ const RF = (() => {
       const utterance=new SpeechSynthesisUtterance(piece);
       currentUtterance=utterance;
       utterance.lang=selected?.lang||'fr-FR';
-      utterance.rate=prefs.rate;
-      utterance.pitch=getPitch(piece);
+      utterance.rate=prefs.rate || 1;
+      utterance.pitch=1.0;
       utterance.volume=_isMuted?0:prefs.voice;
       if(selected)utterance.voice=selected;
       utterance.onstart=()=>{if(token===voiceEpoch)duckOtherAudio(true);};
@@ -752,7 +358,7 @@ const RF = (() => {
         currentUtterance=null;
         duckOtherAudio(false);
         updateNarrateUI(false);
-        tell('La voix n’a pas démarré. Réessaie « Lire la scène ».');
+        tell('La voix n’a pas démarré.');
       }
     }
     next();
@@ -808,7 +414,7 @@ const RF = (() => {
     <select id="rf-voice-select" data-pref="voiceURI" aria-label="Voix du narrateur"></select>
   </label>
   <div id="rf-voice-active-label" class="rf-muted" style="font-size:.9em;margin-top:-.3rem;margin-bottom:.5rem;"></div>
-  <div class="rf-muted" style="font-size:.82em;margin-bottom:.6rem;">Les 4 voix candidates utilisent des aperçus français locaux quand ils sont présents. La narration complète lit le pack pré-généré quand la variante existe, sinon la voix française du navigateur prend le relais.</div>
+  <div class="rf-muted" style="font-size:.82em;margin-bottom:.6rem;">Le système utilise la synthèse vocale intégrée à votre appareil. Les voix canadiennes (fr-CA) sont privilégiées si elles sont disponibles, pour une meilleure clarté de lecture.</div>
 
   <!-- Bloc d'aperçu de voix dédié -->
   <div class="rf-voice-preview-box" style="background:rgba(255,255,255,0.04);border:1px solid var(--rf-line);padding:10px 14px;border-radius:8px;margin:12px 0;">
