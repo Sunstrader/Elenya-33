@@ -1,0 +1,82 @@
+<style id="elenya-hotfix-52-5-1-style">
+/* V52.5.1 — garde-fous runtime : aucun libellé de build visible et fond toujours rendu. */
+#build-version { display: none !important; }
+#elenya-background-safety {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+</style>
+<script>
+(function(){
+  'use strict';
+  var REMOTE_FALLBACK = 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v54/backgrounds/royaume-souvenirs.webp';
+  var LOCAL_FALLBACK = '/assets/backgrounds/awakening-frost-chamber.webp';
+
+  function ensureSafetyLayer(){
+    var layer = document.getElementById('elenya-background-safety');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.id = 'elenya-background-safety';
+      layer.setAttribute('aria-hidden','true');
+      document.body.insertBefore(layer, document.body.firstChild);
+    }
+    return layer;
+  }
+
+  function cssUrl(url){
+    return 'url("' + String(url || '').replace(/"/g, '%22') + '")';
+  }
+
+  function paintSafetyBackground(url){
+    var layer = ensureSafetyLayer();
+    if (!url || url === 'none') {
+      layer.style.backgroundImage = 'none';
+      return;
+    }
+    /* Trois niveaux : décor demandé -> décor NG+ connu -> asset local du preview Node. */
+    layer.style.backgroundImage = cssUrl(url) + ', ' + cssUrl(REMOTE_FALLBACK) + ', ' + cssUrl(LOCAL_FALLBACK);
+  }
+
+  try {
+    if (typeof setBackground === 'function' && !setBackground._elenyaHotfix5251) {
+      var originalSetBackground = setBackground;
+      var patchedSetBackground = function(url){
+        originalSetBackground(url);
+        paintSafetyBackground(url);
+      };
+      patchedSetBackground._elenyaHotfix5251 = true;
+      setBackground = patchedSetBackground;
+      if (typeof window !== 'undefined') window.setBackground = patchedSetBackground;
+    }
+  } catch (_) {}
+
+  /* Si un CDN échoue après l'appel à setBackground, la couche de sécurité conserve un vrai décor. */
+  try {
+    if (typeof ImageCache !== 'undefined' && ImageCache && !ImageCache._elenyaHotfix5251) {
+      var originalPreload = ImageCache.preloadImage.bind(ImageCache);
+      ImageCache.preloadImage = function(url){
+        originalPreload(url);
+        if (!url || url === 'none') return;
+        var probe = new Image();
+        probe.onerror = function(){
+          try {
+            if (typeof _currentBg !== 'undefined' && _currentBg === url) paintSafetyBackground(REMOTE_FALLBACK);
+          } catch (_) { paintSafetyBackground(REMOTE_FALLBACK); }
+        };
+        probe.src = url;
+      };
+      ImageCache._elenyaHotfix5251 = true;
+    }
+  } catch (_) {}
+
+  /* Le nom public du jeu ne dépend plus des anciens labels du backend. */
+  try { document.title = "Elenya Frost — L'Héritage de Primalys"; } catch (_) {}
+  var build = document.getElementById('build-version');
+  if (build) build.hidden = true;
+})();
+</script>
