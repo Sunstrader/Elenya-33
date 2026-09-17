@@ -16,8 +16,8 @@
   'use strict';
   var REMOTE_FALLBACK = 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v54/backgrounds/royaume-souvenirs.webp';
   var LOCAL_FALLBACK = '/assets/backgrounds/awakening-frost-chamber.webp';
-  /* Image réellement rendue par NGP_01_SEUIL après normalisation des assets. */
-  var OPENING_STELE = 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v54/backgrounds/foret-noire.webp';
+  /* Exactement le même lien que la première scène NG+ (NGP_01_SEUIL). */
+  var OPENING_STELE = 'https://cdn.jsdelivr.net/gh/Sunstrader/Releases@main/Acte%201/Cour_ext%C3%A9rieure_enneig%C3%A9e_202606191344.jpeg';
 
   function ensureSafetyLayer(){
     var layer = document.getElementById('elenya-background-safety');
@@ -57,7 +57,7 @@
     }
   } catch (_) {}
 
-  /* Même décor de stèle pour le premier réveil classique et le seuil NG+. */
+  /* Même lien d'image pour le premier réveil classique et le seuil NG+. */
   try {
     if (typeof renderScene === 'function' && !renderScene._elenyaClassicOpeningStele) {
       var originalRenderScene = renderScene;
