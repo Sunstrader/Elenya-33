@@ -7,7 +7,6 @@ function applyNgPlusUltraVisuals_(){
 
   const set=(id,props)=>{if(NGPLUS_DB[id])Object.assign(NGPLUS_DB[id],props);};
 
-
   // Personnages principaux : le décor reste visible, mais les scènes qui parlent d'une présence
   // affichent enfin cette présence au lieu d'un écran purement textuel.
   set('NGP_01_SEUIL',{sprite:'Fen'});
@@ -44,29 +43,24 @@ function applyNgPlusUltraVisuals_(){
 
   const baseImg = (typeof ELENYA_ART_V54_BASE !== 'undefined' ? ELENYA_ART_V54_BASE : 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v54/');
   const fallbackBg = baseImg + 'backgrounds/royaume-souvenirs.webp';
+  const spectralFenScenes = new Set(['NGP_12_FEN']);
 
   Object.entries(NGPLUS_DB).forEach(([id, scene]) => {
     if (!scene) return;
-    
-    // 1 & 2. Ne jamais laisser sans fond visible
+
+    // Ne jamais laisser une scène NG+ sans décor exploitable.
     if (!scene.image || scene.image.trim() === '' || scene.image === 'null' || scene.image === 'undefined') {
       scene.image = fallbackBg;
     }
 
-    // 3 & 4. Ambiance spécifique pour Fen spectral
-    const spectralFenScenes = ['NGP_01_SEUIL','NGP_02_NEUF_ECHOS','NGP_04_FRESQUE_REPRISE','NGP_12_FEN','NGP_U01_FEN','NGP_U04_SECRET_FEN','NGP_U12_REFUS','NG_FIN_CYCLE'];
-    if (scene.sprite === 'Fen' && spectralFenScenes.includes(id)) {
-      // S'assurer qu'on a un fond de secours sombre/cohérent
-      const isDark = ['royaume-souvenirs', 'campement-nuit', 'foret-noire'].some(bg => scene.image.includes(bg));
-      if (!isDark) {
-         scene.image = baseImg + 'backgrounds/campement-nuit.webp';
-      }
-      
-      // Ajouter les propriétés de présentation (neige légère / nuit)
+    // Fen n'est spectral que pendant la scène où le furet devient Kalthar.
+    // Les autres apparitions de Fen restent normales et conservent leur propre décor.
+    if (spectralFenScenes.has(id)) {
       scene.presentation = scene.presentation || {};
       scene.presentation.spectralOverlay = true;
     }
   });
+
   // Repères de mise en scène pour le client et les outils QA.
   Object.entries(NGPLUS_DB).forEach(([id,scene])=>{
     if(!scene.emotionalBeat){
