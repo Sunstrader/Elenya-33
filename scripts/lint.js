@@ -83,8 +83,6 @@ if (fs.existsSync('index.html')) {
     logError('index.html', 'Le bridge google.script.run est manquant.');
   } else if (!indexContent.includes('serverStartNewGamePlus')) {
     logError('index.html', 'La fonction serverStartNewGamePlus est manquante dans le bridge.');
-  } else if (!indexContent.includes('sha256')) {
-    logError('index.html', 'Le module cryptographique sha256 est manquant dans Scripts_Refonte.');
   } else {
     logOk('index.html — Bridge et modules audio & NG+ présents');
   }

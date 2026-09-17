@@ -416,57 +416,9 @@ const RF = (() => {
   <div id="rf-voice-active-label" class="rf-muted" style="font-size:.9em;margin-top:-.3rem;margin-bottom:.5rem;"></div>
   <div class="rf-muted" style="font-size:.82em;margin-bottom:.6rem;">Le système utilise la synthèse vocale intégrée à votre appareil. Les voix canadiennes (fr-CA) sont privilégiées si elles sont disponibles, pour une meilleure clarté de lecture.</div>
 
-  <!-- Bloc d'aperçu de voix dédié -->
-  <div class="rf-voice-preview-box" style="background:rgba(255,255,255,0.04);border:1px solid var(--rf-line);padding:10px 14px;border-radius:8px;margin:12px 0;">
-    <div style="font-size:0.85rem;color:#d8e6fb;margin-bottom:8px;line-height:1.4;">
-      Écoute un court extrait de la voix choisie. La phrase de démonstration peut être différente du texte du jeu.
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <button type="button" id="rf-btn-preview-voice" style="padding:6px 14px;min-height:38px;">🔊 Tester cette voix</button>
-      <button type="button" id="rf-btn-preview-stop" style="padding:6px 14px;min-height:38px;display:none;">⏹️ Arrêter l'aperçu</button>
-      <span id="rf-preview-status" style="font-size:0.85rem;color:#b4c5e1;">Prêt</span>
-    </div>
-  </div>
-
-  <label>Style narratif
-    <select id="rf-style-select" data-pref="voiceStyle" aria-label="Style narratif">
-      <option value="fantasy" ${prefs.voiceStyle==='fantasy'?'selected':''}>Livre audio fantasy (immersif & posé)</option>
-      <option value="mystic" ${prefs.voiceStyle==='mystic'?'selected':''}>Présence ancienne (mystique & confidentiel)</option>
-    </select>
-  </label>
-
-  <label>Sons pendant la narration
-    <select id="rf-duck-select" data-pref="voiceDuck" aria-label="Sons pendant la narration">
-      <option value="reduce" ${prefs.voiceDuck==='reduce'?'selected':''}>Atténuer musiques et ambiances à 25 % (recommandé)</option>
-      <option value="mute" ${prefs.voiceDuck==='mute'?'selected':''}>Couper temporairement (silence)</option>
-      <option value="keep" ${prefs.voiceDuck==='keep'?'selected':''}>Conserver le volume normal (100 %)</option>
-    </select>
-  </label>
-
-  <label>
-    <input type="checkbox" data-pref="readChoices" ${prefs.readChoices?'checked':''}>
-    Lire aussi les choix proposés à la fin du récit
-  </label>
-
-  <label>
-    <input type="checkbox" data-pref="autoFallback" ${prefs.autoFallback?'checked':''}>
-    Basculement automatique sur la voix du navigateur si une variante manque au pack local
-  </label>
-
-  <label>
-    <input type="checkbox" data-pref="narrator" ${prefs.narrator?'checked':''}>
-    Lecture vocale automatique à chaque scène
-  </label>
-
-  <label>Vitesse de la voix
-    <input aria-label="Vitesse du narrateur" type="range" data-pref="rate" min=".7" max="1.4" step=".05" value="${prefs.rate}">
-  </label>
-
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
     <button type="button" id="rf-test-voice">Écouter la scène actuelle</button>
-    <button type="button" id="rf-clear-cache">🗑️ Vider le cache vocal</button>
   </div>
-  <div id="rf-cache-status" class="rf-muted" style="font-size:0.82rem;margin-top:4px;"></div>
 </section>
 
 <section>
@@ -498,144 +450,7 @@ const RF = (() => {
     $('rf-text-less').onclick = () => textSizeStep(-1);
     $('rf-text-more').onclick = () => textSizeStep(1);
 
-    // Bouton de vidage du cache audio
-    $('rf-clear-cache').onclick = async () => {
-      const status = $('rf-cache-status');
-      status.textContent = 'Vidage en cours…';
-      const count = await AudioCache.clear();
-      status.textContent = `Cache audio vidé (${count} fichier${count > 1 ? 's' : ''} supprimé${count > 1 ? 's' : ''}).`;
-    };
-
-    // Bouton d'aperçu de voix
-    const btnPreview = $('rf-btn-preview-voice');
-    const btnStopPreview = $('rf-btn-preview-stop');
-    const previewStatus = $('rf-preview-status');
-    const PREVIEW_SAMPLE_TEXT = "Sur les crêtes de givre, le vent murmure les légendes d'Elenya. Les cristaux d'éther s'illuminent dans la pénombre glaciale.";
-
-    btnPreview.onclick = async () => {
-      const p = getPreviewPlayer();
-      try { p.pause(); p.currentTime = 0; } catch(_) {}
-      btnPreview.disabled = true;
-      btnStopPreview.style.display = 'inline-block';
-
-      const token = ++previewEpoch;
-      if (previewAbortController) {
-        try { previewAbortController.abort(); } catch(_) {}
       }
-      if (typeof AbortController !== 'undefined') {
-        previewAbortController = new AbortController();
-      }
-
-      try {
-        const isOfficial = OFFICIAL_VOICES.some(v => v.id === prefs.voiceURI);
-        if (isOfficial) {
-          const audioUrls = VoicePack.previewUrls(prefs.voiceURI);
-          if (!audioUrls.length) throw new Error('Aperçu français local indisponible');
-          let previewSourceIndex = 0;
-          previewStatus.textContent = '⏳ Chargement de l’aperçu de la voix…';
-          p.src = audioUrls[previewSourceIndex];
-          p.playbackRate = prefs.rate || 1;
-          p.volume = _isMuted ? 0 : (prefs.voice ?? 1);
-
-          p.onplay = () => {
-            if (token === previewEpoch) previewStatus.textContent = '▶️ Aperçu français pré-généré — aucune clé API';
-          };
-          p.onended = () => {
-            if (token === previewEpoch) {
-              btnPreview.disabled = false;
-              btnStopPreview.style.display = 'none';
-              previewStatus.textContent = 'Prêt';
-            }
-          };
-          p.onerror = () => {
-            if (token !== previewEpoch) return;
-            previewSourceIndex++;
-            if (previewSourceIndex < audioUrls.length) {
-              previewStatus.textContent = '⏳ Source de secours…';
-              p.src = audioUrls[previewSourceIndex];
-              p.play().catch(()=>{});
-              return;
-            }
-            // Tant que le pack français exact n'a pas été généré, on évite
-            // l'ancien échantillon anglais et on propose un aperçu français de
-            // secours avec la meilleure voix système disponible.
-            if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
-              try {
-                window.speechSynthesis.cancel();
-                const u = new SpeechSynthesisUtterance(PREVIEW_SAMPLE_TEXT);
-                u.lang = 'fr-FR';
-                u.rate = prefs.rate || 1;
-                u.volume = _isMuted ? 0 : (prefs.voice ?? 1);
-                const fr = frenchVoices();
-                if (fr[0]) u.voice = fr[0];
-                u.onstart = () => { if (token === previewEpoch) previewStatus.textContent = '▶️ Aperçu français de secours — voix système'; };
-                u.onend = () => { if (token === previewEpoch) { btnPreview.disabled = false; btnStopPreview.style.display = 'none'; previewStatus.textContent = 'Prêt'; } };
-                u.onerror = () => { if (token === previewEpoch) { btnPreview.disabled = false; btnStopPreview.style.display = 'none'; previewStatus.textContent = 'Aperçu français indisponible'; } };
-                window.speechSynthesis.speak(u);
-                return;
-              } catch (_) {}
-            }
-            btnPreview.disabled = false;
-            btnStopPreview.style.display = 'none';
-            previewStatus.textContent = 'Aperçu français indisponible';
-          };
-          // Ne pas await ici : sur un fichier absent, certains navigateurs
-          // rejettent play() avant d'émettre `error`. Le gestionnaire `onerror`
-          // doit rester maître du passage .ogg -> .wav -> voix système française.
-          p.play().catch(()=>{});
-        } else {
-          // Synthèse navigateur
-          if (!('speechSynthesis' in window)) throw new Error('Synthèse navigateur non supportée');
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance("Sur les crêtes de givre, le vent murmure les légendes d'Elenya.");
-          u.lang = 'fr-FR';
-          u.rate = prefs.rate || 1;
-          const fr = frenchVoices();
-          const sel = fr.find(v => v.voiceURI === prefs.voiceURI) || fr[0];
-          if (sel) u.voice = sel;
-          u.onstart = () => {
-            if (token === previewEpoch) previewStatus.textContent = '▶️ Lecture en cours…';
-          };
-          u.onend = () => {
-            if (token === previewEpoch) {
-              btnPreview.disabled = false;
-              btnStopPreview.style.display = 'none';
-              previewStatus.textContent = 'Prêt';
-            }
-          };
-          u.onerror = () => {
-            if (token === previewEpoch) {
-              btnPreview.disabled = false;
-              btnStopPreview.style.display = 'none';
-              previewStatus.textContent = 'Erreur synthèse';
-            }
-          };
-          window.speechSynthesis.speak(u);
-        }
-      } catch (err) {
-        if (token === previewEpoch) {
-          btnPreview.disabled = false;
-          btnStopPreview.style.display = 'none';
-          previewStatus.textContent = (err.name === 'AbortError') ? 'Arrêté' : (err.message || 'Erreur aperçu');
-        }
-      }
-    };
-
-    btnStopPreview.onclick = () => {
-      previewEpoch++;
-      if (previewAbortController) {
-        try { previewAbortController.abort(); } catch(_) {}
-        previewAbortController = null;
-      }
-      if (previewPlayer) {
-        try { previewPlayer.pause(); previewPlayer.currentTime = 0; previewPlayer.src = ''; } catch(_) {}
-      }
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      btnPreview.disabled = false;
-      btnStopPreview.style.display = 'none';
-      previewStatus.textContent = 'Arrêté';
-    };
-  }
 
   function loadExplorer(){if(explorer)return Promise.resolve(explorer);return new Promise((resolve,reject)=>google.script.run.withSuccessHandler(r=>{explorer=r;resolve(r)}).withFailureHandler(reject).serverGetExplorer());}
   const known=(s)=>!!coverage.scenes[s.mode+':'+s.id]||_visitedScenes.has(s.id)||_visitedScenes.has(s.sceneNumber);
@@ -698,8 +513,7 @@ const RF = (() => {
 
   applyPrefs();restoreHistory();
 
-  return {
-    prefs,scene,prepareChoice,settle,rollback,resetHistory,restoreHistory,cleanup,speak,stopVoice,toggleSpeak,noteTrack,effect,applyPrefs,
+  return { open, close, prefs,scene,prepareChoice,settle,rollback,resetHistory,restoreHistory,cleanup,speak,stopVoice,toggleSpeak,noteTrack,effect,applyPrefs,
     get audioFactor(){return duckLevel},get busy(){return busy},get epoch(){return requestEpoch},get current(){return data},settings,map,codex,music,galleryExtras,pauseBgm,resumeBgm,toggleTools,tell,write,read,coverage
   };
 })();
