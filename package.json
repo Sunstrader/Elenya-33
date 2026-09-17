@@ -1,21 +1,13 @@
 {
-  "name": "elenya-52-audio",
-  "version": "52.4.3",
-  "description": "Elenya — Corona Glacialis, pack vocal français Gemini Free Tier uniquement",
+  "name": "elenya",
+  "version": "52.5.0",
+  "description": "Elenya — Refonte NG+ Ultra",
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
     "build": "node scripts/build.js",
     "lint": "node scripts/lint.js",
-    "test": "node elenya-refonte-52.4/qa/check.cjs && node elenya-refonte-52.4/qa/audio-narration.cjs && node elenya-refonte-52.4/qa/client-state.cjs && node elenya-refonte-52.4/qa/refonte-fixes.cjs && node elenya-refonte-52.4/qa/offline-voice-pack.cjs && node elenya-refonte-52.4/qa/voice-corpus.cjs && node elenya-refonte-52.4/qa/free-tier-voice.cjs",
-    "voice:previews": "node scripts/generate-full-voice-pack.mjs --previews-only --all-voices --backend=gemini-free",
-    "voice:corpus": "node scripts/build-voice-corpus.cjs",
-    "voice:generate": "node scripts/generate-full-voice-pack.mjs --voice=Sulafat --backend=gemini-free",
-    "voice:dry-run": "node scripts/generate-full-voice-pack.mjs --dry-run --voice=Sulafat",
-    "voice:generate:all": "node scripts/generate-full-voice-pack.mjs --all-voices --backend=gemini-free",
-    "voice:dry-run:all": "node scripts/generate-full-voice-pack.mjs --dry-run --all-voices",
-    "voice:status": "node scripts/voice-pack-status.cjs",
-    "voice:verify": "node scripts/voice-pack-status.cjs --require-full"
+    "test": "node elenya-refonte-52.4/qa/check.cjs && node elenya-refonte-52.4/qa/client-state.cjs && node elenya-refonte-52.4/qa/refonte-fixes.cjs"
   },
   "dependencies": {},
   "engines": {

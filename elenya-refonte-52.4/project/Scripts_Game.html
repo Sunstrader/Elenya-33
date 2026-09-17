@@ -87,7 +87,13 @@ failedUrls: new Set(),
 preloadImage(url) {
 if (!url || url === 'none' || this.failedUrls.has(url) || this.cache[url]) return;
 const img = new Image();
-img.onerror = () => this.failedUrls.add(url);
+img.onerror = () => {
+  this.failedUrls.add(url);
+  if (_currentBg === url) {
+    document.body.style.setProperty('--bg-before', "url('" + CONFIG.FALLBACK_BG + "')");
+    document.body.style.setProperty('--bg-after', 'none');
+  }
+};
 img.onload = () => this.cache[url] = true;
 img.src = url;
 },

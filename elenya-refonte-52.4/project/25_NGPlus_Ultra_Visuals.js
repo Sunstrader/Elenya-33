@@ -54,7 +54,8 @@ function applyNgPlusUltraVisuals_(){
     }
 
     // 3 & 4. Ambiance spécifique pour Fen spectral
-    if (scene.sprite === 'Fen') {
+    const spectralFenScenes = ['NGP_01_SEUIL','NGP_02_NEUF_ECHOS','NGP_04_FRESQUE_REPRISE','NGP_12_FEN','NGP_U01_FEN','NGP_U04_SECRET_FEN','NGP_U12_REFUS','NG_FIN_CYCLE'];
+    if (scene.sprite === 'Fen' && spectralFenScenes.includes(id)) {
       // S'assurer qu'on a un fond de secours sombre/cohérent
       const isDark = ['royaume-souvenirs', 'campement-nuit', 'foret-noire'].some(bg => scene.image.includes(bg));
       if (!isDark) {

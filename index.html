@@ -1747,7 +1747,13 @@ failedUrls: new Set(),
 preloadImage(url) {
 if (!url || url === 'none' || this.failedUrls.has(url) || this.cache[url]) return;
 const img = new Image();
-img.onerror = () => this.failedUrls.add(url);
+img.onerror = () => {
+  this.failedUrls.add(url);
+  if (_currentBg === url) {
+    document.body.style.setProperty('--bg-before', "url('" + CONFIG.FALLBACK_BG + "')");
+    document.body.style.setProperty('--bg-after', 'none');
+  }
+};
 img.onload = () => this.cache[url] = true;
 img.src = url;
 },
@@ -3480,7 +3486,7 @@ body.rf-spectral-fen .rf-snow-overlay {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 5;
+  z-index: 4;
   pointer-events: none;
   background-image: 
     radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px),
@@ -3488,6 +3494,11 @@ body.rf-spectral-fen .rf-snow-overlay {
   background-size: 60px 60px, 100px 100px;
   background-position: 0 0, 20px 20px;
   animation: rf-snow-anim 10s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.rf-spectral-fen .rf-snow-overlay {
+    animation: none;
+  }
 }
 @keyframes rf-snow-anim {
   0% { background-position: 0px 0px, 20px 20px; }
