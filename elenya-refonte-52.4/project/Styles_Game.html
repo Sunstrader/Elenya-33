@@ -691,7 +691,16 @@ body.mode-ngplus #scene-badge{box-shadow:0 0 22px rgba(120,180,255,.12)}
 #ngplus-panel strong{color:#eaf4ff}
 
 /* V40 DIRECTOR'S CUT — mise en scène premium */
-body.mode-ngplus::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;background:radial-gradient(circle at 50% 30%,rgba(150,190,255,.055),transparent 42%),linear-gradient(180deg,rgba(8,14,30,.10),rgba(2,4,10,.18));mix-blend-mode:screen;opacity:.75}
+body.mode-ngplus #vignette {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(150,190,255,.055), transparent 42%),
+    linear-gradient(180deg, rgba(8,14,30,.10), rgba(2,4,10,.18)),
+    radial-gradient(
+      ellipse at center,
+      transparent 42%,
+      rgba(4,5,12,var(--vignette-opacity)) 100%
+    );
+}
 body.rel-possession #scene-title,body.rel-possession .scene-title{letter-spacing:2.5px;text-shadow:0 0 18px rgba(180,210,255,.20)}
 body.rel-confiance .scene-title{filter:brightness(1.08)}
 body.rel-devotion .scene-title{letter-spacing:1.8px}
