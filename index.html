@@ -3467,6 +3467,33 @@ body.rf-reduce-motion *,body.rf-reduce-motion *::before,body.rf-reduce-motion *:
 .rf-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #bee6ff;outline-offset:3px}
 @media(max-width:650px){.header-right{flex-wrap:wrap;gap:.3rem}.header{flex-wrap:wrap}.rf-tools{padding:.4rem;flex-wrap:nowrap;overflow-x:auto}.rf-tools button{flex:0 0 auto;white-space:nowrap}.footer{flex-wrap:wrap}.body-content{padding-inline:1rem!important}.rf-dialog{padding:1rem}.accueil-menu{max-width:100%;padding-inline:1rem}.accueil-btn{white-space:normal!important}#accueil-screen{overflow:auto;justify-content:flex-start;padding-top:2rem;padding-bottom:2rem}.choice-btn{min-height:48px}}
+
+body.rf-spectral-fen::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1; /* au-dessus du bg, en-dessous des persos */
+  pointer-events: none;
+  background: rgba(4, 12, 24, 0.6);
+}
+body.rf-spectral-fen .rf-snow-overlay {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px);
+  background-size: 60px 60px, 100px 100px;
+  background-position: 0 0, 20px 20px;
+  animation: rf-snow-anim 10s linear infinite;
+}
+@keyframes rf-snow-anim {
+  0% { background-position: 0px 0px, 20px 20px; }
+  100% { background-position: 100px 600px, -50px 1000px; }
+}
+
 </style>
 <div id="rf-frost-screen" aria-hidden="true"></div>
 <div class="rf-tools" id="rf-tools" hidden>
@@ -3616,6 +3643,12 @@ const RF = (() => {
     document.body.classList.add('game-live');
     document.body.classList.toggle('rf-ground-frost',!!data?.presentation?.groundFrozen);
     document.body.classList.toggle('rf-ice-aftermath',!!data?.presentation?.iceStormAftermath);
+    document.body.classList.toggle('rf-spectral-fen',!!data?.presentation?.spectralOverlay);
+    if (data?.presentation?.spectralOverlay && !document.getElementById('rf-snow-overlay-el')) {
+      const snow = document.createElement('div'); snow.id = 'rf-snow-overlay-el'; snow.className = 'rf-snow-overlay'; document.body.appendChild(snow);
+    } else if (!data?.presentation?.spectralOverlay && document.getElementById('rf-snow-overlay-el')) {
+      var el = document.getElementById('rf-snow-overlay-el'); if(el && el.parentNode) el.parentNode.removeChild(el); else if(el && el.remove) el.remove();
+    }
     document.querySelectorAll('.header,.body-content,.footer').forEach(el=>el.inert=false);
     const label=$('rf-ground-label');label.hidden=!data?.presentation?.groundFrozen;label.textContent='Le givre que tu as créé recouvre encore le sol.';
     const frozen=data?.presentation?.frozenCharacter;['left','right','center'].forEach(side=>{const layer=$('sprite-'+side),url=layer.dataset.current||'';layer.classList.toggle('rf-frozen',!!frozen&&(frozen==='both'||url.toLowerCase().includes(frozen.toLowerCase())));});
@@ -3935,7 +3968,8 @@ const RF = (() => {
   async function galleryExtras(){try{const result=await loadExplorer();if(!$('gallery-modal').classList.contains('show'))return;const unlocked=read('ef_gallery',[]);for(const bg of result.backgrounds){if($('gallery-grid').querySelector('[data-refonte="'+bg.url.split('/').pop()+'"]'))continue;const item=document.createElement('div');item.dataset.refonte=bg.url.split('/').pop();item.className='gallery-item'+(unlocked.includes(bg.url)?'':' locked');if(unlocked.includes(bg.url)){item.innerHTML=`<img src="${bg.url}" alt="${escapeHtml(bg.name)}"><span class="gallery-label">Nouveau décor</span>`;item.tabIndex=0;item.setAttribute('role','button');item.onclick=()=>openGalleryMedia(bg.url,bg.name,'image');item.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();item.click()}};}else item.innerHTML=`<div class="gallery-locked-name">${escapeHtml(bg.name)}</div><span class="gallery-label">Nouveau décor</span>`;$('gallery-grid').appendChild(item)}}catch(_){tell('Les nouveaux décors n’ont pas pu être chargés dans la galerie. Les autres restent consultables.')}}
 
   function toggleTools(){toolsOpen=!toolsOpen;$('rf-tools').hidden=!toolsOpen||!$('accueil-screen').classList.contains('hidden');$('btn-rf-tools')?.classList.toggle('active',toolsOpen);}
-  function cleanup(){requestEpoch++;busy=false;pending=null;data=null;toolsOpen=false;stopVoice();close();clearTimeout(autoTimer);if(audioContext)audioContext.suspend().catch(()=>{});$('rf-tools').hidden=true;$('rf-reveal').hidden=true;$('rf-ground-label').hidden=true;document.body.classList.remove('rf-ui-hidden','rf-ground-frost','rf-ice-aftermath');document.querySelectorAll('.header,.body-content,.footer').forEach(el=>el.inert=true);hideOverlay();tell('');}
+  function cleanup(){requestEpoch++;busy=false;pending=null;data=null;toolsOpen=false;stopVoice();close();clearTimeout(autoTimer);if(audioContext)audioContext.suspend().catch(()=>{});$('rf-tools').hidden=true;$('rf-reveal').hidden=true;$('rf-ground-label').hidden=true;document.body.classList.remove('rf-ui-hidden','rf-ground-frost','rf-ice-aftermath','rf-spectral-fen');
+    if(document.getElementById('rf-snow-overlay-el')) var el = document.getElementById('rf-snow-overlay-el'); if(el && el.parentNode) el.parentNode.removeChild(el); else if(el && el.remove) el.remove();document.querySelectorAll('.header,.body-content,.footer').forEach(el=>el.inert=true);hideOverlay();tell('');}
 
   $('rf-read').onclick=speak;$('rf-stop').onclick=()=>{stopVoice();tell('Lecture arrêtée.')};$('rf-settings').onclick=settings;$('rf-map').onclick=map;$('rf-codex').onclick=codex;$('rf-close').onclick=close;
   $('rf-hide').onclick=()=>{document.body.classList.add('rf-ui-hidden');$('rf-reveal').hidden=false;$('rf-reveal').focus()};$('rf-reveal').onclick=()=>{document.body.classList.remove('rf-ui-hidden');$('rf-reveal').hidden=true;$('rf-hide').focus()};

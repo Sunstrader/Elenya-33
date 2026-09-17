@@ -6,6 +6,8 @@ function applyNgPlusUltraVisuals_(){
   _ngPlusUltraVisualsApplied=true;
 
   const set=(id,props)=>{if(NGPLUS_DB[id])Object.assign(NGPLUS_DB[id],props);};
+
+
   // Personnages principaux : le décor reste visible, mais les scènes qui parlent d'une présence
   // affichent enfin cette présence au lieu d'un écran purement textuel.
   set('NGP_01_SEUIL',{sprite:'Fen'});
@@ -40,6 +42,30 @@ function applyNgPlusUltraVisuals_(){
     });
   });
 
+  const baseImg = (typeof ELENYA_ART_V54_BASE !== 'undefined' ? ELENYA_ART_V54_BASE : 'https://cdn.jsdelivr.net/gh/Sunstrader/elenya-3d-assets@main/game-v54/');
+  const fallbackBg = baseImg + 'backgrounds/royaume-souvenirs.webp';
+
+  Object.entries(NGPLUS_DB).forEach(([id, scene]) => {
+    if (!scene) return;
+    
+    // 1 & 2. Ne jamais laisser sans fond visible
+    if (!scene.image || scene.image.trim() === '' || scene.image === 'null' || scene.image === 'undefined') {
+      scene.image = fallbackBg;
+    }
+
+    // 3 & 4. Ambiance spécifique pour Fen spectral
+    if (scene.sprite === 'Fen') {
+      // S'assurer qu'on a un fond de secours sombre/cohérent
+      const isDark = ['royaume-souvenirs', 'campement-nuit', 'foret-noire'].some(bg => scene.image.includes(bg));
+      if (!isDark) {
+         scene.image = baseImg + 'backgrounds/campement-nuit.webp';
+      }
+      
+      // Ajouter les propriétés de présentation (neige légère / nuit)
+      scene.presentation = scene.presentation || {};
+      scene.presentation.spectralOverlay = true;
+    }
+  });
   // Repères de mise en scène pour le client et les outils QA.
   Object.entries(NGPLUS_DB).forEach(([id,scene])=>{
     if(!scene.emotionalBeat){
